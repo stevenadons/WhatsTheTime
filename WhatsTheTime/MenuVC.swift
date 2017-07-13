@@ -9,27 +9,77 @@
 import UIKit
 
 class MenuVC: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    
+    
+    // MARK: - Properties
+    
+    var menuCircles: MenuCircles = MenuCircles()
+    
+    var topCirclesInset: CGFloat = 70
+    var bottomCirclesInset: CGFloat = 100
     
 
-    /*
-    // MARK: - Navigation
+    
+    
+    // MARK: - Public Methods
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        view.backgroundColor = Color.lightBackground.value
+        setupViews()
     }
-    */
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+//        animateHeartBeat()
+    }
+    
+    
+    
+    // MARK: - UI Methods
+    
+    private func setupViews() {
+        
+        view.addSubview(menuCircles)
+        
+        NSLayoutConstraint.activate([
+            
+            menuCircles.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            menuCircles.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: (topCirclesInset - bottomCirclesInset) / 2),
+            menuCircles.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -topCirclesInset - bottomCirclesInset),
+            menuCircles.widthAnchor.constraint(equalTo: menuCircles.widthAnchor)
+            
+            ])
+
+    }
+    
+    
+    // Example of animation
+//    private func animateHeartBeat() {
+//    
+//        UIView.animate(withDuration: 0.3, delay: 0.0, animations: {
+//            self.menuCircles.smallCircle.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+//        }) { (finished) in
+//            UIView.animate(withDuration: 0.3, animations: {
+//                self.menuCircles.smallCircle.transform = .identity
+//            })
+//        }
+//        UIView.animate(withDuration: 0.3, delay: 0.1, options: [], animations: {
+//            self.menuCircles.mediumCircle.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+//        }) { (finished) in
+//            UIView.animate(withDuration: 0.3, animations: {
+//                self.menuCircles.mediumCircle.transform = .identity
+//            })
+//        }
+//        UIView.animate(withDuration: 0.3, delay: 0.2, options: [], animations: {
+//            self.menuCircles.bigCircle.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+//        }) { (finished) in
+//            UIView.animate(withDuration: 0.3, animations: {
+//                self.menuCircles.bigCircle.transform = .identity
+//            })
+//        }
+//    }
+   
 
 }

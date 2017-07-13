@@ -8,22 +8,30 @@
 
 /* Begin PBXBuildFile section */
 		4F0C9BB51F17BF9A00956C53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C9BB41F17BF9A00956C53 /* AppDelegate.swift */; };
-		4F0C9BB71F17BF9A00956C53 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C9BB61F17BF9A00956C53 /* ViewController.swift */; };
 		4F0C9BBA1F17BF9A00956C53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F0C9BB81F17BF9A00956C53 /* Main.storyboard */; };
 		4F0C9BBC1F17BF9A00956C53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F0C9BBB1F17BF9A00956C53 /* Assets.xcassets */; };
 		4F0C9BBF1F17BF9A00956C53 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F0C9BBD1F17BF9A00956C53 /* LaunchScreen.storyboard */; };
 		4F0C9BCB1F17C10A00956C53 /* MenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C9BCA1F17C10A00956C53 /* MenuVC.swift */; };
+		4F0C9BCE1F17C26A00956C53 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C9BCD1F17C26A00956C53 /* Color.swift */; };
+		4F0C9BD01F17C3B300956C53 /* MenuCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C9BCF1F17C3B300956C53 /* MenuCircle.swift */; };
+		4F0C9BD41F17CA8E00956C53 /* MenuCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C9BD31F17CA8E00956C53 /* MenuCircles.swift */; };
+		4F0C9BD61F17DF7200956C53 /* RadialGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C9BD51F17DF7200956C53 /* RadialGradientView.swift */; };
+		4F0C9BD81F17DFEC00956C53 /* RadialGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C9BD71F17DFEC00956C53 /* RadialGradientLayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4F0C9BB11F17BF9A00956C53 /* WhatsTheTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatsTheTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F0C9BB41F17BF9A00956C53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4F0C9BB61F17BF9A00956C53 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4F0C9BB91F17BF9A00956C53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4F0C9BBB1F17BF9A00956C53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4F0C9BBE1F17BF9A00956C53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4F0C9BC01F17BF9A00956C53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4F0C9BCA1F17C10A00956C53 /* MenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuVC.swift; sourceTree = "<group>"; };
+		4F0C9BCD1F17C26A00956C53 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		4F0C9BCF1F17C3B300956C53 /* MenuCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCircle.swift; sourceTree = "<group>"; };
+		4F0C9BD31F17CA8E00956C53 /* MenuCircles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCircles.swift; sourceTree = "<group>"; };
+		4F0C9BD51F17DF7200956C53 /* RadialGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadialGradientView.swift; sourceTree = "<group>"; };
+		4F0C9BD71F17DFEC00956C53 /* RadialGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadialGradientLayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +64,7 @@
 		4F0C9BB31F17BF9A00956C53 /* WhatsTheTime */ = {
 			isa = PBXGroup;
 			children = (
+				4F0C9BCC1F17C25D00956C53 /* Utilities */,
 				4F0C9BC91F17BFCB00956C53 /* Resources */,
 				4F0C9BC81F17BFC500956C53 /* Models */,
 				4F0C9BC71F17BFAF00956C53 /* Views */,
@@ -69,9 +78,8 @@
 		4F0C9BC61F17BFA900956C53 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				4F0C9BB41F17BF9A00956C53 /* AppDelegate.swift */,
-				4F0C9BB61F17BF9A00956C53 /* ViewController.swift */,
 				4F0C9BCA1F17C10A00956C53 /* MenuVC.swift */,
+				4F0C9BB41F17BF9A00956C53 /* AppDelegate.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -81,6 +89,8 @@
 			children = (
 				4F0C9BB81F17BF9A00956C53 /* Main.storyboard */,
 				4F0C9BBD1F17BF9A00956C53 /* LaunchScreen.storyboard */,
+				4F0C9BCF1F17C3B300956C53 /* MenuCircle.swift */,
+				4F0C9BD31F17CA8E00956C53 /* MenuCircles.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -97,6 +107,16 @@
 			children = (
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		4F0C9BCC1F17C25D00956C53 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				4F0C9BCD1F17C26A00956C53 /* Color.swift */,
+				4F0C9BD51F17DF7200956C53 /* RadialGradientView.swift */,
+				4F0C9BD71F17DFEC00956C53 /* RadialGradientLayer.swift */,
+			);
+			name = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,9 +192,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F0C9BB71F17BF9A00956C53 /* ViewController.swift in Sources */,
 				4F0C9BB51F17BF9A00956C53 /* AppDelegate.swift in Sources */,
+				4F0C9BD61F17DF7200956C53 /* RadialGradientView.swift in Sources */,
 				4F0C9BCB1F17C10A00956C53 /* MenuVC.swift in Sources */,
+				4F0C9BD01F17C3B300956C53 /* MenuCircle.swift in Sources */,
+				4F0C9BCE1F17C26A00956C53 /* Color.swift in Sources */,
+				4F0C9BD81F17DFEC00956C53 /* RadialGradientLayer.swift in Sources */,
+				4F0C9BD41F17CA8E00956C53 /* MenuCircles.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
