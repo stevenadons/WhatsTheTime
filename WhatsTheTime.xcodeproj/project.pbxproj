@@ -17,6 +17,12 @@
 		4F0C9BD41F17CA8E00956C53 /* MenuCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C9BD31F17CA8E00956C53 /* MenuCircles.swift */; };
 		4F0C9BD61F17DF7200956C53 /* RadialGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C9BD51F17DF7200956C53 /* RadialGradientView.swift */; };
 		4F0C9BD81F17DFEC00956C53 /* RadialGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C9BD71F17DFEC00956C53 /* RadialGradientLayer.swift */; };
+		4FB13FF71F1959430025088A /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB13FF61F1959430025088A /* Logo.swift */; };
+		4FB13FF91F1959560025088A /* Logo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FB13FF81F1959560025088A /* Logo.xib */; };
+		4FB13FFC1F195AAE0025088A /* agdollar.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4FB13FFB1F195AAE0025088A /* agdollar.ttf */; };
+		4FB13FFE1F195EC40025088A /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB13FFD1F195EC40025088A /* GlobalConstants.swift */; };
+		4FB140001F19661F0025088A /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB13FFF1F19661F0025088A /* DismissButton.swift */; };
+		4FB140021F1966300025088A /* DismissButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FB140011F1966300025088A /* DismissButton.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +38,12 @@
 		4F0C9BD31F17CA8E00956C53 /* MenuCircles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCircles.swift; sourceTree = "<group>"; };
 		4F0C9BD51F17DF7200956C53 /* RadialGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadialGradientView.swift; sourceTree = "<group>"; };
 		4F0C9BD71F17DFEC00956C53 /* RadialGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadialGradientLayer.swift; sourceTree = "<group>"; };
+		4FB13FF61F1959430025088A /* Logo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logo.swift; sourceTree = "<group>"; };
+		4FB13FF81F1959560025088A /* Logo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Logo.xib; sourceTree = "<group>"; };
+		4FB13FFB1F195AAE0025088A /* agdollar.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = agdollar.ttf; sourceTree = "<group>"; };
+		4FB13FFD1F195EC40025088A /* GlobalConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
+		4FB13FFF1F19661F0025088A /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
+		4FB140011F1966300025088A /* DismissButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DismissButton.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +103,10 @@
 				4F0C9BBD1F17BF9A00956C53 /* LaunchScreen.storyboard */,
 				4F0C9BCF1F17C3B300956C53 /* MenuCircle.swift */,
 				4F0C9BD31F17CA8E00956C53 /* MenuCircles.swift */,
+				4FB13FF81F1959560025088A /* Logo.xib */,
+				4FB13FF61F1959430025088A /* Logo.swift */,
+				4FB140011F1966300025088A /* DismissButton.xib */,
+				4FB13FFF1F19661F0025088A /* DismissButton.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -105,6 +121,8 @@
 		4F0C9BC91F17BFCB00956C53 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FB13FFA1F195AA20025088A /* Fonts */,
+				4FB13FFD1F195EC40025088A /* GlobalConstants.swift */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -117,6 +135,14 @@
 				4F0C9BD71F17DFEC00956C53 /* RadialGradientLayer.swift */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		4FB13FFA1F195AA20025088A /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				4FB13FFB1F195AAE0025088A /* agdollar.ttf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,6 +207,9 @@
 			files = (
 				4F0C9BBF1F17BF9A00956C53 /* LaunchScreen.storyboard in Resources */,
 				4F0C9BBC1F17BF9A00956C53 /* Assets.xcassets in Resources */,
+				4FB13FF91F1959560025088A /* Logo.xib in Resources */,
+				4FB13FFC1F195AAE0025088A /* agdollar.ttf in Resources */,
+				4FB140021F1966300025088A /* DismissButton.xib in Resources */,
 				4F0C9BBA1F17BF9A00956C53 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -193,11 +222,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F0C9BB51F17BF9A00956C53 /* AppDelegate.swift in Sources */,
+				4FB13FFE1F195EC40025088A /* GlobalConstants.swift in Sources */,
 				4F0C9BD61F17DF7200956C53 /* RadialGradientView.swift in Sources */,
 				4F0C9BCB1F17C10A00956C53 /* MenuVC.swift in Sources */,
 				4F0C9BD01F17C3B300956C53 /* MenuCircle.swift in Sources */,
 				4F0C9BCE1F17C26A00956C53 /* Color.swift in Sources */,
 				4F0C9BD81F17DFEC00956C53 /* RadialGradientLayer.swift in Sources */,
+				4FB13FF71F1959430025088A /* Logo.swift in Sources */,
+				4FB140001F19661F0025088A /* DismissButton.swift in Sources */,
 				4F0C9BD41F17CA8E00956C53 /* MenuCircles.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -360,6 +392,7 @@
 				4F0C9BC51F17BF9A00956C53 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

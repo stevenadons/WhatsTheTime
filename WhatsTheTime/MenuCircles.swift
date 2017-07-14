@@ -101,17 +101,15 @@ class MenuCircles: UIView {
             
             ])
         
-        setNeedsDisplay()
+        bigCircle.locations = [(mediumCircle.bounds.width / bigCircle.bounds.width), 1.0]
+        mediumCircle.locations = [(smallCircle.bounds.width / mediumCircle.bounds.width), 1.0]
+        smallCircle.locations = smallCircleGradientLocations
     }
     
     
     override func draw(_ rect: CGRect) {
         
         super.draw(rect)
-        
-        bigCircle.locations = [(mediumCircle.bounds.width / bigCircle.bounds.width), 1.0]
-        mediumCircle.locations = [(smallCircle.bounds.width / mediumCircle.bounds.width), 1.0]
-        smallCircle.locations = smallCircleGradientLocations
     }
     
     
@@ -196,16 +194,16 @@ class MenuCircles: UIView {
         
         
         // Add circles
-        bigCircle.insideColor = Color.menuCircleBigInside.value
-        bigCircle.outsideColor = Color.menuCircleBigOutside.value
+        bigCircle.insideColor = COLOR.MenuCircleBigInside
+        bigCircle.outsideColor = COLOR.MenuCircleBigOutside
         containerView.addSubview(bigCircle)
         
-        mediumCircle.insideColor = Color.menuCircleMediumInside.value
-        mediumCircle.outsideColor = Color.menuCircleMediumOutside.value
+        mediumCircle.insideColor = COLOR.MenuCircleMediumInside
+        mediumCircle.outsideColor = COLOR.MenuCircleMediumOutside
         containerView.addSubview(mediumCircle)
         
-        smallCircle.insideColor = Color.menuCircleSmallInside.value
-        smallCircle.outsideColor = Color.menuCircleSmallOutside.value
+        smallCircle.insideColor = COLOR.MenuCircleSmallInside
+        smallCircle.outsideColor = COLOR.MenuCircleSmallOutside
         containerView.addSubview(smallCircle)
     }
 
