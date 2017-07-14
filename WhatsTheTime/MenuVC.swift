@@ -13,11 +13,10 @@ class MenuVC: UIViewController {
     
     // MARK: - Properties
     
-    var menuCircles: MenuCircles = MenuCircles()
+    var menuCircles: MenuCircles!
     
     var topCirclesInset: CGFloat = 70
     var bottomCirclesInset: CGFloat = 100
-    
 
     
     
@@ -41,7 +40,9 @@ class MenuVC: UIViewController {
     
     private func setupViews() {
         
+        menuCircles = MenuCircles(smallRatio: 0.7, mediumRatio: 0.9, bigRatio: 1.0)
         view.addSubview(menuCircles)
+
         
         NSLayoutConstraint.activate([
             

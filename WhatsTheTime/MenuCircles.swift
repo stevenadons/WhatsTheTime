@@ -18,22 +18,21 @@ class MenuCircles: UIView {
     var mediumCircle: MenuCircle = MenuCircle()
     var smallCircle: MenuCircle = MenuCircle()
     
-    var bigCircleInset: CGFloat = 0 {
+    var bigCircleRatio: CGFloat = 1.0 {
         didSet {
             bigCircle.setNeedsDisplay()
         }
     }
-    var mediumCircleInset: CGFloat = 25 {
+    var mediumCircleRatio: CGFloat = 0.9 {
         didSet {
             mediumCircle.setNeedsDisplay()
         }
     }
-    var smallCircleInset: CGFloat = 60 {
+    var smallCircleRatio: CGFloat = 0.7 {
         didSet {
             smallCircle.setNeedsDisplay()
         }
     }
-    
     
     
     
@@ -55,6 +54,17 @@ class MenuCircles: UIView {
     }
     
     
+    convenience init(smallRatio: CGFloat, mediumRatio: CGFloat, bigRatio: CGFloat?) {
+        
+        self.init()
+        self.smallCircleRatio = smallRatio
+        self.mediumCircleRatio = mediumRatio
+        if let bigRatio = bigRatio {
+            self.bigCircleRatio = bigRatio
+        }
+    }
+    
+    
     
     // MARK: - Public Methods
     
@@ -62,11 +72,40 @@ class MenuCircles: UIView {
         
         super.layoutSubviews()
         containerView.layer.cornerRadius = min(bounds.width, bounds.height) / 2
+
+        // Set constraints
+        NSLayoutConstraint.activate([
+            
+            containerView.topAnchor.constraint(equalTo: topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            containerView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            containerView.widthAnchor.constraint(equalTo: containerView.heightAnchor),
+            
+            bigCircle.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            bigCircle.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            bigCircle.heightAnchor.constraint(equalTo: containerView.heightAnchor),
+            bigCircle.widthAnchor.constraint(equalTo: containerView.widthAnchor),
+            
+            mediumCircle.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            mediumCircle.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            mediumCircle.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: mediumCircleRatio),
+            mediumCircle.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: mediumCircleRatio),
+            
+            smallCircle.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            smallCircle.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            smallCircle.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: smallCircleRatio),
+            smallCircle.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: smallCircleRatio),
+            
+            ])
+        
+        setNeedsDisplay()
     }
+    
     
     override func draw(_ rect: CGRect) {
         
         super.draw(rect)
+        
         bigCircle.locations = [(mediumCircle.bounds.width / bigCircle.bounds.width), 1.0]
         mediumCircle.locations = [(smallCircle.bounds.width / mediumCircle.bounds.width), 1.0]
         smallCircle.locations = [0.2, 1.0]
@@ -99,32 +138,7 @@ class MenuCircles: UIView {
         containerView.addSubview(smallCircle)
         
                 
-        // Set constraints
-        
-        NSLayoutConstraint.activate([
-            
-            containerView.topAnchor.constraint(equalTo: topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            containerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            containerView.widthAnchor.constraint(equalTo: containerView.heightAnchor),
-
-            bigCircle.topAnchor.constraint(equalTo: containerView.topAnchor, constant: bigCircleInset),
-            bigCircle.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -bigCircleInset),
-            bigCircle.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: bigCircleInset),
-            bigCircle.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -bigCircleInset),
-            
-            mediumCircle.topAnchor.constraint(equalTo: bigCircle.topAnchor, constant: mediumCircleInset),
-            mediumCircle.bottomAnchor.constraint(equalTo: bigCircle.bottomAnchor, constant: -mediumCircleInset),
-            mediumCircle.leadingAnchor.constraint(equalTo: bigCircle.leadingAnchor, constant: mediumCircleInset),
-            mediumCircle.trailingAnchor.constraint(equalTo: bigCircle.trailingAnchor, constant: -mediumCircleInset),
-
-            smallCircle.topAnchor.constraint(equalTo: mediumCircle.topAnchor, constant: smallCircleInset),
-            smallCircle.bottomAnchor.constraint(equalTo: mediumCircle.bottomAnchor, constant: -smallCircleInset),
-            smallCircle.leadingAnchor.constraint(equalTo: mediumCircle.leadingAnchor, constant: smallCircleInset),
-            smallCircle.trailingAnchor.constraint(equalTo: mediumCircle.trailingAnchor, constant: -smallCircleInset)
-
-            ])
-    }
+            }
     
 
 }
