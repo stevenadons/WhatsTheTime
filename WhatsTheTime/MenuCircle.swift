@@ -70,8 +70,28 @@ class MenuCircle: UIView {
     }
   
     
+    // MARK: - Public UI Methods
     
-    // MARK: - UI Methods
+    func animate(scale: CGFloat, translateY: CGFloat, duration: Double, delay: Double, completion: (() -> Void)?) {
+        
+        UIView.animate(withDuration: duration, delay: delay, animations: {
+            self.transform = CGAffineTransform(scaleX: scale, y: scale).translatedBy(x: 0, y: translateY)
+        })  { (finished) in
+            completion?()
+        }
+    }
+    
+    
+    func animateToIdentity(duration: Double, delay: Double) {
+        
+        UIView.animate(withDuration: duration, delay: delay, animations: {
+            self.transform = .identity
+        })
+    }
+
+    
+    
+    // MARK: - Private UI Methods
     
     private func setupViews() {
         

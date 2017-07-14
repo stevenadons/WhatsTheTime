@@ -31,8 +31,17 @@ class MenuVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         
-//        animateHeartBeat()
+        sleep(1)
+        
+//        menuCircles.liftBottom(inset: 70, duration: 0.3)
+//        menuCircles.bringToOriginal(duration: 0.3, delay: 2)
+        
+        menuCircles.enableBeat(interval: 1.1)
+     
+//        menuCircles.expandToFullScreen(duration: 0.8)
+//        menuCircles.bringToOriginal(duration: 0.8, delay: 3)
     }
+    
     
     
     
@@ -42,7 +51,6 @@ class MenuVC: UIViewController {
         
         menuCircles = MenuCircles(smallRatio: 0.7, mediumRatio: 0.9, bigRatio: 1.0)
         view.addSubview(menuCircles)
-
         
         NSLayoutConstraint.activate([
             
@@ -51,36 +59,8 @@ class MenuVC: UIViewController {
             menuCircles.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -topCirclesInset - bottomCirclesInset),
             menuCircles.widthAnchor.constraint(equalTo: menuCircles.widthAnchor)
             
-            ])
-
+        ])
     }
-    
-    
-    // Example of animation
-//    private func animateHeartBeat() {
-//    
-//        UIView.animate(withDuration: 0.3, delay: 0.0, animations: {
-//            self.menuCircles.smallCircle.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-//        }) { (finished) in
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.menuCircles.smallCircle.transform = .identity
-//            })
-//        }
-//        UIView.animate(withDuration: 0.3, delay: 0.1, options: [], animations: {
-//            self.menuCircles.mediumCircle.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-//        }) { (finished) in
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.menuCircles.mediumCircle.transform = .identity
-//            })
-//        }
-//        UIView.animate(withDuration: 0.3, delay: 0.2, options: [], animations: {
-//            self.menuCircles.bigCircle.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-//        }) { (finished) in
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.menuCircles.bigCircle.transform = .identity
-//            })
-//        }
-//    }
-   
+  
 
 }

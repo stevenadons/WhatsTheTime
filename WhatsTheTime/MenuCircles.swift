@@ -13,7 +13,6 @@ class MenuCircles: UIView {
     
     // MARK: - Properties
 
-    var containerView: UIView = UIView()
     var bigCircle: MenuCircle = MenuCircle()
     var mediumCircle: MenuCircle = MenuCircle()
     var smallCircle: MenuCircle = MenuCircle()
@@ -33,6 +32,10 @@ class MenuCircles: UIView {
             smallCircle.setNeedsDisplay()
         }
     }
+    
+    private var containerView: UIView = UIView()
+    private var smallCircleGradientLocations: [CGFloat] = [0.2, 1.0]
+    private var timer: Timer?
     
     
     
@@ -108,19 +111,87 @@ class MenuCircles: UIView {
         
         bigCircle.locations = [(mediumCircle.bounds.width / bigCircle.bounds.width), 1.0]
         mediumCircle.locations = [(smallCircle.bounds.width / mediumCircle.bounds.width), 1.0]
-        smallCircle.locations = [0.2, 1.0]
+        smallCircle.locations = smallCircleGradientLocations
     }
     
     
     
-    // MARK: - UI Methods
+    // MARK: - Public UI Methods
+    
+    func expandToFullScreen(duration: Double) {
+        
+        let diagonal = sqrt(pow(UIScreen.main.bounds.height, 2) + pow(UIScreen.main.bounds.width, 2))
+        let smallRadius = min(smallCircle.bounds.height, smallCircle.bounds.width)
+        let scale = diagonal / smallRadius * 1.5
+        
+        smallCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0, completion: nil)
+        mediumCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0.05, completion: nil)
+        bigCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0.1, completion: nil)
+    }
+    
+    
+    func bringToOriginal(duration: Double, delay: Double) {
+        
+        smallCircle.animateToIdentity(duration: duration, delay: delay)
+        mediumCircle.animateToIdentity(duration: duration, delay: delay + 0.05)
+        bigCircle.animateToIdentity(duration: duration, delay: delay + 0.1)
+    }
+    
+    
+    func liftBottom(inset: CGFloat, duration: Double) {
+        
+        let scale = (bounds.height - inset) / bounds.height
+        
+        smallCircle.animate(scale: scale, translateY: -inset / 2, duration: duration, delay: 0, completion: nil)
+        mediumCircle.animate(scale: scale, translateY: -inset / 2, duration: duration, delay: 0.05, completion: nil)
+        bigCircle.animate(scale: scale, translateY: -inset / 2, duration: duration, delay: 0.1, completion: nil)
+    }
+    
+    
+    func enableBeat(interval: Double) {
+        
+        if timer == nil {
+            timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { (timer) in
+                self.beat()
+            }
+        }
+    }
+    
+    
+    func disableBeat() {
+        
+        if timer != nil {
+            timer!.invalidate()
+            timer = nil
+        }
+    }
+    
+    
+    private func beat() {
+        
+        let duration = 0.2
+        let scale: CGFloat = 1.05
+        
+        smallCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0) { 
+            self.smallCircle.animateToIdentity(duration: duration, delay: 0)
+        }
+        mediumCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0.05) {
+            self.mediumCircle.animateToIdentity(duration: duration, delay: 0)
+        }
+        bigCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0.1) {
+            self.bigCircle.animateToIdentity(duration: duration, delay: 0)
+        }
+    }
+    
+    
+
+    // MARK: - Private UI Methods
     
     private func setupViews() {
         
         // Add containerView
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.backgroundColor = UIColor.clear
-        containerView.clipsToBounds = true
         addSubview(containerView)
         
         
@@ -136,9 +207,6 @@ class MenuCircles: UIView {
         smallCircle.insideColor = Color.menuCircleSmallInside.value
         smallCircle.outsideColor = Color.menuCircleSmallOutside.value
         containerView.addSubview(smallCircle)
-        
-                
-            }
-    
+    }
 
 }
