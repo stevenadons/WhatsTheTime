@@ -13,6 +13,11 @@ class MenuButton: UIButton {
     
     // MARK: - Properties
     
+    var normalConstraint: NSLayoutConstraint?
+    var stretchedConstraint: NSLayoutConstraint?
+    var shrunkenConstraint: NSLayoutConstraint?
+    var activeConstraint: NSLayoutConstraint?
+    
     var text: String! {
         didSet {
             setNeedsLayout()
@@ -63,6 +68,11 @@ class MenuButton: UIButton {
     }
     
     
+    // MARK: - Public UI Methods
+    
+    
+
+    
     
     // MARK: - Private UI Methods
     
@@ -75,5 +85,8 @@ class MenuButton: UIButton {
         setTitleColor(COLOR.Theme, for: .normal)
         titleLabel?.font = UIFont(name: FONTNAME.MenuButton, size: 12)
     }
+    
+
+    
 
 }

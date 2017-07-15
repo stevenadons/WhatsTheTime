@@ -15,6 +15,7 @@ class Menu: UIView {
     
     var menuCircles: MenuCircles!
     var buttons: [MenuButton] = []
+//    var buttonsWidthConstraints: [NSLayoutConstraint] = []
     
     private var containerView: UIView = UIView()
     private let  spacingButtons: CGFloat = 14
@@ -40,6 +41,7 @@ class Menu: UIView {
     }
     
     
+    
     // MARK: - Public Methods
     
     override func layoutSubviews() {
@@ -49,10 +51,11 @@ class Menu: UIView {
         // Set constraints
         
         for button in buttons {
+            
             NSLayoutConstraint.activate([
                 button.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
                 button.heightAnchor.constraint(equalToConstant: 35),
-                button.widthAnchor.constraint(equalToConstant: 148),
+                button.activeConstraint!,
                 ])
         }
         
@@ -73,13 +76,12 @@ class Menu: UIView {
             buttons[2].topAnchor.constraint(equalTo: buttons[1].bottomAnchor, constant: spacingButtons),
             buttons[3].topAnchor.constraint(equalTo: buttons[2].bottomAnchor, constant: spacingButtons),
             
-            ])
-        }
+        ])
+    }
     
     
     
     // MARK: - Public UI Methods
-    
     
     
     
@@ -92,11 +94,9 @@ class Menu: UIView {
         containerView.backgroundColor = UIColor.clear
         addSubview(containerView)
         
-        
         // Add circles
         menuCircles = MenuCircles(smallRatio: 0.7, mediumRatio: 0.9, bigRatio: 1.0)
         containerView.addSubview(menuCircles)
-        
         
         // Add buttons
         let button1 = MenuButton(text: "TIMER (2 X 25 MIN)")
@@ -108,15 +108,90 @@ class Menu: UIView {
         buttons.append(button3)
         buttons.append(button4)
         for button in buttons {
+            button.normalConstraint = button.widthAnchor.constraint(equalToConstant: normalWidth(button: button))
+            button.stretchedConstraint = button.widthAnchor.constraint(equalToConstant: stretchedWidth(button: button))
+            button.shrunkenConstraint = button.widthAnchor.constraint(equalToConstant: 0)
+            button.activeConstraint = button.normalConstraint
+            button.addTarget(self, action: #selector(buttonTapped(sender:forEvent:)), for: [.touchUpInside])
             containerView.addSubview(button)
         }
     }
+    
+    
+    @objc private func buttonTapped(sender: MenuButton, forEvent event: UIEvent) {
+        
+        animateButtons(tappedButton: sender)
+        menuCircles.expandToFullScreen(duration: 0.8)
+        // notice viewcontroller
+    }
+    
+    
+    private func animateButtons(tappedButton: MenuButton) {
+        
+        for index in 0..<buttons.count {
+            var tappedHit = false
+            if buttons[index].isEqual(tappedButton) {
+                animateHighlight(button: tappedButton)
+                tappedHit = true
+            } else {
+                let delay = tappedHit ? 0.1 * Double(index) : 0.1 * Double(index + 1)
+                animateShrink(button: buttons[index], delay: delay)
+            }
+        }
+    }
+    
+    
+    private func animateHighlight(button: MenuButton) {
+        
+        button.activeConstraint?.isActive = false
+        button.activeConstraint = button.stretchedConstraint
+        button.activeConstraint?.isActive = true
+        
+        UIView.animate(withDuration: 0.2, delay: 0.0, animations: {
+            self.layoutIfNeeded()
+        })
+    }
+    
+    
+    private func animateShrink(button: MenuButton, delay: Double) {
+        
+        button.activeConstraint?.isActive = false
+        button.activeConstraint = button.shrunkenConstraint
+        button.activeConstraint?.isActive = true
+        
+        UIView.animate(withDuration: 0.25, delay: delay, options: [.curveEaseIn], animations: {
+            self.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    
+    
+    // MARK: - Private Helper Methods
+    
+    private func normalWidth(button: MenuButton) -> CGFloat {
+        
+        var normalWidth: CGFloat
+        let index = buttons.index(of: button)
+        if index == 0 || index == 3 {
+            normalWidth = 148
+        } else {
+            normalWidth = 198
+        }
+        return normalWidth
+    }
+    
+    
+    private func stretchedWidth(button: MenuButton) -> CGFloat {
+        
+        var stretchedWidth: CGFloat
+        let index = buttons.index(of: button)
+        if index == 0 || index == 3 {
+            stretchedWidth = UIScreen.main.bounds.width - 125
+        } else {
+            stretchedWidth = UIScreen.main.bounds.width - 75
+        }
+        return stretchedWidth
+    }
 
-    
-    
-
-    
-    
-    
     
 }

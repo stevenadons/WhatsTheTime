@@ -76,7 +76,7 @@ class MenuVC: UIViewController {
             menu.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             menu.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: (topCirclesInset - bottomCirclesInset) / 2),
             menu.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -topCirclesInset - bottomCirclesInset),
-            menu.widthAnchor.constraint(equalTo: menu.widthAnchor),
+            menu.widthAnchor.constraint(equalTo: menu.heightAnchor),
             
         ])
     }
