@@ -41,7 +41,14 @@ enum COLOR {
     static let MenuCircleMediumInside = UIColor(hexString: "#4049AD")
     static let MenuCircleSmallOutside = UIColor(hexString: "#1E2460")
     static let MenuCircleSmallInside = UIColor(hexString: "#2E3694")
+    
+    static let White = UIColor(hexString: "#FFFFFF")
+}
 
+
+enum FONTNAME {
+    
+    static let MenuButton = "HelveticaNeue-Bold"
 }
 
 

@@ -59,7 +59,6 @@ class MenuCircle: UIView {
         
         super.layoutSubviews()
         containerView.layer.cornerRadius = min(bounds.width, bounds.height) / 2
-//        gradientView.locations = [0.6, 1.0]
     }
     
     override func draw(_ rect: CGRect) {
