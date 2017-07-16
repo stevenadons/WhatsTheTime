@@ -31,17 +31,10 @@ class MenuVC: UIViewController {
         setupViews()
     }
     
+    
     override func viewDidAppear(_ animated: Bool) {
         
-//        sleep(1)
-        
-//        menuCircles.liftBottom(inset: 70, duration: 0.3)
-//        menuCircles.bringToOriginal(duration: 0.3, delay: 2)
-        
-//        menuCircles.enableBeat(interval: 1.1)
-     
-//        menu.menuCircles.expandToFullScreen(duration: 0.8)
-//        menu.menuCircles.bringToOriginal(duration: 0.8, delay: 3)
+        menu.enableBeat(interval: 5)
     }
     
     

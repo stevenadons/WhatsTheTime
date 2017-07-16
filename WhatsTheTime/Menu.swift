@@ -11,14 +11,26 @@ import UIKit
 class Menu: UIView {
     
     
+    // MARK: - Helper Classes
+    
+    enum State {
+        
+        case WaitingForInput
+        case ButtonTapped
+    }
+    
+    
     // MARK: - Properties
     
     var menuCircles: MenuCircles!
     var buttons: [MenuButton] = []
-//    var buttonsWidthConstraints: [NSLayoutConstraint] = []
     
     private var containerView: UIView = UIView()
-    private let  spacingButtons: CGFloat = 14
+    private var timer: Timer?
+    private var state: State = .WaitingForInput
+
+    private let buttonHeight: CGFloat = 35
+    private let spacingButtons: CGFloat = 14
 
     
     
@@ -44,44 +56,31 @@ class Menu: UIView {
     
     // MARK: - Public Methods
     
-    override func layoutSubviews() {
-        
-        super.layoutSubviews()
-        
-        // Set constraints
-        
-        for button in buttons {
-            
-            NSLayoutConstraint.activate([
-                button.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-                button.heightAnchor.constraint(equalToConstant: 35),
-                button.activeConstraint!,
-                ])
-        }
-        
-        NSLayoutConstraint.activate([
-            
-            containerView.topAnchor.constraint(equalTo: topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            containerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            containerView.widthAnchor.constraint(equalTo: containerView.heightAnchor),
-            
-            menuCircles.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            menuCircles.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            menuCircles.heightAnchor.constraint(equalTo: containerView.heightAnchor),
-            menuCircles.widthAnchor.constraint(equalTo: containerView.widthAnchor),
-            
-            buttons[1].bottomAnchor.constraint(equalTo: containerView.centerYAnchor, constant: -spacingButtons/2),
-            buttons[0].bottomAnchor.constraint(equalTo: buttons[1].topAnchor, constant: -spacingButtons),
-            buttons[2].topAnchor.constraint(equalTo: buttons[1].bottomAnchor, constant: spacingButtons),
-            buttons[3].topAnchor.constraint(equalTo: buttons[2].bottomAnchor, constant: spacingButtons),
-            
-        ])
-    }
-    
     
     
     // MARK: - Public UI Methods
+    
+    func enableBeat(interval: Double) {
+        
+        menuCircles.enableBeat(interval: interval)
+        
+        if timer == nil {
+            timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { (timer) in
+                self.flash()
+            }
+        }
+    }
+    
+    
+    func disableBeat() {
+        
+        menuCircles.disableBeat()
+        
+        if timer != nil {
+            timer!.invalidate()
+            timer = nil
+        }
+    }
     
     
     
@@ -108,18 +107,46 @@ class Menu: UIView {
         buttons.append(button3)
         buttons.append(button4)
         for button in buttons {
-            button.normalConstraint = button.widthAnchor.constraint(equalToConstant: normalWidth(button: button))
-            button.stretchedConstraint = button.widthAnchor.constraint(equalToConstant: stretchedWidth(button: button))
-            button.shrunkenConstraint = button.widthAnchor.constraint(equalToConstant: 0)
-            button.activeConstraint = button.normalConstraint
             button.addTarget(self, action: #selector(buttonTapped(sender:forEvent:)), for: [.touchUpInside])
             containerView.addSubview(button)
         }
+        
+        // Set constraints
+        for button in buttons {
+            
+            NSLayoutConstraint.activate([
+                button.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+                button.heightAnchor.constraint(equalToConstant: buttonHeight),
+                button.widthAnchor.constraint(equalToConstant: normalWidth(button: button)),
+                ])
+        }
+        
+        NSLayoutConstraint.activate([
+            
+            containerView.topAnchor.constraint(equalTo: topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            containerView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            containerView.widthAnchor.constraint(equalTo: containerView.heightAnchor),
+            
+            menuCircles.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            menuCircles.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            menuCircles.heightAnchor.constraint(equalTo: containerView.heightAnchor),
+            menuCircles.widthAnchor.constraint(equalTo: containerView.widthAnchor),
+            
+            buttons[0].topAnchor.constraint(equalTo: containerView.centerYAnchor, constant: -(buttonHeight * 2 + spacingButtons * 1.5)),
+            buttons[1].topAnchor.constraint(equalTo: containerView.centerYAnchor, constant: -(buttonHeight + spacingButtons * 0.5)),
+            buttons[2].topAnchor.constraint(equalTo: containerView.centerYAnchor, constant: spacingButtons * 0.5),
+            buttons[3].topAnchor.constraint(equalTo: containerView.centerYAnchor, constant: buttonHeight + spacingButtons * 1.5),
+            
+            ])
     }
     
     
     @objc private func buttonTapped(sender: MenuButton, forEvent event: UIEvent) {
         
+        state = .ButtonTapped
+        layer.removeAllAnimations()
+        disableBeat()
         animateButtons(tappedButton: sender)
         menuCircles.expandToFullScreen(duration: 0.8)
         // notice viewcontroller
@@ -143,25 +170,55 @@ class Menu: UIView {
     
     private func animateHighlight(button: MenuButton) {
         
-        button.activeConstraint?.isActive = false
-        button.activeConstraint = button.stretchedConstraint
-        button.activeConstraint?.isActive = true
+        button.changeSizeConstraint(attribute: .width, constant: stretchedWidth(button: button))
         
-        UIView.animate(withDuration: 0.2, delay: 0.0, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.layoutIfNeeded()
-        })
+        }) { (finished) in
+            let newTopConstraint = NSLayoutConstraint(item: button, attribute: .top, relatedBy: .equal, toItem: self.containerView, attribute: .top, multiplier: 1, constant: -self.frame.origin.y + 25)
+            button.replaceConstraint(attribute: .top, with: newTopConstraint)
+            UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseIn], animations: {
+                print("finished")
+                self.layoutIfNeeded()
+            }, completion: { (finished) in
+                print("finishec")
+            })
+        }
     }
     
     
     private func animateShrink(button: MenuButton, delay: Double) {
         
-        button.activeConstraint?.isActive = false
-        button.activeConstraint = button.shrunkenConstraint
-        button.activeConstraint?.isActive = true
+        button.changeSizeConstraint(attribute: .width, constant: 0.0)
         
-        UIView.animate(withDuration: 0.25, delay: delay, options: [.curveEaseIn], animations: {
+        UIView.animate(withDuration: 0.25, delay: delay, options: [.curveEaseIn, .allowUserInteraction], animations: {
             self.layoutIfNeeded()
         }, completion: nil)
+    }
+    
+    
+    private func animateBeat(button: MenuButton, delay: Double) {
+        
+        button.changeSizeConstraint(attribute: .width, constant: beatingWidth(button: button))
+        
+        UIView.animate(withDuration: 0.05, delay: delay, options: [.curveEaseOut, .allowUserInteraction], animations: {
+            self.layoutIfNeeded()
+        }) { (finished) in
+            if self.state == .WaitingForInput {
+                button.changeSizeConstraint(attribute: .width, constant: self.normalWidth(button: button))
+                UIView.animate(withDuration: 0.05, delay: 0.0, options: [.curveEaseIn, .allowUserInteraction], animations: {
+                    self.layoutIfNeeded()
+                })
+            }
+        }
+    }
+    
+    
+    private func flash() {
+        
+        for index in 0..<buttons.count {
+            self.animateBeat(button: self.buttons[index], delay: 0.5 + 0.1 * Double(index))
+        }
     }
     
     
@@ -191,6 +248,12 @@ class Menu: UIView {
             stretchedWidth = UIScreen.main.bounds.width - 75
         }
         return stretchedWidth
+    }
+    
+    
+    private func beatingWidth(button: MenuButton) -> CGFloat {
+        
+        return normalWidth(button: button) + 5
     }
 
     

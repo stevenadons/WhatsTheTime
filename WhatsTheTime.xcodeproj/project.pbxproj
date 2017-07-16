@@ -19,6 +19,9 @@
 		4F0C9BD81F17DFEC00956C53 /* RadialGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0C9BD71F17DFEC00956C53 /* RadialGradientLayer.swift */; };
 		4F9249D01F1A6DD9004E9CD0 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */; };
 		4F9249D21F1A7270004E9CD0 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9249D11F1A7270004E9CD0 /* Menu.swift */; };
+		4FA04FB21F1B484C007609B9 /* AnimatingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA04FB11F1B484C007609B9 /* AnimatingConstraints.swift */; };
+		4FA04FB61F1B5077007609B9 /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA04FB51F1B5077007609B9 /* UIView+Constraints.swift */; };
+		4FA04FB81F1B65B1007609B9 /* TimerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA04FB71F1B65B1007609B9 /* TimerVC.swift */; };
 		4FB13FF71F1959430025088A /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB13FF61F1959430025088A /* Logo.swift */; };
 		4FB13FF91F1959560025088A /* Logo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FB13FF81F1959560025088A /* Logo.xib */; };
 		4FB13FFC1F195AAE0025088A /* agdollar.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4FB13FFB1F195AAE0025088A /* agdollar.ttf */; };
@@ -42,6 +45,9 @@
 		4F0C9BD71F17DFEC00956C53 /* RadialGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadialGradientLayer.swift; sourceTree = "<group>"; };
 		4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		4F9249D11F1A7270004E9CD0 /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
+		4FA04FB11F1B484C007609B9 /* AnimatingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingConstraints.swift; sourceTree = "<group>"; };
+		4FA04FB51F1B5077007609B9 /* UIView+Constraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Constraints.swift"; sourceTree = "<group>"; };
+		4FA04FB71F1B65B1007609B9 /* TimerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerVC.swift; sourceTree = "<group>"; };
 		4FB13FF61F1959430025088A /* Logo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logo.swift; sourceTree = "<group>"; };
 		4FB13FF81F1959560025088A /* Logo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Logo.xib; sourceTree = "<group>"; };
 		4FB13FFB1F195AAE0025088A /* agdollar.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = agdollar.ttf; sourceTree = "<group>"; };
@@ -95,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				4F0C9BCA1F17C10A00956C53 /* MenuVC.swift */,
+				4FA04FB71F1B65B1007609B9 /* TimerVC.swift */,
 				4F0C9BB41F17BF9A00956C53 /* AppDelegate.swift */,
 			);
 			name = Controllers;
@@ -131,6 +138,8 @@
 				4F0C9BCD1F17C26A00956C53 /* Color.swift */,
 				4F0C9BD51F17DF7200956C53 /* RadialGradientView.swift */,
 				4F0C9BD71F17DFEC00956C53 /* RadialGradientLayer.swift */,
+				4FA04FB11F1B484C007609B9 /* AnimatingConstraints.swift */,
+				4FA04FB51F1B5077007609B9 /* UIView+Constraints.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -244,6 +253,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F0C9BB51F17BF9A00956C53 /* AppDelegate.swift in Sources */,
+				4FA04FB81F1B65B1007609B9 /* TimerVC.swift in Sources */,
+				4FA04FB21F1B484C007609B9 /* AnimatingConstraints.swift in Sources */,
 				4FB13FFE1F195EC40025088A /* GlobalConstants.swift in Sources */,
 				4F0C9BD61F17DF7200956C53 /* RadialGradientView.swift in Sources */,
 				4F0C9BCB1F17C10A00956C53 /* MenuVC.swift in Sources */,
@@ -253,6 +264,7 @@
 				4F9249D01F1A6DD9004E9CD0 /* MenuButton.swift in Sources */,
 				4F0C9BD81F17DFEC00956C53 /* RadialGradientLayer.swift in Sources */,
 				4FB13FF71F1959430025088A /* Logo.swift in Sources */,
+				4FA04FB61F1B5077007609B9 /* UIView+Constraints.swift in Sources */,
 				4FB140001F19661F0025088A /* DismissButton.swift in Sources */,
 				4F0C9BD41F17CA8E00956C53 /* MenuCircles.swift in Sources */,
 			);
