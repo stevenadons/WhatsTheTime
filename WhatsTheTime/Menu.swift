@@ -8,6 +8,16 @@
 
 import UIKit
 
+
+enum MenuItem {
+    
+    case Timer
+    case SetGameTime
+    case EditScore
+    case Documents
+}
+
+
 class Menu: UIView {
     
     
@@ -24,6 +34,8 @@ class Menu: UIView {
     
     var menuCircles: MenuCircles!
     var buttons: [MenuButton] = []
+    var delegate: MenuDelegate?
+    var selectedMenuItem: MenuItem?
     
     private var containerView: UIView = UIView()
     private var timer: Timer?
@@ -98,10 +110,10 @@ class Menu: UIView {
         containerView.addSubview(menuCircles)
         
         // Add buttons
-        let button1 = MenuButton(text: "TIMER (2 X 25 MIN)")
-        let button2 = MenuButton(text: "SET GAME TIME")
-        let button3 = MenuButton(text: "EDIT SCORE")
-        let button4 = MenuButton(text: "DOCUMENTS")
+        let button1 = MenuButton(text: "TIMER (2 X 25 MIN)", menuItem: .Timer)
+        let button2 = MenuButton(text: "SET GAME TIME", menuItem: .SetGameTime)
+        let button3 = MenuButton(text: "EDIT SCORE", menuItem: .EditScore)
+        let button4 = MenuButton(text: "DOCUMENTS", menuItem: .Documents)
         buttons.append(button1)
         buttons.append(button2)
         buttons.append(button3)
@@ -145,14 +157,22 @@ class Menu: UIView {
     @objc private func buttonTapped(sender: MenuButton, forEvent event: UIEvent) {
         
         state = .ButtonTapped
+        selectedMenuItem = sender.menuItem
+        
         layer.removeAllAnimations()
         disableBeat()
-        animateButtons(tappedButton: sender)
+        
         menuCircles.expandToFullScreen(duration: 0.8)
-        // notice viewcontroller
+        animateButtons(tappedButton: sender)
+        
+        let deadline = DispatchTime.now() + DispatchTimeInterval.milliseconds(800)
+        DispatchQueue.main.asyncAfter(deadline: deadline) { 
+            self.callVCToNavigate(from: sender.menuItem)
+        }
     }
     
     
+    // Total duration = 0.55
     private func animateButtons(tappedButton: MenuButton) {
         
         for index in 0..<buttons.count {
@@ -168,6 +188,7 @@ class Menu: UIView {
     }
     
     
+    // Total duration = 0.4
     private func animateHighlight(button: MenuButton) {
         
         button.changeSizeConstraint(attribute: .width, constant: stretchedWidth(button: button))
@@ -178,15 +199,13 @@ class Menu: UIView {
             let newTopConstraint = NSLayoutConstraint(item: button, attribute: .top, relatedBy: .equal, toItem: self.containerView, attribute: .top, multiplier: 1, constant: -self.frame.origin.y + 25)
             button.replaceConstraint(attribute: .top, with: newTopConstraint)
             UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseIn], animations: {
-                print("finished")
                 self.layoutIfNeeded()
-            }, completion: { (finished) in
-                print("finishec")
-            })
+            }, completion: nil)
         }
     }
     
     
+    // Total duration = 0.25
     private func animateShrink(button: MenuButton, delay: Double) {
         
         button.changeSizeConstraint(attribute: .width, constant: 0.0)
@@ -219,6 +238,12 @@ class Menu: UIView {
         for index in 0..<buttons.count {
             self.animateBeat(button: self.buttons[index], delay: 0.5 + 0.1 * Double(index))
         }
+    }
+    
+    
+    private func callVCToNavigate(from menuItem: MenuItem) {
+        
+        delegate?.handleNavigation(for: menuItem)
     }
     
     

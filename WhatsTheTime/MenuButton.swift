@@ -17,6 +17,7 @@ class MenuButton: UIButton {
     var stretchedConstraint: NSLayoutConstraint?
     var shrunkenConstraint: NSLayoutConstraint?
     var activeConstraint: NSLayoutConstraint?
+    var menuItem: MenuItem!
     
     var text: String! {
         didSet {
@@ -42,10 +43,11 @@ class MenuButton: UIButton {
     }
     
     
-    convenience init(text: String) {
+    convenience init(text: String, menuItem: MenuItem) {
         
         self.init()
         self.text = text
+        self.menuItem = menuItem
     }
     
   

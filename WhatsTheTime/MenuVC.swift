@@ -8,6 +8,14 @@
 
 import UIKit
 
+
+protocol MenuDelegate: class {
+    
+    func handleNavigation(for menuItem: MenuItem)
+}
+
+
+
 class MenuVC: UIViewController {
     
     
@@ -52,6 +60,7 @@ class MenuVC: UIViewController {
         view.addSubview(dismissButton)
         
         menu = Menu()
+        menu.delegate = self
         view.addSubview(menu)
         
         NSLayoutConstraint.activate([
@@ -82,5 +91,39 @@ class MenuVC: UIViewController {
         print("dismissed")
     }
   
-
 }
+
+
+
+extension MenuVC: MenuDelegate {
+    
+    func handleNavigation(for menuItem: MenuItem) {
+        
+        var newVC = UIViewController()
+        switch menuItem {
+        case .Timer:
+            newVC = TimerVC()
+        case .SetGameTime:
+            print("to be implemented")
+        case .EditScore:
+            print("to be implemented")
+        case .Documents:
+            print("to be implemented")
+        }
+        
+        let frameForView = self.view.bounds.offsetBy(dx: 0, dy: self.view.bounds.height)
+        if let view = newVC.view {
+            view.frame = frameForView
+            self.addChildViewController(newVC)
+            self.view.addSubview(view)
+            newVC.didMove(toParentViewController: self)
+        }
+    }
+}
+
+
+
+
+
+
+
