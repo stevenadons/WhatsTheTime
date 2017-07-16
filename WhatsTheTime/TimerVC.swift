@@ -29,7 +29,8 @@ class TimerVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         
         super.viewDidAppear(animated)
-        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseOut], animations: {
+        
+        UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 1.5, initialSpringVelocity: 0.0, options: .curveEaseOut, animations: {
             self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         }) { (finished) in
             print("finished")

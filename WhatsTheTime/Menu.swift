@@ -188,7 +188,7 @@ class Menu: UIView {
     }
     
     
-    // Total duration = 0.4
+    // Total duration = 0.4 (moving) + 0.8 (fading out)
     private func animateHighlight(button: MenuButton) {
         
         button.changeSizeConstraint(attribute: .width, constant: stretchedWidth(button: button))
@@ -200,8 +200,12 @@ class Menu: UIView {
             button.replaceConstraint(attribute: .top, with: newTopConstraint)
             UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseIn], animations: {
                 self.layoutIfNeeded()
-            }, completion: nil)
-        }
+                }) { (finished) in
+                    UIView.animate(withDuration: 0.4, delay: 0.4, animations: {
+                        button.alpha = 0.0
+                    })
+                }
+            }
     }
     
     
