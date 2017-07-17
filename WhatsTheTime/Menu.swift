@@ -187,8 +187,18 @@ class Menu: UIView {
     
     private func animateBeat(button: MenuButton, delay: Double) {
         
-        button.changeSizeConstraint(attribute: .width, constant: beatingWidth(button: button))
+//        button.animateSizeConstraintConstantChange(attribute: .width, newConstant: beatingWidth(button: button), duration: 0.05, delay: delay, options: [.curveEaseOut, .allowUserInteraction]) {
+//            
+//            if self.state == .WaitingForInput {
+//                
+//                button.animateSizeConstraintConstantChange(attribute: .width, newConstant: self.normalWidth(button: button), duration: 0.05, delay: 0.0, options: [.curveEaseIn, .allowUserInteraction], completion: nil)
+//            }
+//        }
         
+        
+        // waarom werkt deze wel en de voorgaande niet de eerste keer?
+        // volledig overnemen hier en testen..
+        button.changeSizeConstraint(attribute: .width, constant: beatingWidth(button: button))
         UIView.animate(withDuration: 0.05, delay: delay, options: [.curveEaseOut, .allowUserInteraction], animations: {
             self.layoutIfNeeded()
         }) { (finished) in
@@ -204,6 +214,7 @@ class Menu: UIView {
     
     private func flash() {
         
+        print("start flash at time \(Date())")
         for index in 0..<buttons.count {
             self.animateBeat(button: self.buttons[index], delay: 0.5 + 0.1 * Double(index))
         }

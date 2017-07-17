@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TimerVC: UpSlideViewController {
+class TimerVC: UIViewController, Sliding {
 
     // MARK: - Properties
     
@@ -34,28 +34,13 @@ class TimerVC: UpSlideViewController {
         
         super.viewDidAppear(animated)
         
-        clock.replaceConstraintAnimating(attribute: .centerY, withNewRelatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 207, duration: 0.8, delay: 0.2) { 
-            print("finished1")
-        }
-        
-//        let newCenterYConstraint = NSLayoutConstraint(item: clock, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 207)
-//        clock.replaceConstraint(attribute: .centerY, with: newCenterYConstraint, updateNow: true)
-//       
-//        UIView.animate(withDuration: 0.8, delay: 0.2, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: .curveEaseOut, animations: {
-//            self.clock.superview?.layoutIfNeeded()
-//        }) { (finished) in
-//            print("finished1")
-//        }
-        
-        let newCenterYConstraint2 = NSLayoutConstraint(item: field, attribute: .centerY, relatedBy: .equal, toItem: fieldContainer, attribute: .top, multiplier: 1, constant: 429)
-        field.replaceConstraint(attribute: .centerY, with: newCenterYConstraint2, updateNow: true)
-        
-        UIView.animate(withDuration: 0.8, delay: 0.4, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: .curveEaseOut, animations: {
-            self.field.superview?.layoutIfNeeded()
-        }) { (finished) in
-            print("finished2")
-        }
+        slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
+        clock.animateConstraintChange(attribute: .centerY, withNewConstraintRelatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 207, duration: 0.6, delay: 0.2, completion: nil)
+        field.animateConstraintChange(attribute: .centerY, withNewConstraintRelatedBy: .equal, toItem: fieldContainer, attribute: .top, multiplier: 1, constant: 429, duration: 0.6, delay: 0.4, completion: nil)
+//        clock.animateConstraintChange(attribute: .centerY, withNewConstraintRelatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 207, duration: 0.8, delay: 0.2, completion: nil)
+//        field.animateConstraintChange(attribute: .centerY, withNewConstraintRelatedBy: .equal, toItem: fieldContainer, attribute: .top, multiplier: 1, constant: 429, duration: 0.8, delay: 0.4, completion: nil)
     }
+    
     
     
     
