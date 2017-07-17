@@ -72,7 +72,14 @@ class MenuButton: UIButton {
     
     // MARK: - Public UI Methods
     
-    
+    func fade(duration: Double, delay: Double, completion: (() -> Void)?) {
+        
+        UIView.animate(withDuration: duration, delay: delay, options: [.curveEaseIn], animations: {
+            self.alpha = 0.0
+        }) { (finished) in
+            completion?()
+        }
+    }
 
     
     

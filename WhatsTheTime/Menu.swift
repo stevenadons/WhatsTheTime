@@ -145,10 +145,10 @@ class Menu: UIView {
             menuCircles.heightAnchor.constraint(equalTo: containerView.heightAnchor),
             menuCircles.widthAnchor.constraint(equalTo: containerView.widthAnchor),
             
-            buttons[0].topAnchor.constraint(equalTo: containerView.centerYAnchor, constant: -(buttonHeight * 2 + spacingButtons * 1.5)),
-            buttons[1].topAnchor.constraint(equalTo: containerView.centerYAnchor, constant: -(buttonHeight + spacingButtons * 0.5)),
-            buttons[2].topAnchor.constraint(equalTo: containerView.centerYAnchor, constant: spacingButtons * 0.5),
-            buttons[3].topAnchor.constraint(equalTo: containerView.centerYAnchor, constant: buttonHeight + spacingButtons * 1.5),
+            buttons[0].centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: -(buttonHeight * 1.5 + spacingButtons * 1.5)),
+            buttons[1].centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: -(buttonHeight * 0.5 + spacingButtons * 0.5)),
+            buttons[2].centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: buttonHeight * 0.5 + spacingButtons * 0.5),
+            buttons[3].centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: buttonHeight * 1.5 + spacingButtons * 1.5),
             
             ])
     }
@@ -175,48 +175,13 @@ class Menu: UIView {
     // Total duration = 0.55
     private func animateButtons(tappedButton: MenuButton) {
         
-        for index in 0..<buttons.count {
-            var tappedHit = false
-            if buttons[index].isEqual(tappedButton) {
-                animateHighlight(button: tappedButton)
-                tappedHit = true
+        for button in buttons {
+            if button.isEqual(tappedButton) {
+                button.fade(duration: 0.2, delay: 0.6, completion: nil)
             } else {
-                let delay = tappedHit ? 0.1 * Double(index) : 0.1 * Double(index + 1)
-                animateShrink(button: buttons[index], delay: delay)
+                button.fade(duration: 0.2, delay: 0.0, completion: nil)
             }
         }
-    }
-    
-    
-    // Total duration = 0.4 (moving) + 0.8 (fading out)
-    private func animateHighlight(button: MenuButton) {
-        
-        button.changeSizeConstraint(attribute: .width, constant: stretchedWidth(button: button))
-        
-        UIView.animate(withDuration: 0.2, animations: {
-            self.layoutIfNeeded()
-        }) { (finished) in
-            let newTopConstraint = NSLayoutConstraint(item: button, attribute: .top, relatedBy: .equal, toItem: self.containerView, attribute: .top, multiplier: 1, constant: -self.frame.origin.y + 25)
-            button.replaceConstraint(attribute: .top, with: newTopConstraint)
-            UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseIn], animations: {
-                self.layoutIfNeeded()
-                }) { (finished) in
-                    UIView.animate(withDuration: 0.4, delay: 0.4, animations: {
-                        button.alpha = 0.0
-                    })
-                }
-            }
-    }
-    
-    
-    // Total duration = 0.25
-    private func animateShrink(button: MenuButton, delay: Double) {
-        
-        button.changeSizeConstraint(attribute: .width, constant: 0.0)
-        
-        UIView.animate(withDuration: 0.25, delay: delay, options: [.curveEaseIn, .allowUserInteraction], animations: {
-            self.layoutIfNeeded()
-        }, completion: nil)
     }
     
     
