@@ -10,14 +10,18 @@ import UIKit
 
 class TimerVC: UIViewController, Sliding {
 
+    
     // MARK: - Properties
     
     private var logo: Logo!
     private var dismissButton: DismissButton!
     
-    private var clock: UIView!
-    private var fieldContainer: UIView!
-    private var field: UIView!
+    private var timer: UIView!
+    private var pitchContainer: UIView!
+    private var pitch: UIView!
+    
+    private var timerCenterYConstraint: NSLayoutConstraint!
+    private var pitchCenterYConstraint: NSLayoutConstraint!
     
     
     
@@ -33,15 +37,8 @@ class TimerVC: UIViewController, Sliding {
     override func viewDidAppear(_ animated: Bool) {
         
         super.viewDidAppear(animated)
-        
-        slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
-        clock.animateConstraintChange(attribute: .centerY, withNewConstraintRelatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 207, duration: 0.6, delay: 0.2, completion: nil)
-        field.animateConstraintChange(attribute: .centerY, withNewConstraintRelatedBy: .equal, toItem: fieldContainer, attribute: .top, multiplier: 1, constant: 429, duration: 0.6, delay: 0.4, completion: nil)
-//        clock.animateConstraintChange(attribute: .centerY, withNewConstraintRelatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 207, duration: 0.8, delay: 0.2, completion: nil)
-//        field.animateConstraintChange(attribute: .centerY, withNewConstraintRelatedBy: .equal, toItem: fieldContainer, attribute: .top, multiplier: 1, constant: 429, duration: 0.8, delay: 0.4, completion: nil)
+        animateViewsOnAppear()
     }
-    
-    
     
     
     
@@ -56,20 +53,24 @@ class TimerVC: UIViewController, Sliding {
 //        dismissButton.addTarget(self, action: #selector(handleDismiss(sender:forEvent:)), for: [.touchUpInside])
 //        view.addSubview(dismissButton)
         
-        clock = UIView()
-        clock.translatesAutoresizingMaskIntoConstraints = false
-        clock.backgroundColor = UIColor.black
-        view.addSubview(clock)
+        timer = UIView()
+        timer.translatesAutoresizingMaskIntoConstraints = false
+        timer.backgroundColor = UIColor.black
+        view.addSubview(timer)
         
-        fieldContainer = UIView()
-        fieldContainer.translatesAutoresizingMaskIntoConstraints = false
-        fieldContainer.backgroundColor = UIColor.clear
-        view.addSubview(fieldContainer)
+        pitchContainer = UIView()
+        pitchContainer.translatesAutoresizingMaskIntoConstraints = false
+        pitchContainer.backgroundColor = UIColor.clear
+        view.addSubview(pitchContainer)
         
-        field = UIView()
-        field.translatesAutoresizingMaskIntoConstraints = false
-        field.backgroundColor = COLOR.Theme
-        fieldContainer.addSubview(field)
+        pitch = UIView()
+        pitch.translatesAutoresizingMaskIntoConstraints = false
+        pitch.backgroundColor = COLOR.Theme
+        pitchContainer.addSubview(pitch)
+
+        timerCenterYConstraint = NSLayoutConstraint(item: timer, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 207) + UIScreen.main.bounds.height)
+        pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 429) + UIScreen.main.bounds.height)
+        
         
         NSLayoutConstraint.activate([
             
@@ -83,22 +84,37 @@ class TimerVC: UIViewController, Sliding {
 //            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
 //            dismissButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 27),
             
-            clock.widthAnchor.constraint(equalToConstant: 194),
-            clock.heightAnchor.constraint(equalToConstant: 194),
-            clock.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            clock.centerYAnchor.constraint(equalTo: view.bottomAnchor, constant: 100 + clock.bounds.height/2),
+            timer.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 194)),
+            timer.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 194)),
+            timer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            timerCenterYConstraint,
             
-            fieldContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
-            fieldContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
-            fieldContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            fieldContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            pitchContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
+            pitchContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
+            pitchContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pitchContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            field.widthAnchor.constraint(equalToConstant: 185),
-            field.heightAnchor.constraint(equalToConstant: 111),
-            field.centerXAnchor.constraint(equalTo: fieldContainer.centerXAnchor),
-            field.centerYAnchor.constraint(equalTo: fieldContainer.bottomAnchor, constant: 100 + field.bounds.height/2),
+            pitch.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 185)),
+            pitch.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 111)),
+            pitch.centerXAnchor.constraint(equalTo: pitchContainer.centerXAnchor),
+            pitchCenterYConstraint,
             
             ])
+    }
+    
+    private func animateViewsOnAppear() {
+        
+        slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
+        
+        timerCenterYConstraint.constant = CoordinateScalor.convert(y: 207)
+        UIView.animate(withDuration: 0.6, delay: 0.2, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
+            self.view.layoutIfNeeded()
+        })
+        
+        pitchCenterYConstraint.constant = CoordinateScalor.convert(y: 429)
+        UIView.animate(withDuration: 0.6, delay: 0.4, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
+            self.pitchContainer.layoutIfNeeded()
+        })
     }
     
     

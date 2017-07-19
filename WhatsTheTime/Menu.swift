@@ -162,10 +162,10 @@ class Menu: UIView {
         layer.removeAllAnimations()
         disableBeat()
         
-        menuCircles.expandToFullScreen(duration: 0.8)
+        menuCircles.expandToFullScreen(duration: 0.6)
         animateButtons(tappedButton: sender)
         
-        let deadline = DispatchTime.now() + DispatchTimeInterval.milliseconds(800)
+        let deadline = DispatchTime.now() + DispatchTimeInterval.milliseconds(400)
         DispatchQueue.main.asyncAfter(deadline: deadline) { 
             self.callVCToNavigate(from: sender.menuItem)
         }
@@ -186,16 +186,7 @@ class Menu: UIView {
     
     
     private func animateBeat(button: MenuButton, delay: Double) {
-        
-//        button.animateSizeConstraintConstantChange(attribute: .width, newConstant: beatingWidth(button: button), duration: 0.05, delay: delay, options: [.curveEaseOut, .allowUserInteraction]) {
-//            
-//            if self.state == .WaitingForInput {
-//                
-//                button.animateSizeConstraintConstantChange(attribute: .width, newConstant: self.normalWidth(button: button), duration: 0.05, delay: 0.0, options: [.curveEaseIn, .allowUserInteraction], completion: nil)
-//            }
-//        }
-        
-        
+
         // waarom werkt deze wel en de voorgaande niet de eerste keer?
         // volledig overnemen hier en testen..
         button.changeSizeConstraint(attribute: .width, constant: beatingWidth(button: button))
