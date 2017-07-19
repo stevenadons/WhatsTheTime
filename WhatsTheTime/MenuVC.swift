@@ -66,14 +66,14 @@ class MenuVC: UIViewController {
         NSLayoutConstraint.activate([
             
             logo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logo.widthAnchor.constraint(equalToConstant: 200),
-            logo.heightAnchor.constraint(equalToConstant: 40),
-            logo.topAnchor.constraint(equalTo: view.topAnchor, constant: 23),
+            logo.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 200)),
+            logo.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 40)),
+            logo.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 23)),
             
-            dismissButton.widthAnchor.constraint(equalToConstant: 20),
-            dismissButton.heightAnchor.constraint(equalToConstant: 20),
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
-            dismissButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 27),
+            dismissButton.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 20)),
+            dismissButton.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 20)),
+            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 30)),
+            dismissButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 27)),
             
             menu.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             menu.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: (topCirclesInset - bottomCirclesInset) / 2),

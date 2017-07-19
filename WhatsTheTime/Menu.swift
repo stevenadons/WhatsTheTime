@@ -205,7 +205,6 @@ class Menu: UIView {
     
     private func flash() {
         
-        print("start flash at time \(Date())")
         for index in 0..<buttons.count {
             self.animateBeat(button: self.buttons[index], delay: 0.5 + 0.1 * Double(index))
         }
