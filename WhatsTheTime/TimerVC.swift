@@ -8,6 +8,13 @@
 
 import UIKit
 
+
+protocol StopWatchDelegate: class {
+    
+    func handleTap(button: StopWatch)
+}
+
+
 class TimerVC: UIViewController, Sliding {
 
     
@@ -16,12 +23,12 @@ class TimerVC: UIViewController, Sliding {
     private var logo: Logo!
     private var hamburger: Hamburger!
     private var ellipse: EllipseView!
-    private var timerContainer: UIView!
-    private var timer: UIView!
-    private var pitchContainer: UIView!
+    private var stopWatchViewContainer: ContainerView!
+    private var stopWatchView: StopWatchView!
+    private var pitchContainer: ContainerView!
     private var pitch: UIView!
     
-    private var timerCenterYConstraint: NSLayoutConstraint!
+    private var stopWatchViewCenterYConstraint: NSLayoutConstraint!
     private var pitchCenterYConstraint: NSLayoutConstraint!
     private var ellipseTopConstraint: NSLayoutConstraint!
     private var ellipseBottomConstraint: NSLayoutConstraint!
@@ -58,13 +65,16 @@ class TimerVC: UIViewController, Sliding {
     // MARK: - Private UI Methods
     
     private func setupViews() {
-                
-        logo = Bundle.main.loadNibNamed(NIBNAME.Logo, owner: self, options: nil)?.last as! Logo
-        view.addSubview(logo)
+        
+        
+        // Add UI elements
         
         hamburger = Bundle.main.loadNibNamed(NIBNAME.Hamburger, owner: self, options: nil)?.last as! Hamburger
         hamburger.addTarget(self, action: #selector(showMenu(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(hamburger)
+
+        logo = Bundle.main.loadNibNamed(NIBNAME.Logo, owner: self, options: nil)?.last as! Logo
+        view.addSubview(logo)
         
         ellipse = EllipseView()
         ellipse.translatesAutoresizingMaskIntoConstraints = false
@@ -72,29 +82,29 @@ class TimerVC: UIViewController, Sliding {
         ellipse.color = COLOR.White
         view.addSubview(ellipse)
         
-        timerContainer = UIView()
-        timerContainer.translatesAutoresizingMaskIntoConstraints = false
-        timerContainer.isUserInteractionEnabled = false
-        timerContainer.backgroundColor = UIColor.clear
-        view.addSubview(timerContainer)
+        stopWatchViewContainer = ContainerView()
+        stopWatchViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stopWatchViewContainer)
         
-        timer = UIView()
-        timer.translatesAutoresizingMaskIntoConstraints = false
-        timer.backgroundColor = UIColor.black
-        timerContainer.addSubview(timer)
+        stopWatchView = StopWatchView()
+        stopWatchView.translatesAutoresizingMaskIntoConstraints = false
+        stopWatchView.stopWatch.delegate = self
+        stopWatchViewContainer.addSubview(stopWatchView)
         
-        pitchContainer = UIView()
+        pitchContainer = ContainerView()
         pitchContainer.translatesAutoresizingMaskIntoConstraints = false
-        pitchContainer.isUserInteractionEnabled = false
-        pitchContainer.backgroundColor = UIColor.clear
         view.addSubview(pitchContainer)
         
         pitch = UIView()
         pitch.translatesAutoresizingMaskIntoConstraints = false
+        pitch.isUserInteractionEnabled = true
         pitch.backgroundColor = COLOR.Theme
         pitchContainer.addSubview(pitch)
 
-        timerCenterYConstraint = NSLayoutConstraint(item: timer, attribute: .centerY, relatedBy: .equal, toItem: timerContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 207) + initialObjectYOffset)
+        
+        // Add constraints
+        
+        stopWatchViewCenterYConstraint = NSLayoutConstraint(item: stopWatchView, attribute: .centerY, relatedBy: .equal, toItem: stopWatchViewContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 207) + initialObjectYOffset)
         pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 429) + initialObjectYOffset)
         
         NSLayoutConstraint.activate([
@@ -114,15 +124,15 @@ class TimerVC: UIViewController, Sliding {
             ellipse.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(x: -250)),
             ellipse.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: CoordinateScalor.convert(x: 250)),
             
-            timerContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
-            timerContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
-            timerContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            timerContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            stopWatchViewContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
+            stopWatchViewContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
+            stopWatchViewContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stopWatchViewContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            timer.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 194)),
-            timer.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 194)),
-            timer.centerXAnchor.constraint(equalTo: timerContainer.centerXAnchor),
-            timerCenterYConstraint,
+            stopWatchView.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 194)),
+            stopWatchView.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 194)),
+            stopWatchView.centerXAnchor.constraint(equalTo: stopWatchViewContainer.centerXAnchor),
+            stopWatchViewCenterYConstraint,
             
             pitchContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
             pitchContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
@@ -148,9 +158,9 @@ class TimerVC: UIViewController, Sliding {
         
         slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
         
-        timerCenterYConstraint.constant = CoordinateScalor.convert(y: 207)
+        stopWatchViewCenterYConstraint.constant = CoordinateScalor.convert(y: 207)
         UIView.animate(withDuration: 0.8, delay: 0.3, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
-            self.timerContainer.layoutIfNeeded()
+            self.stopWatchViewContainer.layoutIfNeeded()
         })
         
         pitchCenterYConstraint.constant = CoordinateScalor.convert(y: 429)
@@ -171,6 +181,21 @@ class TimerVC: UIViewController, Sliding {
         print("menu")
     }
 
-   
-
 }
+
+
+
+extension TimerVC: StopWatchDelegate {
+    
+    func handleTap(button: StopWatch) {
+        
+//        if UserDefaults.standard.bool(forKey: SETTINGS_KEY.Sound) {
+//            JukeBox.instance.playSound(SOUND.ButtonTap)
+//        }
+        
+        // do something
+        
+        print("tapped")
+    }
+}
+

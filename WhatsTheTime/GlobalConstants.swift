@@ -24,10 +24,10 @@ enum COLOR {
 //    static let Border = UIColor.init(hexString: "#333333")                    // Hair line separators in between views.
 //    static let Shadow = UIColor.init(hexString: "#ccccc")                     // Shadow colours for card like design.
 //    
-//    static let DarkBackground = UIColor.init(hexString: "#999966")            // Dark background colour to group UI components with light colour.
+    static let DarkBackground = UIColor.init(hexString: "#989CB5")              // Dark background colour to group UI components with light colour. "#999966"
     static let LightBackground = UIColor.init(hexString: "#EAEBF0")             // Light background colour to group UI components with dark colour.
 //    static let IntermediateBackground = UIColor.init(hexString: "#cccc99")    // Used for grouping UI elements with some other colour scheme.
-//    
+//
 //    static let DarkText = UIColor.init(hexString: "#333333")
 //    static let LightText = UIColor.init(hexString: "#cccccc")
 //    static let IntermediateText = UIColor.init(hexString: "#999999")
