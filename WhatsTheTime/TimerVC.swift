@@ -14,7 +14,7 @@ class TimerVC: UIViewController, Sliding {
     // MARK: - Properties
     
     private var logo: Logo!
-    private var dismissButton: DismissButton!
+    private var hamburger: Hamburger!
     private var ellipse: EllipseView!
     private var timerContainer: UIView!
     private var timer: UIView!
@@ -62,17 +62,19 @@ class TimerVC: UIViewController, Sliding {
         logo = Bundle.main.loadNibNamed(NIBNAME.Logo, owner: self, options: nil)?.last as! Logo
         view.addSubview(logo)
         
-        dismissButton = Bundle.main.loadNibNamed(NIBNAME.DismissButton, owner: self, options: nil)?.last as! DismissButton
-        dismissButton.addTarget(self, action: #selector(handleDismiss(sender:forEvent:)), for: [.touchUpInside])
-        view.addSubview(dismissButton)
+        hamburger = Bundle.main.loadNibNamed(NIBNAME.Hamburger, owner: self, options: nil)?.last as! Hamburger
+        hamburger.addTarget(self, action: #selector(showMenu(sender:forEvent:)), for: [.touchUpInside])
+        view.addSubview(hamburger)
         
         ellipse = EllipseView()
         ellipse.translatesAutoresizingMaskIntoConstraints = false
+        ellipse.isUserInteractionEnabled = false
         ellipse.color = COLOR.White
         view.addSubview(ellipse)
         
         timerContainer = UIView()
         timerContainer.translatesAutoresizingMaskIntoConstraints = false
+        timerContainer.isUserInteractionEnabled = false
         timerContainer.backgroundColor = UIColor.clear
         view.addSubview(timerContainer)
         
@@ -83,6 +85,7 @@ class TimerVC: UIViewController, Sliding {
         
         pitchContainer = UIView()
         pitchContainer.translatesAutoresizingMaskIntoConstraints = false
+        pitchContainer.isUserInteractionEnabled = false
         pitchContainer.backgroundColor = UIColor.clear
         view.addSubview(pitchContainer)
         
@@ -101,10 +104,10 @@ class TimerVC: UIViewController, Sliding {
             logo.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 40)),
             logo.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 23)),
             
-            dismissButton.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 20)),
-            dismissButton.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 20)),
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 30)),
-            dismissButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 27)),
+            hamburger.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 20)),
+            hamburger.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 20)),
+            hamburger.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 30)),
+            hamburger.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 27)),
             
             ellipse.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 60)),
             ellipse.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: CoordinateScalor.convert(y: -100)),
@@ -146,16 +149,16 @@ class TimerVC: UIViewController, Sliding {
         slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
         
         timerCenterYConstraint.constant = CoordinateScalor.convert(y: 207)
-        UIView.animate(withDuration: 0.6, delay: 0.2, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 0.8, delay: 0.3, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.timerContainer.layoutIfNeeded()
         })
         
         pitchCenterYConstraint.constant = CoordinateScalor.convert(y: 429)
-        UIView.animate(withDuration: 0.6, delay: 0.4, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 0.8, delay: 0.6, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.pitchContainer.layoutIfNeeded()
         })
         
-        UIView.animate(withDuration: 2, delay: 2, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 4, delay: 1, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.ellipse.transform = CGAffineTransform.identity
         })
     }
@@ -163,9 +166,9 @@ class TimerVC: UIViewController, Sliding {
     
     // MARK: - Private Methods
     
-    @objc private func handleDismiss(sender: DismissButton, forEvent event: UIEvent) {
+    @objc private func showMenu(sender: Hamburger, forEvent event: UIEvent) {
         
-        print("dismissed")
+        print("menu")
     }
 
    

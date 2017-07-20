@@ -13,6 +13,7 @@ enum NIBNAME {
     
     static let Logo = "Logo"
     static let DismissButton = "DismissButton"
+    static let Hamburger = "Hamburger"
 }
 
 
