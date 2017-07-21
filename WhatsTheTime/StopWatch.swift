@@ -32,14 +32,17 @@ class StopWatch: UIButton {
     // MARK: - Properties
     
     var delegate: StopWatchDelegate?
+    var session: StopWatchSession?
     
     private var stopWatchState: State = State.Initial
     private var progress: CGFloat = 1  // 0.0 to 1.0
     
     private var container: CALayer!
     private var core: CALayer!
-    private var firstHalfProgress: CAShapeLayer!
-    private var secondHalfProgress: CAShapeLayer!
+    
+    private var progressBar: CAShapeLayer!
+//    private var firstHalfProgress: CAShapeLayer!
+//    private var secondHalfProgress: CAShapeLayer!
     
     private let progressWidth: CGFloat = 18
     private let strokeInsetRatio: CGFloat = 0.005
@@ -79,13 +82,17 @@ class StopWatch: UIButton {
         core.frame = container.bounds.insetBy(dx: progressWidth, dy: progressWidth)
         core.cornerRadius = core.bounds.width / 2
         
-        firstHalfProgress.removeFromSuperlayer()
-        firstHalfProgress = progressLayer(forHalf: .First)
-        container.addSublayer(firstHalfProgress)
-
-        secondHalfProgress.removeFromSuperlayer()
-        secondHalfProgress = progressLayer(forHalf: .Second)
-        container.addSublayer(secondHalfProgress)
+        progressBar.removeFromSuperlayer()
+        progressBar = progressLayer()
+        container.addSublayer(progressBar)
+        
+//        firstHalfProgress.removeFromSuperlayer()
+//        firstHalfProgress = progressLayer(forHalf: .First)
+//        container.addSublayer(firstHalfProgress)
+//
+//        secondHalfProgress.removeFromSuperlayer()
+//        secondHalfProgress = progressLayer(forHalf: .Second)
+//        container.addSublayer(secondHalfProgress)
 
     }
     
@@ -98,7 +105,9 @@ class StopWatch: UIButton {
         
         // Configure self
         self.backgroundColor = UIColor.clear
-//        self.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
+        
+        // Add session
+        session = StopWatchSession()
         
         // Add container
         container = CALayer()
@@ -114,11 +123,9 @@ class StopWatch: UIButton {
         core.borderWidth = 1
         container.addSublayer(core)
         
-        // Add progresses
-        firstHalfProgress = progressLayer(forHalf: .First)
-        container.addSublayer(firstHalfProgress)
-        secondHalfProgress = progressLayer(forHalf: .Second)
-        container.addSublayer(secondHalfProgress)
+        // Add progressbar
+        progressBar = progressLayer()
+        container.addSublayer(progressBar)
         
         // Bring subviews to front
         for subview in subviews {
@@ -128,7 +135,7 @@ class StopWatch: UIButton {
     }
     
     
-    private func progressLayer(forHalf half: Half) -> CAShapeLayer {
+    private func progressLayer() -> CAShapeLayer {
         
         let shape = CAShapeLayer()
         shape.strokeColor = COLOR.Theme.cgColor
@@ -140,15 +147,19 @@ class StopWatch: UIButton {
         shape.strokeStart = strokeInsetRatio
         shape.strokeEnd = strokeEndPosition()
         shape.contentsScale = UIScreen.main.scale
-        shape.path = progressPath(forHalf: half).cgPath
+        shape.path = progressPath().cgPath
         return shape
     }
+
     
-    
-    private func progressPath(forHalf half: Half) -> UIBezierPath {
+    private func progressPath() -> UIBezierPath {
         
         let path = UIBezierPath()
-        switch half {
+        
+        guard session != nil else {
+            return path }
+        
+        switch session!.half {
         case .First:
             path.move(to: CGPoint(x: bounds.width/2, y: progressWidth/2))
             path.addArc(withCenter: CGPoint(x: containerSide()/2, y: containerSide()/2), radius: (coreSide()/2 + progressWidth/2), startAngle: -.pi/2, endAngle: .pi/2, clockwise: true)
@@ -184,22 +195,6 @@ class StopWatch: UIButton {
     
     
     // MARK: - Touch methods
-    
-    
-//    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-//        
-//        print("will evaluate")
-//        let radius: CGFloat = coreSide() / 2
-//        if let point: CGPoint = event?.allTouches?.first?.location(in: self.superview) {
-//            let distance: CGFloat = sqrt(CGFloat(powf((Float(self.center.x - point.x)), 2) + powf((Float(self.center.y - point.y)), 2)))
-//            print("evaluating distance \(distance) vs radius \(radius)")
-//            if(distance < radius) {
-//                return true
-//            }
-//        }
-//        return false
-//    }
-    
     
     private func isInsideCore(event: UIEvent) -> Bool {
         

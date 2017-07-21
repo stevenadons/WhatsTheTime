@@ -29,6 +29,7 @@
 		4FB13FFE1F195EC40025088A /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB13FFD1F195EC40025088A /* GlobalConstants.swift */; };
 		4FB140001F19661F0025088A /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB13FFF1F19661F0025088A /* DismissButton.swift */; };
 		4FB140021F1966300025088A /* DismissButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FB140011F1966300025088A /* DismissButton.xib */; };
+		4FB88DD91F22393300DDB034 /* StopWatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DD81F22393300DDB034 /* StopWatchSession.swift */; };
 		4FF9D46F1F210A8F00CA687C /* EllipseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9D46E1F210A8F00CA687C /* EllipseView.swift */; };
 		4FF9D4711F212CD900CA687C /* Hamburger.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FF9D4701F212CD900CA687C /* Hamburger.xib */; };
 		4FF9D4731F212CF000CA687C /* Hamburger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9D4721F212CF000CA687C /* Hamburger.swift */; };
@@ -62,6 +63,7 @@
 		4FB13FFD1F195EC40025088A /* GlobalConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		4FB13FFF1F19661F0025088A /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
 		4FB140011F1966300025088A /* DismissButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DismissButton.xib; sourceTree = "<group>"; };
+		4FB88DD81F22393300DDB034 /* StopWatchSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchSession.swift; sourceTree = "<group>"; };
 		4FF9D46E1F210A8F00CA687C /* EllipseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EllipseView.swift; sourceTree = "<group>"; };
 		4FF9D4701F212CD900CA687C /* Hamburger.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Hamburger.xib; sourceTree = "<group>"; };
 		4FF9D4721F212CF000CA687C /* Hamburger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hamburger.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 		4F0C9BC81F17BFC500956C53 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				4FB88DD81F22393300DDB034 /* StopWatchSession.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				4FB13FFE1F195EC40025088A /* GlobalConstants.swift in Sources */,
 				4F0C9BD61F17DF7200956C53 /* RadialGradientView.swift in Sources */,
 				4FF9D4811F2160D000CA687C /* ContainerView.swift in Sources */,
+				4FB88DD91F22393300DDB034 /* StopWatchSession.swift in Sources */,
 				4FF9D4731F212CF000CA687C /* Hamburger.swift in Sources */,
 				4F0C9BCB1F17C10A00956C53 /* MenuVC.swift in Sources */,
 				4F0C9BD01F17C3B300956C53 /* MenuCircle.swift in Sources */,

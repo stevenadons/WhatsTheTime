@@ -22,6 +22,7 @@ class TimerVC: UIViewController, Sliding {
     
     private var logo: Logo!
     private var hamburger: Hamburger!
+    private var ellipseContainer: ContainerView!
     private var ellipse: EllipseView!
     private var stopWatchViewContainer: ContainerView!
     private var stopWatchView: StopWatchView!
@@ -47,13 +48,6 @@ class TimerVC: UIViewController, Sliding {
     }
     
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        super.viewWillAppear(animated)
-        blowUpEllipse()
-    }
-    
-    
     override func viewDidAppear(_ animated: Bool) {
         
         super.viewDidAppear(animated)
@@ -76,11 +70,15 @@ class TimerVC: UIViewController, Sliding {
         logo = Bundle.main.loadNibNamed(NIBNAME.Logo, owner: self, options: nil)?.last as! Logo
         view.addSubview(logo)
         
+        ellipseContainer = ContainerView()
+        ellipseContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(ellipseContainer)
+        
         ellipse = EllipseView()
         ellipse.translatesAutoresizingMaskIntoConstraints = false
         ellipse.isUserInteractionEnabled = false
         ellipse.color = COLOR.White
-        view.addSubview(ellipse)
+        ellipseContainer.addSubview(ellipse)
         
         stopWatchViewContainer = ContainerView()
         stopWatchViewContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -106,6 +104,9 @@ class TimerVC: UIViewController, Sliding {
         
         stopWatchViewCenterYConstraint = NSLayoutConstraint(item: stopWatchView, attribute: .centerY, relatedBy: .equal, toItem: stopWatchViewContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 207) + initialObjectYOffset)
         pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 429) + initialObjectYOffset)
+        ellipseTopConstraint = NSLayoutConstraint(item: ellipse, attribute: .top, relatedBy: .equal, toItem: ellipseContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 60) - CoordinateScalor.convert(y: 120))
+        ellipseBottomConstraint = NSLayoutConstraint(item: ellipse, attribute: .bottom, relatedBy: .equal, toItem: ellipseContainer, attribute: .bottom, multiplier: 1, constant: CoordinateScalor.convert(y: -100) + CoordinateScalor.convert(y: 150))
+
         
         NSLayoutConstraint.activate([
             
@@ -119,10 +120,15 @@ class TimerVC: UIViewController, Sliding {
             hamburger.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 30)),
             hamburger.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 27)),
             
-            ellipse.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 60)),
-            ellipse.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: CoordinateScalor.convert(y: -100)),
-            ellipse.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(x: -250)),
-            ellipse.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: CoordinateScalor.convert(x: 250)),
+            ellipseContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
+            ellipseContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
+            ellipseContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ellipseContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            ellipseTopConstraint,
+            ellipseBottomConstraint,
+            ellipse.leadingAnchor.constraint(equalTo: ellipseContainer.leadingAnchor, constant: CoordinateScalor.convert(x: -250)),
+            ellipse.trailingAnchor.constraint(equalTo: ellipseContainer.trailingAnchor, constant: CoordinateScalor.convert(x: 250)),
             
             stopWatchViewContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
             stopWatchViewContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
@@ -148,12 +154,6 @@ class TimerVC: UIViewController, Sliding {
     }
     
     
-    private func blowUpEllipse() {
-    
-        ellipse.transform = CGAffineTransform(scaleX: 1, y: 2)
-    }
-    
-    
     private func animateViewsOnAppear() {
         
         slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
@@ -168,8 +168,10 @@ class TimerVC: UIViewController, Sliding {
             self.pitchContainer.layoutIfNeeded()
         })
         
+        ellipseTopConstraint.constant = CoordinateScalor.convert(y: 60)
+        ellipseBottomConstraint.constant = CoordinateScalor.convert(y: -100)
         UIView.animate(withDuration: 4, delay: 1, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
-            self.ellipse.transform = CGAffineTransform.identity
+            self.ellipseContainer.layoutIfNeeded()
         })
     }
     
