@@ -8,13 +8,30 @@
 
 import UIKit
 
+
+protocol StopWatchUIDelegate: class {
+    
+    func handleTap(stopWatchUI: StopWatchUI)
+}
+
+
+protocol StopWatchTimerDelegate: class {
+    
+    func handleTick(for: StopWatchTimer)
+    func handlePause(for: StopWatchTimer)
+    func handleReset(for: StopWatchTimer)
+    func handleReachedZero(for: StopWatchTimer)
+
+}
+
+
 class StopWatchView: UIView {
 
     
-    
     // MARK: - Properties
     
-    var stopWatch: StopWatch!
+    var stopWatchUI: StopWatchUI!
+    var timer: StopWatchTimer!
     
     
     
@@ -39,7 +56,7 @@ class StopWatchView: UIView {
     
     override func layoutSubviews() {
         
-        stopWatch.frame = self.bounds
+        stopWatchUI.frame = self.bounds
     }
     
     
@@ -49,8 +66,11 @@ class StopWatchView: UIView {
     private func setUp() {
         
         self.backgroundColor = UIColor.clear
-        stopWatch = StopWatch()
-        self.addSubview(stopWatch)
+        
+        stopWatchUI = StopWatchUI(delegate: self)
+        self.addSubview(stopWatchUI)
+        
+        timer = StopWatchTimer(delegate: self)
         
         for subview in subviews {
             bringSubview(toFront: subview)
@@ -58,3 +78,38 @@ class StopWatchView: UIView {
     }
 
 }
+
+
+
+extension StopWatchView: StopWatchUIDelegate {
+    
+    func handleTap(stopWatchUI: StopWatchUI) {
+        
+        //        if UserDefaults.standard.bool(forKey: SETTINGS_KEY.Sound) {
+        //            JukeBox.instance.playSound(SOUND.ButtonTap)
+        //        }
+        
+        // do something
+        
+        print("tapped")
+    }
+}
+
+
+extension StopWatchView: StopWatchTimerDelegate {
+    
+    func handleTick(for: StopWatchTimer) {
+    }
+    
+    func handlePause(for: StopWatchTimer) {
+    }
+    
+    func handleReset(for: StopWatchTimer) {
+    }
+    
+    func handleReachedZero(for: StopWatchTimer) {
+    }
+}
+
+
+

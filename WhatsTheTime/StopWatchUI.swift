@@ -1,16 +1,16 @@
 //
-//  StopWatch.swift
+//  StopWatchUI.swift
 //  WhatsTheTime
 //
-//  Created by Steven Adons on 20/07/17.
+//  Created by Steven Adons on 21/07/17.
 //  Copyright © 2017 StevenAdons. All rights reserved.
 //
 
 import UIKit
 
 
-class StopWatch: UIButton {
-
+class StopWatchUI: UIButton {
+    
     
     // MARK: - Helper Classes
     
@@ -25,16 +25,15 @@ class StopWatch: UIButton {
     
     // MARK: - Properties
     
-    var delegate: StopWatchDelegate?
-    var session: StopWatchSession?
+    var delegate: StopWatchUIDelegate?
     
     private var stopWatchState: State = State.Initial
     private var progress: CGFloat = 1  // 0.0 to 1.0
     
     private var container: CALayer!
     private var core: CALayer!
-    
-    private var progressBar: CAShapeLayer!
+    private var firstProgressBar: CAShapeLayer!
+    private var secondProgressBar: CAShapeLayer!
     
     private let progressWidth: CGFloat = 18
     private let strokeInsetRatio: CGFloat = 0.005
@@ -67,6 +66,13 @@ class StopWatch: UIButton {
     }
     
     
+    convenience init(delegate: StopWatchUIDelegate) {
+        
+        self.init()
+        self.delegate = delegate
+    }
+    
+    
     
     // MARK: - Public methods
     
@@ -78,11 +84,14 @@ class StopWatch: UIButton {
         core.frame = container.bounds.insetBy(dx: progressWidth, dy: progressWidth)
         core.cornerRadius = core.bounds.width / 2
         
-        progressBar.removeFromSuperlayer()
-        progressBar = progressLayer()
-        container.addSublayer(progressBar)
+        firstProgressBar.removeFromSuperlayer()
+        firstProgressBar = progressLayer(for: .First)
+        container.addSublayer(firstProgressBar)
+        
+        secondProgressBar.removeFromSuperlayer()
+        secondProgressBar = progressLayer(for: .Second)
+        container.addSublayer(secondProgressBar)
     }
-    
     
     
     
@@ -92,9 +101,6 @@ class StopWatch: UIButton {
         
         // Configure self
         self.backgroundColor = UIColor.clear
-        
-        // Add session
-        session = StopWatchSession()
         
         // Add container
         container = CALayer()
@@ -110,9 +116,13 @@ class StopWatch: UIButton {
         core.borderWidth = 1
         container.addSublayer(core)
         
-        // Add progressbar
-        progressBar = progressLayer()
-        container.addSublayer(progressBar)
+        // Add progressbars
+        firstProgressBar = progressLayer(for: .First)
+        container.addSublayer(firstProgressBar)
+        secondProgressBar = progressLayer(for: .Second)
+        container.addSublayer(secondProgressBar)
+        //        progressBar = progressLayer()
+        //        container.addSublayer(progressBar)
         
         // Bring subviews to front
         for subview in subviews {
@@ -121,7 +131,7 @@ class StopWatch: UIButton {
     }
     
     
-    private func progressLayer() -> CAShapeLayer {
+    private func progressLayer(for half: Half) -> CAShapeLayer {
         
         let shape = CAShapeLayer()
         shape.strokeColor = COLOR.Theme.cgColor
@@ -133,19 +143,16 @@ class StopWatch: UIButton {
         shape.strokeStart = strokeInsetRatio
         shape.strokeEnd = strokeEndPosition()
         shape.contentsScale = UIScreen.main.scale
-        shape.path = progressPath().cgPath
+        shape.path = progressPath(for: half).cgPath
         return shape
     }
-
     
-    private func progressPath() -> UIBezierPath {
+    
+    private func progressPath(for half: Half) -> UIBezierPath {
         
         let path = UIBezierPath()
         
-        guard session != nil else {
-            return path }
-        
-        switch session!.half {
+        switch half {
         case .First:
             path.move(to: CGPoint(x: bounds.width/2, y: progressWidth/2))
             path.addArc(withCenter: CGPoint(x: containerSide/2, y: containerSide/2), radius: (coreSide/2 + progressWidth/2), startAngle: -.pi/2, endAngle: .pi/2, clockwise: true)
@@ -161,7 +168,7 @@ class StopWatch: UIButton {
     // MARK: - Math methods
     
     private func strokeEndPosition() -> CGFloat {
-    
+        
         let strokeField = 1.0 - strokeInsetRatio * 2
         return strokeInsetRatio + strokeField * progress
     }
@@ -190,7 +197,7 @@ class StopWatch: UIButton {
                 return true
             }
         }
-        return false
+        return false 
     }
     
     
@@ -211,20 +218,20 @@ class StopWatch: UIButton {
         super.endTracking(touch, with: event)
         if let event = event {
             if isInsideCore(event: event) {
-                handleButtonTapped()
-            } 
+                handleTap()
+            }
         }
     }
     
     
-    private func handleButtonTapped() {
+    private func handleTap() {
         
         print("button tapped")
-        delegate?.handleTap(button: self)
+        delegate?.handleTap(stopWatchUI: self)
     }
     
     
     
-
-
+    
+    
 }

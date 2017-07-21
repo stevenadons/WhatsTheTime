@@ -9,12 +9,6 @@
 import UIKit
 
 
-protocol StopWatchDelegate: class {
-    
-    func handleTap(button: StopWatch)
-}
-
-
 class TimerVC: UIViewController, Sliding {
 
     
@@ -86,7 +80,6 @@ class TimerVC: UIViewController, Sliding {
         
         stopWatchView = StopWatchView()
         stopWatchView.translatesAutoresizingMaskIntoConstraints = false
-        stopWatchView.stopWatch.delegate = self
         stopWatchViewContainer.addSubview(stopWatchView)
         
         pitchContainer = ContainerView()
@@ -186,18 +179,4 @@ class TimerVC: UIViewController, Sliding {
 }
 
 
-
-extension TimerVC: StopWatchDelegate {
-    
-    func handleTap(button: StopWatch) {
-        
-//        if UserDefaults.standard.bool(forKey: SETTINGS_KEY.Sound) {
-//            JukeBox.instance.playSound(SOUND.ButtonTap)
-//        }
-        
-        // do something
-        
-        print("tapped")
-    }
-}
 
