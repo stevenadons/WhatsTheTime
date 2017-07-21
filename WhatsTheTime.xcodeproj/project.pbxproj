@@ -200,18 +200,10 @@
 		4F9249CE1F1A6D8B004E9CD0 /* UI Elements */ = {
 			isa = PBXGroup;
 			children = (
-				4F9249D11F1A7270004E9CD0 /* Menu.swift */,
-				4F0C9BD31F17CA8E00956C53 /* MenuCircles.swift */,
-				4F0C9BCF1F17C3B300956C53 /* MenuCircle.swift */,
-				4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */,
-				4FB13FF81F1959560025088A /* Logo.xib */,
-				4FB13FF61F1959430025088A /* Logo.swift */,
-				4FB140011F1966300025088A /* DismissButton.xib */,
-				4FB13FFF1F19661F0025088A /* DismissButton.swift */,
-				4FF9D4701F212CD900CA687C /* Hamburger.xib */,
-				4FF9D4721F212CF000CA687C /* Hamburger.swift */,
-				4FF9D47A1F213E9200CA687C /* StopWatchView.swift */,
-				4FF9D4781F213E7000CA687C /* StopWatch.swift */,
+				4FB88DDF1F22446500DDB034 /* StopWatch */,
+				4FB88DDE1F22445800DDB034 /* IconButtons */,
+				4FB88DDD1F22444D00DDB034 /* Logo */,
+				4FB88DDC1F22444500DDB034 /* Menu */,
 			);
 			name = "UI Elements";
 			sourceTree = "<group>";
@@ -222,6 +214,46 @@
 				4FB13FFB1F195AAE0025088A /* agdollar.ttf */,
 			);
 			name = Fonts;
+			sourceTree = "<group>";
+		};
+		4FB88DDC1F22444500DDB034 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				4F9249D11F1A7270004E9CD0 /* Menu.swift */,
+				4F0C9BD31F17CA8E00956C53 /* MenuCircles.swift */,
+				4F0C9BCF1F17C3B300956C53 /* MenuCircle.swift */,
+				4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */,
+			);
+			name = Menu;
+			sourceTree = "<group>";
+		};
+		4FB88DDD1F22444D00DDB034 /* Logo */ = {
+			isa = PBXGroup;
+			children = (
+				4FB13FF81F1959560025088A /* Logo.xib */,
+				4FB13FF61F1959430025088A /* Logo.swift */,
+			);
+			name = Logo;
+			sourceTree = "<group>";
+		};
+		4FB88DDE1F22445800DDB034 /* IconButtons */ = {
+			isa = PBXGroup;
+			children = (
+				4FB140011F1966300025088A /* DismissButton.xib */,
+				4FB13FFF1F19661F0025088A /* DismissButton.swift */,
+				4FF9D4701F212CD900CA687C /* Hamburger.xib */,
+				4FF9D4721F212CF000CA687C /* Hamburger.swift */,
+			);
+			name = IconButtons;
+			sourceTree = "<group>";
+		};
+		4FB88DDF1F22446500DDB034 /* StopWatch */ = {
+			isa = PBXGroup;
+			children = (
+				4FF9D47A1F213E9200CA687C /* StopWatchView.swift */,
+				4FF9D4781F213E7000CA687C /* StopWatch.swift */,
+			);
+			name = StopWatch;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

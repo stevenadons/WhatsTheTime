@@ -22,12 +22,6 @@ class StopWatch: UIButton {
         case CountingUp
     }
     
-    enum Half {
-        
-        case First
-        case Second
-    }
-    
     
     // MARK: - Properties
     
@@ -41,16 +35,18 @@ class StopWatch: UIButton {
     private var core: CALayer!
     
     private var progressBar: CAShapeLayer!
-//    private var firstHalfProgress: CAShapeLayer!
-//    private var secondHalfProgress: CAShapeLayer!
     
     private let progressWidth: CGFloat = 18
     private let strokeInsetRatio: CGFloat = 0.005
     
-    //    private var shinyShape: CAShapeLayer!
-    //    private var shinyGradientLayer: CAGradientLayer!
-    //    private var iconCircle: [CAShapeLayer] = []
-    //    private var iconLine: [CAShapeLayer] = []
+    private var containerSide: CGFloat {
+        return min(self.bounds.width, self.bounds.height)
+    }
+    
+    private var coreSide: CGFloat {
+        return containerSide - 2 * progressWidth
+    }
+    
     
     
     
@@ -76,7 +72,7 @@ class StopWatch: UIButton {
     
     override func layoutSubviews() {
         
-        container.bounds = CGRect(x: 0, y: 0, width: containerSide(), height: containerSide())
+        container.bounds = CGRect(x: 0, y: 0, width: containerSide, height: containerSide)
         container.position = self.center
         
         core.frame = container.bounds.insetBy(dx: progressWidth, dy: progressWidth)
@@ -85,15 +81,6 @@ class StopWatch: UIButton {
         progressBar.removeFromSuperlayer()
         progressBar = progressLayer()
         container.addSublayer(progressBar)
-        
-//        firstHalfProgress.removeFromSuperlayer()
-//        firstHalfProgress = progressLayer(forHalf: .First)
-//        container.addSublayer(firstHalfProgress)
-//
-//        secondHalfProgress.removeFromSuperlayer()
-//        secondHalfProgress = progressLayer(forHalf: .Second)
-//        container.addSublayer(secondHalfProgress)
-
     }
     
     
@@ -131,7 +118,6 @@ class StopWatch: UIButton {
         for subview in subviews {
             bringSubview(toFront: subview)
         }
-        
     }
     
     
@@ -162,24 +148,12 @@ class StopWatch: UIButton {
         switch session!.half {
         case .First:
             path.move(to: CGPoint(x: bounds.width/2, y: progressWidth/2))
-            path.addArc(withCenter: CGPoint(x: containerSide()/2, y: containerSide()/2), radius: (coreSide()/2 + progressWidth/2), startAngle: -.pi/2, endAngle: .pi/2, clockwise: true)
+            path.addArc(withCenter: CGPoint(x: containerSide/2, y: containerSide/2), radius: (coreSide/2 + progressWidth/2), startAngle: -.pi/2, endAngle: .pi/2, clockwise: true)
         case .Second:
-            path.move(to: CGPoint(x: bounds.width/2, y: containerSide() - progressWidth/2))
-            path.addArc(withCenter: CGPoint(x: bounds.midX, y: bounds.midY), radius: (coreSide()/2 + progressWidth/2), startAngle: .pi/2, endAngle: -.pi/2, clockwise: true)
+            path.move(to: CGPoint(x: bounds.width/2, y: containerSide - progressWidth/2))
+            path.addArc(withCenter: CGPoint(x: bounds.midX, y: bounds.midY), radius: (coreSide/2 + progressWidth/2), startAngle: .pi/2, endAngle: -.pi/2, clockwise: true)
         }
         return path
-    }
-    
-    
-    private func containerSide() -> CGFloat {
-        
-        return min(self.bounds.width, self.bounds.height)
-    }
-    
-    
-    private func coreSide() -> CGFloat {
-        
-        return containerSide() - 2 * progressWidth
     }
     
     
@@ -200,7 +174,7 @@ class StopWatch: UIButton {
         
         if let point: CGPoint = event.allTouches?.first?.location(in: self.superview) {
             let distance: CGFloat = sqrt(CGFloat(powf((Float(self.center.x - point.x)), 2) + powf((Float(self.center.y - point.y)), 2)))
-            if (distance < coreSide()/2) {
+            if (distance < coreSide/2) {
                 return true
             }
         }
