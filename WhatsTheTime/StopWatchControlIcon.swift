@@ -23,15 +23,15 @@ class StopWatchControlIcon: UIView {
     
     // MARK: - Properties
     
-    var icon: Icon = .PlayIcon {
+    var icon: Icon = .PlayIcon
+        {
         didSet {
-            shape.setNeedsDisplay()
+            setNeedsDisplay()
         }
     }
     
     var color: UIColor = UIColor.white {
         didSet {
-//            shape.setNeedsDisplay()
             setNeedsLayout()
         }
     }
@@ -114,9 +114,27 @@ class StopWatchControlIcon: UIView {
     }
     
     
+    func change(to newIcon: StopWatchControlIcon.Icon) {
+        
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
+            self.alpha = 0.0
+            self.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        }) { (finished) in
+            self.icon = newIcon
+            UIView.animate(withDuration: 0.2, delay: 1, options: [.curveEaseOut], animations: {
+                self.alpha = 1.0
+                self.transform = CGAffineTransform.identity
+            }) { (finished) in
+                print("finished")
+            }
+        }
+    }
+    
+    
     override func draw(_ rect: CGRect) {
         
         super.draw(rect)
+        shape.path = path(for: icon).cgPath
         shape.setNeedsDisplay()
     }
     
@@ -151,9 +169,9 @@ class StopWatchControlIcon: UIView {
         
         switch icon {
         case .PlayIcon:
-            path.move(to: CGPoint(x: bounds.width * 0.14, y: 0))
-            path.addLine(to: CGPoint(x: bounds.width * 0.86, y: bounds.height / 2))
-            path.addLine(to: CGPoint(x: bounds.width * 0.14, y: bounds.height))
+            path.move(to: CGPoint(x: bounds.width * 0.24, y: 0))
+            path.addLine(to: CGPoint(x: bounds.width * 0.96, y: bounds.height / 2))
+            path.addLine(to: CGPoint(x: bounds.width * 0.24, y: bounds.height))
             path.close()
         case .PauseIcon:
             path.move(to: CGPoint(x: bounds.width * 0.14, y: 0))

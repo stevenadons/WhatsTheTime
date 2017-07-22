@@ -15,6 +15,15 @@ enum Half {
     case Second
 }
 
+enum MinutesInHalf: Int {
+    
+    case Fifteen = 15
+    case Twenty = 20
+    case TwentyFive = 25
+    case Thirty = 30
+    case ThirtyFive = 35
+}
+
 
 
 class HockeyGame {
@@ -30,22 +39,14 @@ class HockeyGame {
         case Ended
     }
     
-    enum MinutesInHalf: Int {
-        
-        case Twenty = 20
-        case TwentyFive = 25
-        case Thirty = 30
-        case ThirtyFive = 35
-    }
-    
     
     // MARK: - Properties
     
     private var scoreHome: Int = 0
     private var scoreAway: Int = 0
-    private var half: Half = .First
+    var half: Half = .First
     var status: Status = .WaitingToStart
-    private var duration: MinutesInHalf = .Twenty
+    var duration: MinutesInHalf = .Twenty
     
     
     

@@ -50,6 +50,7 @@ enum COLOR {
 enum FONTNAME {
     
     static let MenuButton = "HelveticaNeue-Bold"
+    static let DurationLabel = "HelveticaNeue"
 }
 
 

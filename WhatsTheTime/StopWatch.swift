@@ -13,9 +13,9 @@ protocol StopWatchTimerDelegate: class {
     
     func handleTick(for: StopWatchTimer, timeString: String)
     func handlePause(for: StopWatchTimer)
+    func handleStop(for: StopWatchTimer, timeString: String)
     func handleReset(for: StopWatchTimer)
     func handleReachedZero(for: StopWatchTimer, timeString: String)
-    
 }
 
 
@@ -33,19 +33,26 @@ class StopWatch: UIControl {
     
     // MARK: - Properties
     
-    
     fileprivate var delegate: StopWatchDelegate!
     fileprivate var timer: StopWatchTimer!
     fileprivate var icon: StopWatchControlIcon!
     fileprivate var timeLabel: StopWatchLabel!
     
     private var mode: Mode = .CountingDown
-    private var progress: CGFloat = 1  // 0.0 to 1.0
+    private var game: HockeyGame! 
+    private var half: Half {
+        return game.half
+    }
+    private var duration: MinutesInHalf {
+        return game.duration
+    }
 
     private var squareContainer: CALayer!
+    private var progressZone: CAShapeLayer!
     private var core: CALayer!
     private var firstProgressBar: CAShapeLayer!
     private var secondProgressBar: CAShapeLayer!
+    private var durationLabel: UILabel!
     
     private let progressBarWidth: CGFloat = 18
     private let progressBarStrokeInsetRatio: CGFloat = 0.005
@@ -61,6 +68,7 @@ class StopWatch: UIControl {
     override init(frame: CGRect) {
         
         super.init(frame: frame)
+        game = HockeyGame(duration: .TwentyFive)
         setUp()
     }
     
@@ -68,14 +76,19 @@ class StopWatch: UIControl {
     required init?(coder aDecoder: NSCoder) {
         
         super.init(coder: aDecoder)
+        game = HockeyGame(duration: .TwentyFive)
         setUp()
     }
     
     
-    convenience init(delegate: StopWatchDelegate) {
+    convenience init(delegate: StopWatchDelegate, game: HockeyGame) {
         
         self.init()
         self.delegate = delegate
+        self.game = game
+        timer.set(duration: game.duration)
+        timeLabel.text = timer.timeString(totalSeconds: timer.totalSecondsToGo)
+        durationLabel.text = "2x\(game.duration.rawValue)min"
     }
     
     
@@ -85,20 +98,34 @@ class StopWatch: UIControl {
     override func layoutSubviews() {
         
         squareContainer.frame = bounds.insetBy(dx: (bounds.width - squareSide) / 2, dy: (bounds.height - squareSide) / 2)
+        
+        progressZone.frame = squareContainer.bounds
+        progressZone.path = UIBezierPath(ovalIn: progressZone.bounds).cgPath
 
         core.frame = squareContainer.bounds.insetBy(dx: progressBarWidth, dy: progressBarWidth)
         core.cornerRadius = core.bounds.width / 2
         
         firstProgressBar.removeFromSuperlayer()
         firstProgressBar = progressBarLayer(for: .First)
+        firstProgressBar.strokeEnd = (self.half == .Second) ? strokeEndPosition(progress: 1) : strokeEndPosition(progress: timer.progress)
         squareContainer.addSublayer(firstProgressBar)
         
         secondProgressBar.removeFromSuperlayer()
         secondProgressBar = progressBarLayer(for: .Second)
+        secondProgressBar.strokeEnd = (self.half == .First) ? strokeEndPosition(progress: 0) : strokeEndPosition(progress: timer.progress)
         squareContainer.addSublayer(secondProgressBar)
         
         icon.frame = bounds.insetBy(dx: (130 * bounds.width / 230) / 2, dy: (130 * bounds.height / 230) / 2)
         timeLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.35)
+        
+        NSLayoutConstraint.activate([
+            
+            durationLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 80/230),
+            durationLabel.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 20/230),
+            durationLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            durationLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: CoordinateScalor.convert(height: -30)),
+            
+            ])
     }
     
     
@@ -117,11 +144,15 @@ class StopWatch: UIControl {
         squareContainer.rasterizationScale = UIScreen.main.scale
         layer.addSublayer(squareContainer)
         
+        // Add progressZone
+        progressZone = CAShapeLayer()
+        progressZone.strokeColor = UIColor.clear.cgColor
+        progressZone.fillColor = COLOR.LightBackground.cgColor
+        squareContainer.addSublayer(progressZone)
+        
         // Add core
         core = CALayer()
-        core.backgroundColor = COLOR.LightBackground.cgColor
-        core.borderColor = COLOR.DarkBackground.cgColor
-        core.borderWidth = 1
+        core.backgroundColor = COLOR.White.cgColor
         squareContainer.addSublayer(core)
         
         // Add progressbars
@@ -136,11 +167,21 @@ class StopWatch: UIControl {
         addSubview(icon)
         
         // Set up timer
-        timer = StopWatchTimer(delegate: self)
+        timer = StopWatchTimer(delegate: self, duration: duration)
         
-        // Add timeLabel
+        // Add labels
         timeLabel = StopWatchLabel(timer: timer)
         addSubview(timeLabel)
+        durationLabel = UILabel()
+        durationLabel.translatesAutoresizingMaskIntoConstraints = false
+        durationLabel.isUserInteractionEnabled = false
+        durationLabel.backgroundColor = UIColor.clear
+        durationLabel.textColor = COLOR.Theme
+        durationLabel.text = ""
+        durationLabel.textAlignment = .center
+        durationLabel.adjustsFontSizeToFitWidth = true
+        durationLabel.font = UIFont(name: FONTNAME.DurationLabel, size: 12)
+        addSubview(durationLabel)
         
         // Bring subviews to front
         for subview in subviews {
@@ -162,7 +203,7 @@ class StopWatch: UIControl {
         shape.fillColor = UIColor.clear.cgColor
         shape.position = CGPoint.zero
         shape.strokeStart = progressBarStrokeInsetRatio
-        shape.strokeEnd = strokeEndPosition()
+        shape.strokeEnd = progressBarStrokeInsetRatio
         shape.contentsScale = UIScreen.main.scale
         shape.path = progressBarPath(for: half).cgPath
         return shape
@@ -185,7 +226,7 @@ class StopWatch: UIControl {
     }
     
     
-    private func strokeEndPosition() -> CGFloat {
+    private func strokeEndPosition(progress: CGFloat) -> CGFloat {
         
         let strokeField = 1.0 - progressBarStrokeInsetRatio * 2
         return progressBarStrokeInsetRatio + strokeField * progress
@@ -233,15 +274,27 @@ class StopWatch: UIControl {
         super.endTracking(touch, with: event)
         if let event = event {
             if isInsideCore(event: event) {
-                iconTapped()
+                handleTap()
             }
         }
     }
     
-    private func iconTapped() {
+    
+    private func handleTap() {
         
-        print("icon tapped")
+        switch icon.icon {
+        case .PlayIcon:
+            timer.start()
+            icon.change(to: .PauseIcon)
+        case .PauseIcon:
+            timer.pause()
+            icon.change(to: .PlayIcon)
+        case .StopIcon:
+            timer.stop()
+            icon.change(to: .PlayIcon)
+        }
     }
+    
 }
 
 
@@ -249,9 +302,15 @@ extension StopWatch: StopWatchTimerDelegate {
     
     func handleTick(for: StopWatchTimer, timeString: String) {
         timeLabel.text = timeString
+        setNeedsLayout()
     }
     
     func handlePause(for: StopWatchTimer) {
+    }
+    
+    func handleStop(for: StopWatchTimer, timeString: String) {
+        timeLabel.text = timeString
+        setNeedsLayout()
     }
     
     func handleReset(for: StopWatchTimer) {
@@ -259,5 +318,7 @@ extension StopWatch: StopWatchTimerDelegate {
     
     func handleReachedZero(for: StopWatchTimer, timeString: String) {
         timeLabel.text = timeString
+        icon.change(to: .StopIcon)
+        setNeedsLayout()
     }
 }

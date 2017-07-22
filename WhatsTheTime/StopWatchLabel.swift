@@ -19,9 +19,9 @@ class StopWatchLabel: UIView {
     
     // MARK: - Properties
     
-    var text: String = "25:00" {
+    var text: String = "" {
         didSet {
-            label.setNeedsDisplay()
+            setNeedsLayout()
         }
     }
     
@@ -51,13 +51,18 @@ class StopWatchLabel: UIView {
         
         self.init()
         self.timer = timer
+        self.text = timer.timeString(totalSeconds: timer.totalSecondsToGo)
     }
     
     
     
     // MARK: - Public methods
     
-    
+    override func layoutSubviews() {
+        
+        super.layoutSubviews()
+        label.text = text
+    }
     
     
     
@@ -95,7 +100,7 @@ class StopWatchLabel: UIView {
         label.textAlignment = alignment
         label.adjustsFontSizeToFitWidth = true
         label.baselineAdjustment = .alignCenters
-        label.font = UIFont(name: FONTNAME.MenuButton, size: 54)
+        label.font = UIFont(name: FONTNAME.MenuButton, size: 48)
         return label
     }
     

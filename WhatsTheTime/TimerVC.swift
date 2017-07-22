@@ -9,10 +9,6 @@
 import UIKit
 
 
-protocol StopWatchViewDelegate: class {
-    
-    func handleTimerStateChanged(stopWatchTimer: StopWatchTimer)
-}
 
 protocol StopWatchDelegate: class {
     
@@ -29,14 +25,13 @@ class TimerVC: UIViewController, Sliding {
     private var hamburger: Hamburger!
     private var ellipseContainer: ContainerView!
     private var ellipse: EllipseView!
-    private var stopWatchViewContainer: ContainerView!
-//    private var stopWatchView: StopWatchView!
+    private var stopWatchContainer: ContainerView!
     private var stopWatch: StopWatch!
     private var pitchContainer: ContainerView!
     private var pitch: UIView!
     private var game: HockeyGame!
     
-    private var stopWatchViewCenterYConstraint: NSLayoutConstraint!
+    private var stopWatchCenterYConstraint: NSLayoutConstraint!
     private var pitchCenterYConstraint: NSLayoutConstraint!
     private var ellipseTopConstraint: NSLayoutConstraint!
     private var ellipseBottomConstraint: NSLayoutConstraint!
@@ -52,9 +47,9 @@ class TimerVC: UIViewController, Sliding {
         super.viewDidLoad()
         
         view.backgroundColor = COLOR.LightBackground
+        game = HockeyGame(duration: .Fifteen)
+
         setupViews()
-        
-        game = HockeyGame(duration: .Twenty)
     }
     
     
@@ -90,17 +85,13 @@ class TimerVC: UIViewController, Sliding {
         ellipse.color = COLOR.White
         ellipseContainer.addSubview(ellipse)
         
-        stopWatchViewContainer = ContainerView()
-        stopWatchViewContainer.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stopWatchViewContainer)
+        stopWatchContainer = ContainerView()
+        stopWatchContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stopWatchContainer)
         
-//        stopWatchView = StopWatchView(delegate: self)
-//        stopWatchView.translatesAutoresizingMaskIntoConstraints = false
-//        stopWatchViewContainer.addSubview(stopWatchView)
-        
-        stopWatch = StopWatch(delegate: self)
+        stopWatch = StopWatch(delegate: self, game: game)
         stopWatch.translatesAutoresizingMaskIntoConstraints = false
-        stopWatchViewContainer.addSubview(stopWatch)
+        stopWatchContainer.addSubview(stopWatch)
         
         pitchContainer = ContainerView()
         pitchContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -115,7 +106,7 @@ class TimerVC: UIViewController, Sliding {
         
         // Add constraints
         
-        stopWatchViewCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchViewContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 207) + initialObjectYOffset)
+        stopWatchCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 207) + initialObjectYOffset)
         pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 429) + initialObjectYOffset)
         ellipseTopConstraint = NSLayoutConstraint(item: ellipse, attribute: .top, relatedBy: .equal, toItem: ellipseContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 60) - CoordinateScalor.convert(y: 120))
         ellipseBottomConstraint = NSLayoutConstraint(item: ellipse, attribute: .bottom, relatedBy: .equal, toItem: ellipseContainer, attribute: .bottom, multiplier: 1, constant: CoordinateScalor.convert(y: -100) + CoordinateScalor.convert(y: 150))
@@ -143,15 +134,15 @@ class TimerVC: UIViewController, Sliding {
             ellipse.leadingAnchor.constraint(equalTo: ellipseContainer.leadingAnchor, constant: CoordinateScalor.convert(x: -250)),
             ellipse.trailingAnchor.constraint(equalTo: ellipseContainer.trailingAnchor, constant: CoordinateScalor.convert(x: 250)),
             
-            stopWatchViewContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
-            stopWatchViewContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
-            stopWatchViewContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stopWatchViewContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            stopWatchContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
+            stopWatchContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
+            stopWatchContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stopWatchContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            stopWatch.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 230)),
-            stopWatch.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 230)),
-            stopWatch.centerXAnchor.constraint(equalTo: stopWatchViewContainer.centerXAnchor),
-            stopWatchViewCenterYConstraint,
+            stopWatch.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 210/375),
+            stopWatch.heightAnchor.constraint(equalTo: stopWatch.widthAnchor, multiplier: 1),
+            stopWatch.centerXAnchor.constraint(equalTo: stopWatchContainer.centerXAnchor),
+            stopWatchCenterYConstraint,
             
             pitchContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
             pitchContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
@@ -171,9 +162,9 @@ class TimerVC: UIViewController, Sliding {
         
         slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
         
-        stopWatchViewCenterYConstraint.constant = CoordinateScalor.convert(y: 207)
+        stopWatchCenterYConstraint.constant = CoordinateScalor.convert(y: 207)
         UIView.animate(withDuration: 0.8, delay: 0.3, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
-            self.stopWatchViewContainer.layoutIfNeeded()
+            self.stopWatchContainer.layoutIfNeeded()
         })
         
         pitchCenterYConstraint.constant = CoordinateScalor.convert(y: 429)
@@ -199,25 +190,6 @@ class TimerVC: UIViewController, Sliding {
 }
 
 
-extension TimerVC: StopWatchViewDelegate {
-    
-    func handleTimerStateChanged(stopWatchTimer: StopWatchTimer) {
-    
-        print("tapped")
-        
-        switch stopWatchTimer.state {
-        case .WaitingToStart:
-            print("waitingtostart")
-        case .Running:
-            print("running")
-        case .Paused:
-            print("paused")
-        case .Ended:
-            print("ended")
-        }
-    }
-}
-
 
 extension TimerVC: StopWatchDelegate {
     
@@ -232,6 +204,8 @@ extension TimerVC: StopWatchDelegate {
             print("running")
         case .Paused:
             print("paused")
+        case .Overdue:
+            print("overdue")
         case .Ended:
             print("ended")
         }

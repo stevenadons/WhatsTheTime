@@ -18,7 +18,7 @@ class EllipseView: UIView {
     var path: UIBezierPath!
     var color: UIColor = UIColor.white {
         didSet {
-            ellipse.setNeedsDisplay()
+            ellipse.setNeedsLayout()
         }
     }
     
