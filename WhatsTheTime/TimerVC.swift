@@ -9,6 +9,12 @@
 import UIKit
 
 
+protocol StopWatchViewDelegate: class {
+    
+    func handleTimerStateChanged(stopWatchTimer: StopWatchTimer)
+}
+
+
 class TimerVC: UIViewController, Sliding {
 
     
@@ -22,6 +28,7 @@ class TimerVC: UIViewController, Sliding {
     private var stopWatchView: StopWatchView!
     private var pitchContainer: ContainerView!
     private var pitch: UIView!
+    private var game: HockeyGame!
     
     private var stopWatchViewCenterYConstraint: NSLayoutConstraint!
     private var pitchCenterYConstraint: NSLayoutConstraint!
@@ -37,8 +44,11 @@ class TimerVC: UIViewController, Sliding {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
         view.backgroundColor = COLOR.LightBackground
         setupViews()
+        
+        game = HockeyGame(duration: .Twenty)
     }
     
     
@@ -78,7 +88,7 @@ class TimerVC: UIViewController, Sliding {
         stopWatchViewContainer.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stopWatchViewContainer)
         
-        stopWatchView = StopWatchView()
+        stopWatchView = StopWatchView(delegate: self)
         stopWatchView.translatesAutoresizingMaskIntoConstraints = false
         stopWatchViewContainer.addSubview(stopWatchView)
         
@@ -176,6 +186,26 @@ class TimerVC: UIViewController, Sliding {
         print("menu")
     }
 
+}
+
+
+extension TimerVC: StopWatchViewDelegate {
+    
+    func handleTimerStateChanged(stopWatchTimer: StopWatchTimer) {
+    
+        print("tapped")
+        
+        switch stopWatchTimer.state {
+        case .WaitingToStart:
+            print("waitingtostart")
+        case .Running:
+            print("running")
+        case .Paused:
+            print("paused")
+        case .Ended:
+            print("ended")
+        }
+    }
 }
 
 

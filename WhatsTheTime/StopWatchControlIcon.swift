@@ -15,15 +15,15 @@ class StopWatchControlIcon: UIView {
     
     enum Icon {
         
-        case Play
-        case Pause
-        case Stop
+        case PlayIcon
+        case PauseIcon
+        case StopIcon
     }
     
     
     // MARK: - Properties
     
-    var icon: Icon = .Play {
+    var icon: Icon = .PlayIcon {
         didSet {
             shape.setNeedsDisplay()
         }
@@ -150,12 +150,12 @@ class StopWatchControlIcon: UIView {
         let path = UIBezierPath()
         
         switch icon {
-        case .Play:
+        case .PlayIcon:
             path.move(to: CGPoint(x: bounds.width * 0.14, y: 0))
             path.addLine(to: CGPoint(x: bounds.width * 0.86, y: bounds.height / 2))
             path.addLine(to: CGPoint(x: bounds.width * 0.14, y: bounds.height))
             path.close()
-        case .Pause:
+        case .PauseIcon:
             path.move(to: CGPoint(x: bounds.width * 0.14, y: 0))
             path.addLine(to: CGPoint(x: bounds.width * 0.46, y: 0))
             path.addLine(to: CGPoint(x: bounds.width * 0.46, y: bounds.height))
@@ -166,7 +166,7 @@ class StopWatchControlIcon: UIView {
             path.addLine(to: CGPoint(x: bounds.width * 0.86, y: bounds.height))
             path.addLine(to: CGPoint(x: bounds.width * 0.54, y: bounds.height))
             path.close()
-        case .Stop:
+        case .StopIcon:
             path.move(to: CGPoint(x: 0, y: 0))
             path.addLine(to: CGPoint(x: bounds.width, y: 0))
             path.addLine(to: CGPoint(x: bounds.width, y: bounds.height))

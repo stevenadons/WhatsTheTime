@@ -26,16 +26,16 @@ class StopWatchTimer {
     // MARK: - Properties
     
     private var timer: Timer!
-    private var state: State = .WaitingToStart
+    var state: State = .WaitingToStart
     private var delegate: StopWatchTimerDelegate!
     
-    private var totalSeconds: Int = 60 * 25
-    private var secondsToGo: Int = 60 * 25
-    private var seconds: Int {
-        return secondsToGo % 60
+    private var totalSecondsInHalf: Int = 60 * 25
+    private var totalSecondsToGo: Int = 60 * 25
+    private var secondsToGo: Int {
+        return totalSecondsToGo % 60
     }
-    private var minutes: Int {
-        return secondsToGo / 60
+    private var minutesToGo: Int {
+        return totalSecondsToGo / 60
     }
     
     
@@ -72,25 +72,34 @@ class StopWatchTimer {
         guard state != .WaitingToStart else { return }
         timer.invalidate()
         delegate.handleReset(for: self)
-        secondsToGo = totalSeconds
+        totalSecondsToGo = totalSecondsInHalf
         state = .WaitingToStart
     }
     
+    func timeString() -> String {
+        
+        var timeString: String = ""
+        if minutesToGo < 10 {
+            timeString.append("0")
+        }
+        timeString.append("\(minutesToGo):\(secondsToGo)")
+        return timeString
+    }
     
     
     // MARK: - Private Methods
 
     @objc private func tick() {
         
-        secondsToGo -= 1
+        totalSecondsToGo -= 1
         if secondsToGo < 1 {
             // Reached zero
             timer.invalidate()
-            delegate.handleReachedZero(for: self)
+            delegate.handleReachedZero(for: self, timeString: timeString())
             state = .Ended
         } else {
             // Keep on counting
-            delegate.handleTick(for: self)
+            delegate.handleTick(for: self, timeString: timeString())
         }
     }
     

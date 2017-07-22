@@ -17,10 +17,10 @@ protocol StopWatchUIDelegate: class {
 
 protocol StopWatchTimerDelegate: class {
     
-    func handleTick(for: StopWatchTimer)
+    func handleTick(for: StopWatchTimer, timeString: String)
     func handlePause(for: StopWatchTimer)
     func handleReset(for: StopWatchTimer)
-    func handleReachedZero(for: StopWatchTimer)
+    func handleReachedZero(for: StopWatchTimer, timeString: String)
 
 }
 
@@ -31,10 +31,12 @@ class StopWatchView: UIView {
     // MARK: - Properties
     
     private var stopWatchUI: StopWatchUI!
-    private var timeLabel: StopWatchLabel!
-    private var icon: StopWatchControlIcon!
-    private var timer: StopWatchTimer!
     
+    fileprivate var delegate: StopWatchViewDelegate!
+    fileprivate var timer: StopWatchTimer!
+    fileprivate var icon: StopWatchControlIcon!
+    fileprivate var timeLabel: StopWatchLabel!
+
     
     
     // MARK: - Initializers
@@ -53,14 +55,21 @@ class StopWatchView: UIView {
     }
     
     
+    convenience init(delegate: StopWatchViewDelegate) {
+        
+        self.init()
+        self.delegate = delegate
+    }
+    
+    
     
     // MARK: - Public methods
     
     override func layoutSubviews() {
         
         stopWatchUI.frame = bounds
-        icon.frame = bounds.insetBy(dx: (130 * bounds.width / 230) / 2, dy: (130 * bounds.width / 230) / 2)
-        timeLabel.frame = bounds.insetBy(dx: stopWatchUI.coreSide * 0.25, dy: stopWatchUI.coreSide * 0.35)
+        icon.frame = bounds.insetBy(dx: (130 * bounds.width / 230) / 2, dy: (130 * bounds.height / 230) / 2)
+        timeLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.35)
     }
     
     
@@ -74,7 +83,7 @@ class StopWatchView: UIView {
         stopWatchUI = StopWatchUI(delegate: self)
         addSubview(stopWatchUI)
         
-        icon = StopWatchControlIcon(icon: .Pause)
+        icon = StopWatchControlIcon(icon: .PlayIcon)
         icon.color = COLOR.Affirmation
         addSubview(icon)
         
@@ -96,20 +105,28 @@ extension StopWatchView: StopWatchUIDelegate {
     
     func handleTap(stopWatchUI: StopWatchUI) {
         
-        //        if UserDefaults.standard.bool(forKey: SETTINGS_KEY.Sound) {
-        //            JukeBox.instance.playSound(SOUND.ButtonTap)
-        //        }
-        
-        // do something
-        
         print("tapped")
+
+        switch icon.icon {
+        case .PlayIcon:
+            timer.start()
+            delegate.handleTimerStateChanged(stopWatchTimer: timer)
+        case .PauseIcon:
+            timer.pause()
+            delegate.handleTimerStateChanged(stopWatchTimer: timer)
+        case .StopIcon:
+            timer.pause()
+            delegate.handleTimerStateChanged(stopWatchTimer: timer)
+        }
     }
 }
 
 
 extension StopWatchView: StopWatchTimerDelegate {
     
-    func handleTick(for: StopWatchTimer) {
+    func handleTick(for: StopWatchTimer, timeString: String) {
+        
+        timeLabel.text = timeString
     }
     
     func handlePause(for: StopWatchTimer) {
@@ -118,7 +135,9 @@ extension StopWatchView: StopWatchTimerDelegate {
     func handleReset(for: StopWatchTimer) {
     }
     
-    func handleReachedZero(for: StopWatchTimer) {
+    func handleReachedZero(for: StopWatchTimer, timeString: String) {
+        
+        timeLabel.text = timeString
     }
 }
 
