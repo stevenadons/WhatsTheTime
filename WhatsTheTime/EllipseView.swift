@@ -46,11 +46,9 @@ class EllipseView: UIView {
     override func layoutSubviews() {
         
         super.layoutSubviews()
-        
-//        container.frame = bounds
-//        ellipse.frame = container.bounds
-//        ellipse.path = UIBezierPath(ovalIn: bounds).cgPath
         layoutOrAnimateSublayers()
+        
+        ellipse.fillColor = color.cgColor
     }
     
     
@@ -119,7 +117,7 @@ class EllipseView: UIView {
         // Add ellipse
         ellipse = CAShapeLayer()
         ellipse.strokeColor = UIColor.clear.cgColor
-        ellipse.fillColor = self.color.cgColor
+        ellipse.fillColor = color.cgColor
         container.addSublayer(ellipse)
     }
 }

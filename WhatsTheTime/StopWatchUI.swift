@@ -42,7 +42,7 @@ class StopWatchUI: UIButton {
         return min(self.bounds.width, self.bounds.height)
     }
     
-    private var coreSide: CGFloat {
+    var coreSide: CGFloat {
         return containerSide - 2 * progressWidth
     }
     
@@ -121,8 +121,6 @@ class StopWatchUI: UIButton {
         container.addSublayer(firstProgressBar)
         secondProgressBar = progressLayer(for: .Second)
         container.addSublayer(secondProgressBar)
-        //        progressBar = progressLayer()
-        //        container.addSublayer(progressBar)
         
         // Bring subviews to front
         for subview in subviews {

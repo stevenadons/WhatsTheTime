@@ -37,6 +37,9 @@ class MenuVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = COLOR.LightBackground
         setupViews()
+        
+        // to skip menu
+        handleNavigation(for: MenuItem.Timer)
     }
     
     

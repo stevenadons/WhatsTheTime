@@ -128,8 +128,8 @@ class TimerVC: UIViewController, Sliding {
             stopWatchViewContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stopWatchViewContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            stopWatchView.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 194)),
-            stopWatchView.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 194)),
+            stopWatchView.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 230)),
+            stopWatchView.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 230)),
             stopWatchView.centerXAnchor.constraint(equalTo: stopWatchViewContainer.centerXAnchor),
             stopWatchViewCenterYConstraint,
             

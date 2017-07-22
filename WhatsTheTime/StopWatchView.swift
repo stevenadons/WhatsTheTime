@@ -30,8 +30,10 @@ class StopWatchView: UIView {
     
     // MARK: - Properties
     
-    var stopWatchUI: StopWatchUI!
-    var timer: StopWatchTimer!
+    private var stopWatchUI: StopWatchUI!
+    private var timeLabel: StopWatchLabel!
+    private var icon: StopWatchControlIcon!
+    private var timer: StopWatchTimer!
     
     
     
@@ -56,7 +58,9 @@ class StopWatchView: UIView {
     
     override func layoutSubviews() {
         
-        stopWatchUI.frame = self.bounds
+        stopWatchUI.frame = bounds
+        icon.frame = bounds.insetBy(dx: (130 * bounds.width / 230) / 2, dy: (130 * bounds.width / 230) / 2)
+        timeLabel.frame = bounds.insetBy(dx: stopWatchUI.coreSide * 0.25, dy: stopWatchUI.coreSide * 0.35)
     }
     
     
@@ -68,9 +72,16 @@ class StopWatchView: UIView {
         self.backgroundColor = UIColor.clear
         
         stopWatchUI = StopWatchUI(delegate: self)
-        self.addSubview(stopWatchUI)
+        addSubview(stopWatchUI)
+        
+        icon = StopWatchControlIcon(icon: .Pause)
+        icon.color = COLOR.Affirmation
+        addSubview(icon)
         
         timer = StopWatchTimer(delegate: self)
+        
+        timeLabel = StopWatchLabel(timer: timer)
+        addSubview(timeLabel)
         
         for subview in subviews {
             bringSubview(toFront: subview)
