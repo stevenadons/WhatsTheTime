@@ -14,6 +14,11 @@ protocol StopWatchViewDelegate: class {
     func handleTimerStateChanged(stopWatchTimer: StopWatchTimer)
 }
 
+protocol StopWatchDelegate: class {
+    
+    func handleTimerStateChange(stopWatchTimer: StopWatchTimer)
+}
+
 
 class TimerVC: UIViewController, Sliding {
 
@@ -25,7 +30,8 @@ class TimerVC: UIViewController, Sliding {
     private var ellipseContainer: ContainerView!
     private var ellipse: EllipseView!
     private var stopWatchViewContainer: ContainerView!
-    private var stopWatchView: StopWatchView!
+//    private var stopWatchView: StopWatchView!
+    private var stopWatch: StopWatch!
     private var pitchContainer: ContainerView!
     private var pitch: UIView!
     private var game: HockeyGame!
@@ -88,9 +94,13 @@ class TimerVC: UIViewController, Sliding {
         stopWatchViewContainer.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stopWatchViewContainer)
         
-        stopWatchView = StopWatchView(delegate: self)
-        stopWatchView.translatesAutoresizingMaskIntoConstraints = false
-        stopWatchViewContainer.addSubview(stopWatchView)
+//        stopWatchView = StopWatchView(delegate: self)
+//        stopWatchView.translatesAutoresizingMaskIntoConstraints = false
+//        stopWatchViewContainer.addSubview(stopWatchView)
+        
+        stopWatch = StopWatch(delegate: self)
+        stopWatch.translatesAutoresizingMaskIntoConstraints = false
+        stopWatchViewContainer.addSubview(stopWatch)
         
         pitchContainer = ContainerView()
         pitchContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -105,7 +115,7 @@ class TimerVC: UIViewController, Sliding {
         
         // Add constraints
         
-        stopWatchViewCenterYConstraint = NSLayoutConstraint(item: stopWatchView, attribute: .centerY, relatedBy: .equal, toItem: stopWatchViewContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 207) + initialObjectYOffset)
+        stopWatchViewCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchViewContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 207) + initialObjectYOffset)
         pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 429) + initialObjectYOffset)
         ellipseTopConstraint = NSLayoutConstraint(item: ellipse, attribute: .top, relatedBy: .equal, toItem: ellipseContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 60) - CoordinateScalor.convert(y: 120))
         ellipseBottomConstraint = NSLayoutConstraint(item: ellipse, attribute: .bottom, relatedBy: .equal, toItem: ellipseContainer, attribute: .bottom, multiplier: 1, constant: CoordinateScalor.convert(y: -100) + CoordinateScalor.convert(y: 150))
@@ -138,9 +148,9 @@ class TimerVC: UIViewController, Sliding {
             stopWatchViewContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stopWatchViewContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            stopWatchView.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 230)),
-            stopWatchView.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 230)),
-            stopWatchView.centerXAnchor.constraint(equalTo: stopWatchViewContainer.centerXAnchor),
+            stopWatch.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 230)),
+            stopWatch.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 230)),
+            stopWatch.centerXAnchor.constraint(equalTo: stopWatchViewContainer.centerXAnchor),
             stopWatchViewCenterYConstraint,
             
             pitchContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
@@ -193,6 +203,26 @@ extension TimerVC: StopWatchViewDelegate {
     
     func handleTimerStateChanged(stopWatchTimer: StopWatchTimer) {
     
+        print("tapped")
+        
+        switch stopWatchTimer.state {
+        case .WaitingToStart:
+            print("waitingtostart")
+        case .Running:
+            print("running")
+        case .Paused:
+            print("paused")
+        case .Ended:
+            print("ended")
+        }
+    }
+}
+
+
+extension TimerVC: StopWatchDelegate {
+    
+    func handleTimerStateChange(stopWatchTimer: StopWatchTimer) {
+        
         print("tapped")
         
         switch stopWatchTimer.state {
