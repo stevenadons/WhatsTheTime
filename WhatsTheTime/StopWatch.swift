@@ -115,7 +115,9 @@ class StopWatch: UIControl {
         secondProgressBar.strokeEnd = (self.half == .First) ? strokeEndPosition(progress: 0) : strokeEndPosition(progress: timer.progress)
         squareContainer.addSublayer(secondProgressBar)
         
+        print("self frame is \(frame)")
         icon.frame = bounds.insetBy(dx: (130 * bounds.width / 230) / 2, dy: (130 * bounds.height / 230) / 2)
+        print("icon frame is \(icon.frame)")
         timeLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.35)
         
         NSLayoutConstraint.activate([
@@ -302,7 +304,7 @@ extension StopWatch: StopWatchTimerDelegate {
     
     func handleTick(for: StopWatchTimer, timeString: String) {
         timeLabel.text = timeString
-        setNeedsLayout()
+        timeLabel.setNeedsDisplay()
     }
     
     func handlePause(for: StopWatchTimer) {
@@ -310,7 +312,7 @@ extension StopWatch: StopWatchTimerDelegate {
     
     func handleStop(for: StopWatchTimer, timeString: String) {
         timeLabel.text = timeString
-        setNeedsLayout()
+        timeLabel.setNeedsDisplay()
     }
     
     func handleReset(for: StopWatchTimer) {
@@ -318,7 +320,7 @@ extension StopWatch: StopWatchTimerDelegate {
     
     func handleReachedZero(for: StopWatchTimer, timeString: String) {
         timeLabel.text = timeString
+        timeLabel.setNeedsDisplay()
         icon.change(to: .StopIcon)
-        setNeedsLayout()
     }
 }
