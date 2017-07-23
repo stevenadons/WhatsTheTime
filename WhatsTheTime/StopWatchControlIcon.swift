@@ -40,6 +40,8 @@ class StopWatchControlIcon: UIView {
     private var container: CALayer!
     private var shape: CAShapeLayer!
     private var path: UIBezierPath!
+    private var timer: Timer?
+    private var isBeating: Bool = false
 
     
     // MARK: - Initializers
@@ -110,6 +112,12 @@ class StopWatchControlIcon: UIView {
         CATransaction.commit()
     }
     
+    override func draw(_ rect: CGRect) {
+        
+        super.draw(rect)
+        shape.path = path(for: icon).cgPath
+        shape.setNeedsDisplay()
+    }
     
     func change(to newIcon: StopWatchControlIcon.Icon) {
         
@@ -125,14 +133,6 @@ class StopWatchControlIcon: UIView {
                 print("finished")
             }
         }
-    }
-    
-    
-    override func draw(_ rect: CGRect) {
-        
-        super.draw(rect)
-        shape.path = path(for: icon).cgPath
-        shape.setNeedsDisplay()
     }
     
     
@@ -193,8 +193,46 @@ class StopWatchControlIcon: UIView {
         
         return path
     }
-
     
+    
+    
+    // MARK: - Animation methods
+    
+    func startBeating() {
+        
+        guard !isBeating else { return }
+        if timer == nil {
+            timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { (timer) in
+                self.beat()
+            }
+        }
+        isBeating = true
+    }
+    
+    func stopBeating() {
+        
+        guard isBeating else { return }
+        if timer != nil {
+            timer!.invalidate()
+            timer = nil
+        }
+        isBeating = false
+    }
+    
+    private func beat() {
+        
+        let duration = 0.2
+        let scale: CGFloat = 0.90
+        
+        UIView.animate(withDuration: duration, delay: 0.0, animations: {
+            self.transform = CGAffineTransform(scaleX: scale, y: scale)
+        })  { (finished) in
+            UIView.animate(withDuration: duration, delay: 0.0, animations: {
+                self.transform = .identity
+            })
+        }
+    }
+     
     
     
     // MARK: - Math methods

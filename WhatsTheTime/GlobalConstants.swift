@@ -57,6 +57,7 @@ enum FONTNAME {
 
 // Localized strings
 
+let LS_NEWGAME = NSLocalizedString("NEW GAME", comment: "Overdue message")
 let LS_MINUTE = NSLocalizedString("MINUTE", comment: "Overdue message")
 let LS_SECOND = NSLocalizedString("SECOND", comment: "Overdue message")
 let LS_MINUTES = NSLocalizedString("MINUTES", comment: "Overdue message")
@@ -65,7 +66,8 @@ let LS_OVERDUE_MESSAGE_BEGINS = NSLocalizedString("OVER TIME  -  ", comment: "Ov
 let LS_OVERTIME = NSLocalizedString("OVER TIME", comment: "Half time message")
 let LS_HALFTIME = NSLocalizedString("HALF TIME", comment: "Half time message")
 let LS_FULLTIME = NSLocalizedString("FULL TIME", comment: "Full time message")
-
+let LS_FIRSTHALFLABEL = NSLocalizedString("First", comment: "Half time indication label")
+let LS_SECONDHALFLABEL = NSLocalizedString("Second", comment: "Half time indication label")
 
 
 

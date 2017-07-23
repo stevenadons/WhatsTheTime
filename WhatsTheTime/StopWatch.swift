@@ -45,6 +45,7 @@ class StopWatch: UIControl {
     private var core: CALayer!
     fileprivate var firstProgressBar: CAShapeLayer!
     fileprivate var secondProgressBar: CAShapeLayer!
+    private var halfLabel: UILabel!
     private var durationLabel: UILabel!
     
     private let progressBarWidth: CGFloat = 18
@@ -82,6 +83,7 @@ class StopWatch: UIControl {
         timer.set(duration: game.duration)
         timeLabel.text = stopWatchLabelTimeString()
         durationLabel.text = "2x\(game.duration.rawValue)min"
+        halfLabel.text = LS_FIRSTHALFLABEL
         setNeedsLayout()
     }
     
@@ -109,7 +111,12 @@ class StopWatch: UIControl {
             durationLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 80/230),
             durationLabel.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 20/230),
             durationLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            durationLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: CoordinateScalor.convert(height: -30)),
+            durationLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: CoordinateScalor.convert(height: -40)),
+            
+            halfLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 80/230),
+            halfLabel.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 20/230),
+            halfLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            halfLabel.topAnchor.constraint(equalTo: durationLabel.topAnchor, constant: durationLabel.font.pointSize),
             
             ])
     }
@@ -159,6 +166,7 @@ class StopWatch: UIControl {
     func reset() {
         
         timer.reset()
+        halfLabel.alpha = 1.0
         updateProgressBars()
         resetTimeLabel(withColor: COLOR.Theme)
         setProgressBarsColor(to: COLOR.Theme)
@@ -209,16 +217,12 @@ class StopWatch: UIControl {
         // Add labels
         timeLabel = StopWatchLabel(text: stopWatchLabelTimeString())
         addSubview(timeLabel)
-        durationLabel = UILabel()
-        durationLabel.translatesAutoresizingMaskIntoConstraints = false
-        durationLabel.isUserInteractionEnabled = false
-        durationLabel.backgroundColor = UIColor.clear
-        durationLabel.textColor = COLOR.Theme
-        durationLabel.text = ""
-        durationLabel.textAlignment = .center
-        durationLabel.adjustsFontSizeToFitWidth = true
-        durationLabel.font = UIFont(name: FONTNAME.ThemeRegular, size: 12)
+        durationLabel = StopWatchSmallLabel()
         addSubview(durationLabel)
+        halfLabel = StopWatchSmallLabel()
+        halfLabel.font = UIFont(name: FONTNAME.ThemeBold, size: durationLabel.font.pointSize)
+        addSubview(halfLabel)
+        
         
         // Bring subviews to front
         for subview in subviews {
@@ -350,11 +354,14 @@ class StopWatch: UIControl {
             timer.startCountDown()
             game.status = .Running
             icon.change(to: .PauseIcon)
-            
+            icon.stopBeating()
+            delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: nil)
+
         case .PauseIcon:
             timer.pause()
             game.status = .Pausing
             icon.change(to: .PlayIcon)
+            icon.startBeating()
             
         case .StopIcon:
             if game.status == .Running {
@@ -370,7 +377,8 @@ class StopWatch: UIControl {
                     game.status = .Finished
                     resetTimeLabel(withColor: COLOR.Theme)
                     setProgressBarsColor(to: UIColor.clear)
-                    icon.icon = .NoIcon
+                    halfLabel.alpha = 0.0
+                    icon.change(to: .NoIcon)
                     delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: nil)
                 }
                 
@@ -378,6 +386,7 @@ class StopWatch: UIControl {
                 // Half time counter stopped
                 timer.stopCountUp()
                 game.half = .Second
+                halfLabel.text = LS_SECONDHALFLABEL
                 timer.reset()
                 resetTimeLabel(withColor: COLOR.Theme)
                 setProgressBarsColor(to: COLOR.Theme)

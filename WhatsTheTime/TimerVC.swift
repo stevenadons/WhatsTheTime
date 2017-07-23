@@ -52,6 +52,8 @@ class TimerVC: UIViewController, Sliding {
     
     private let initialObjectYOffset: CGFloat = UIScreen.main.bounds.height
     
+    fileprivate var ellipseUp: Bool = true
+    
     
     
     // MARK: - Public Methods
@@ -90,6 +92,7 @@ class TimerVC: UIViewController, Sliding {
         
         messageContainer = ContainerView()
         messageContainer.translatesAutoresizingMaskIntoConstraints = false
+        messageContainer.backgroundColor = COLOR.DarkBackground
         view.addSubview(messageContainer)
         
         messageLabel = UILabel()
@@ -97,6 +100,7 @@ class TimerVC: UIViewController, Sliding {
         messageLabel.isUserInteractionEnabled = false
         messageLabel.backgroundColor = UIColor.clear
         messageLabel.textColor = COLOR.White
+        message = LS_NEWGAME
         messageLabel.text = message
         messageLabel.textAlignment = .center
         messageLabel.adjustsFontSizeToFitWidth = true
@@ -159,7 +163,7 @@ class TimerVC: UIViewController, Sliding {
             messageLabel.leadingAnchor.constraint(equalTo: messageContainer.leadingAnchor, constant: 8),
             messageLabel.trailingAnchor.constraint(equalTo: messageContainer.trailingAnchor, constant: -8),
             messageLabel.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 24)),
-            messageLabel.bottomAnchor.constraint(equalTo: messageContainer.bottomAnchor, constant: -50 - CoordinateScalor.convert(height: 25)),
+            messageLabel.bottomAnchor.constraint(equalTo: messageContainer.bottomAnchor, constant: -50 - CoordinateScalor.convert(height: 30)),
             
             ellipseContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
             ellipseContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
@@ -210,10 +214,10 @@ class TimerVC: UIViewController, Sliding {
         })
         
         ellipseTopConstraint.constant = CoordinateScalor.convert(y: 60)
-        ellipseBottomConstraint.constant = CoordinateScalor.convert(y: -100)
+        ellipseBottomConstraint.constant = CoordinateScalor.convert(y: -100 - 24)
         UIView.animate(withDuration: 4, delay: 1, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.ellipseContainer.layoutIfNeeded()
-        })
+        }, completion: nil)
     }
     
     fileprivate func animateEllipse(up: Bool, color: UIColor?, completion: (() -> Void)?) {
@@ -223,6 +227,7 @@ class TimerVC: UIViewController, Sliding {
             self.ellipseContainer.layoutIfNeeded()
             self.messageContainer.backgroundColor = (up && color != nil) ? color : UIColor.clear
         }) { (finished) in
+            self.ellipseUp = up
             completion?()
         }
     }
@@ -250,6 +255,10 @@ extension TimerVC: StopWatchDelegate {
                 completionHandler?()
             })
         case .RunningCountDown:
+            if ellipseUp {
+                message = ""
+                animateEllipse(up: false, color: nil, completion: nil)
+            }
             completionHandler?()
         case .RunningCountUp:
             message = LS_HALFTIME
