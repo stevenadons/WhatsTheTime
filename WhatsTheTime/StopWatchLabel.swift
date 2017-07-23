@@ -16,7 +16,6 @@ class StopWatchLabel: UIView {
     
     
     
-    
     // MARK: - Properties
     
     var text: String = "" {
@@ -24,9 +23,14 @@ class StopWatchLabel: UIView {
             setNeedsLayout()
         }
     }
+    var textColor: UIColor = COLOR.Theme {
+        didSet {
+            label.textColor = textColor
+            setNeedsDisplay()
+        }
+    }
     
     private var label: UILabel!
-    private var timer: StopWatchTimer?
     
     
     
@@ -39,19 +43,16 @@ class StopWatchLabel: UIView {
         setup()
     }
     
-    
     required init?(coder aDecoder: NSCoder) {
         
         super.init(coder: aDecoder)
         setup()
     }
     
-    
-    convenience init(timer: StopWatchTimer) {
+    convenience init(text: String) {
         
         self.init()
-        self.timer = timer
-        self.text = timer.timeString(totalSeconds: timer.totalSecondsToGo)
+        self.text = text
     }
     
     
@@ -80,36 +81,31 @@ class StopWatchLabel: UIView {
         
         // Set constraints
         NSLayoutConstraint.activate([
-            
             label.centerXAnchor.constraint(equalTo: centerXAnchor),
             label.centerYAnchor.constraint(equalTo: centerYAnchor),
             label.heightAnchor.constraint(equalTo: heightAnchor),
             label.widthAnchor.constraint(equalTo: widthAnchor),
-            
             ])
     }
-    
     
     private func label(text: String, alignment: NSTextAlignment) -> UILabel {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = UIColor.clear
-        label.textColor = COLOR.Theme
+        label.textColor = textColor
         label.text = text
         label.textAlignment = alignment
         label.adjustsFontSizeToFitWidth = true
         label.baselineAdjustment = .alignCenters
-        label.font = UIFont(name: FONTNAME.MenuButton, size: 48)
+        label.font = UIFont(name: FONTNAME.ThemeBold, size: 48)
         return label
     }
     
     
     
-    
     // MARK: - Math methods
     
-   
 
     
 }

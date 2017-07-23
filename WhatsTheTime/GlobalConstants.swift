@@ -33,7 +33,7 @@ enum COLOR {
 //    static let IntermediateText = UIColor.init(hexString: "#999999")
 //    
     static let Affirmation = UIColor.init(hexString: "#F4AB23") // Orange yellow // Colour to show success, something right for user. "#00ff66""
-//    static let Negation = UIColor.init(hexString: "#ff3300")                  // Colour to show error, some danger zones for user.
+    static let Negation = UIColor.init(hexString: "#980822")                  // Colour to show error, some danger zones for user. ff3300
     
     // Custom colors
     static let MenuCircleBigOutside = UIColor(hexString: "#4C54A6")
@@ -49,8 +49,25 @@ enum COLOR {
 
 enum FONTNAME {
     
-    static let MenuButton = "HelveticaNeue-Bold"
-    static let DurationLabel = "HelveticaNeue"
+    static let ThemeBold = "HelveticaNeue-Bold"
+    static let ThemeRegular = "HelveticaNeue"
 }
+
+
+
+// Localized strings
+
+let LS_MINUTE = NSLocalizedString("MINUTE", comment: "Overdue message")
+let LS_SECOND = NSLocalizedString("SECOND", comment: "Overdue message")
+let LS_MINUTES = NSLocalizedString("MINUTES", comment: "Overdue message")
+let LS_SECONDS = NSLocalizedString("SECONDS", comment: "Overdue message")
+let LS_OVERDUE_MESSAGE_BEGINS = NSLocalizedString("OVER TIME  -  ", comment: "Overdue message")
+let LS_OVERTIME = NSLocalizedString("OVER TIME", comment: "Half time message")
+let LS_HALFTIME = NSLocalizedString("HALF TIME", comment: "Half time message")
+let LS_FULLTIME = NSLocalizedString("FULL TIME", comment: "Full time message")
+
+
+
+
 
 

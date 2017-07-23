@@ -11,11 +11,10 @@ import UIKit
 
 protocol StopWatchTimerDelegate: class {
     
-    func handleTick(for: StopWatchTimer, timeString: String)
-    func handlePause(for: StopWatchTimer)
-    func handleStop(for: StopWatchTimer, timeString: String)
-    func handleReset(for: StopWatchTimer)
-    func handleReachedZero(for: StopWatchTimer, timeString: String)
+    func handleTickCountDown(overdue: Bool)
+    func handleTickCountUp()
+    func handleTimerReset()
+    func handleReachedZero()
 }
 
 
@@ -24,22 +23,16 @@ class StopWatch: UIControl {
     
     // MARK: - Helper Classes
     
-    enum Mode {
-        
-        case CountingDown
-        case CountingUp
-    }
-    
     
     // MARK: - Properties
     
+    var game: HockeyGame!
+
     fileprivate var delegate: StopWatchDelegate!
     fileprivate var timer: StopWatchTimer!
     fileprivate var icon: StopWatchControlIcon!
     fileprivate var timeLabel: StopWatchLabel!
-    
-    private var mode: Mode = .CountingDown
-    private var game: HockeyGame! 
+
     private var half: Half {
         return game.half
     }
@@ -50,8 +43,8 @@ class StopWatch: UIControl {
     private var squareContainer: CALayer!
     private var progressZone: CAShapeLayer!
     private var core: CALayer!
-    private var firstProgressBar: CAShapeLayer!
-    private var secondProgressBar: CAShapeLayer!
+    fileprivate var firstProgressBar: CAShapeLayer!
+    fileprivate var secondProgressBar: CAShapeLayer!
     private var durationLabel: UILabel!
     
     private let progressBarWidth: CGFloat = 18
@@ -87,8 +80,9 @@ class StopWatch: UIControl {
         self.delegate = delegate
         self.game = game
         timer.set(duration: game.duration)
-        timeLabel.text = timer.timeString(totalSeconds: timer.totalSecondsToGo)
+        timeLabel.text = stopWatchLabelTimeString()
         durationLabel.text = "2x\(game.duration.rawValue)min"
+        setNeedsLayout()
     }
     
     
@@ -105,19 +99,9 @@ class StopWatch: UIControl {
         core.frame = squareContainer.bounds.insetBy(dx: progressBarWidth, dy: progressBarWidth)
         core.cornerRadius = core.bounds.width / 2
         
-        firstProgressBar.removeFromSuperlayer()
-        firstProgressBar = progressBarLayer(for: .First)
-        firstProgressBar.strokeEnd = (self.half == .Second) ? strokeEndPosition(progress: 1) : strokeEndPosition(progress: timer.progress)
-        squareContainer.addSublayer(firstProgressBar)
+        updateProgressBars()
         
-        secondProgressBar.removeFromSuperlayer()
-        secondProgressBar = progressBarLayer(for: .Second)
-        secondProgressBar.strokeEnd = (self.half == .First) ? strokeEndPosition(progress: 0) : strokeEndPosition(progress: timer.progress)
-        squareContainer.addSublayer(secondProgressBar)
-        
-        print("self frame is \(frame)")
         icon.frame = bounds.insetBy(dx: (130 * bounds.width / 230) / 2, dy: (130 * bounds.height / 230) / 2)
-        print("icon frame is \(icon.frame)")
         timeLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.35)
         
         NSLayoutConstraint.activate([
@@ -128,6 +112,57 @@ class StopWatch: UIControl {
             durationLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: CoordinateScalor.convert(height: -30)),
             
             ])
+    }
+    
+    func stopWatchLabelTimeString() -> String {
+        
+        var result: String = ""
+        let total = (timer.state == .RunningCountUp) ? timer.totalSecondsCountingUp : timer.totalSecondsToGo
+        
+        if minutes(totalSeconds: total) < 10 {
+            result.append("0")
+        }
+        result.append("\(minutes(totalSeconds: total)):")
+        if seconds(totalSeconds: total) < 10 {
+            result.append("0")
+        }
+        result.append("\(seconds(totalSeconds: total))")
+        
+        return result
+    }
+    
+    func messageLabelTimeString() -> String {
+        
+        var result: String = ""
+        let total = timer.totalSecondsOverdue
+        
+        if minutes(totalSeconds: total) > 0 {
+            result.append("\(minutes(totalSeconds: total)) ")
+            if minutes(totalSeconds: total) == 1 {
+                result.append(LS_MINUTE.appending(" "))
+            } else {
+                result.append(LS_MINUTES.appending(" "))
+            }
+        }
+        if seconds(totalSeconds: total) > 0 {
+            result.append("\(seconds(totalSeconds: total)) ")
+        }
+        if seconds(totalSeconds: total) == 1 {
+            result.append(LS_SECOND)
+        } else {
+            result.append(LS_SECONDS)
+        }
+        
+        return result
+    }
+    
+    func reset() {
+        
+        timer.reset()
+        updateProgressBars()
+        resetTimeLabel(withColor: COLOR.Theme)
+        setProgressBarsColor(to: COLOR.Theme)
+        icon.icon = .PlayIcon
     }
     
     
@@ -172,7 +207,7 @@ class StopWatch: UIControl {
         timer = StopWatchTimer(delegate: self, duration: duration)
         
         // Add labels
-        timeLabel = StopWatchLabel(timer: timer)
+        timeLabel = StopWatchLabel(text: stopWatchLabelTimeString())
         addSubview(timeLabel)
         durationLabel = UILabel()
         durationLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -182,13 +217,26 @@ class StopWatch: UIControl {
         durationLabel.text = ""
         durationLabel.textAlignment = .center
         durationLabel.adjustsFontSizeToFitWidth = true
-        durationLabel.font = UIFont(name: FONTNAME.DurationLabel, size: 12)
+        durationLabel.font = UIFont(name: FONTNAME.ThemeRegular, size: 12)
         addSubview(durationLabel)
         
         // Bring subviews to front
         for subview in subviews {
             bringSubview(toFront: subview)
         }
+    }
+    
+    fileprivate func updateProgressBars() {
+        
+        firstProgressBar.removeFromSuperlayer()
+        firstProgressBar = progressBarLayer(for: .First)
+        firstProgressBar.strokeEnd = (self.half == .Second) ? strokeEndPosition(progress: 1) : strokeEndPosition(progress: timer.progress)
+        squareContainer.addSublayer(firstProgressBar)
+        
+        secondProgressBar.removeFromSuperlayer()
+        secondProgressBar = progressBarLayer(for: .Second)
+        secondProgressBar.strokeEnd = (self.half == .First) ? strokeEndPosition(progress: 0) : strokeEndPosition(progress: timer.progress)
+        squareContainer.addSublayer(secondProgressBar)
     }
     
     
@@ -211,7 +259,6 @@ class StopWatch: UIControl {
         return shape
     }
     
-    
     private func progressBarPath(for half: Half) -> UIBezierPath {
         
         let path = UIBezierPath()
@@ -227,11 +274,24 @@ class StopWatch: UIControl {
         return path
     }
     
-    
     private func strokeEndPosition(progress: CGFloat) -> CGFloat {
         
         let strokeField = 1.0 - progressBarStrokeInsetRatio * 2
         return progressBarStrokeInsetRatio + strokeField * progress
+    }
+    
+    
+    
+    // MARK: - Helper methods
+
+    private func seconds(totalSeconds: Int) -> Int {
+        
+        return totalSeconds % 60
+    }
+    
+    private func minutes(totalSeconds: Int) -> Int {
+        
+        return totalSeconds / 60
     }
     
     
@@ -285,42 +345,102 @@ class StopWatch: UIControl {
     private func handleTap() {
         
         switch icon.icon {
+            
         case .PlayIcon:
-            timer.start()
+            timer.startCountDown()
+            game.status = .Running
             icon.change(to: .PauseIcon)
+            
         case .PauseIcon:
             timer.pause()
+            game.status = .Pausing
             icon.change(to: .PlayIcon)
+            
         case .StopIcon:
-            timer.stop()
-            icon.change(to: .PlayIcon)
+            if game.status == .Running {
+                // Game still running (in overtime)
+                timer.stopCountDown()
+                if game.half == .First {
+                    game.status = .HalfTime
+                    timer.startCountUp()
+                    resetTimeLabel(withColor: COLOR.Theme)
+                    setProgressBarsColor(to: COLOR.Theme)
+                    delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: nil)
+                } else {
+                    game.status = .Finished
+                    resetTimeLabel(withColor: COLOR.Theme)
+                    setProgressBarsColor(to: UIColor.clear)
+                    icon.icon = .NoIcon
+                    delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: nil)
+                }
+                
+            } else if game.status == .HalfTime {
+                // Half time counter stopped
+                timer.stopCountUp()
+                game.half = .Second
+                timer.reset()
+                resetTimeLabel(withColor: COLOR.Theme)
+                setProgressBarsColor(to: COLOR.Theme)
+                delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: {
+                    self.icon.change(to: .PlayIcon)
+                })
+            }
+            
+        case .NoIcon:
+            print("no icon")
+            delegate?.handleNewGame()
         }
     }
     
+    fileprivate func resetTimeLabel(withColor color: UIColor) {
+        
+        timeLabel.textColor = color
+        timeLabel.text = stopWatchLabelTimeString()
+        timeLabel.setNeedsDisplay()
+    }
+    
+    fileprivate func setProgressBarsColor(to newColor: UIColor) {
+        
+        firstProgressBar.strokeColor = newColor.cgColor
+        firstProgressBar.setNeedsDisplay()
+        secondProgressBar.strokeColor = newColor.cgColor
+        secondProgressBar.setNeedsDisplay()
+    }
 }
 
 
 extension StopWatch: StopWatchTimerDelegate {
     
-    func handleTick(for: StopWatchTimer, timeString: String) {
-        timeLabel.text = timeString
+    func handleTickCountDown(overdue: Bool) {
+        if overdue {
+            delegate?.handleTickOverdue()
+        } else {
+            timeLabel.text = stopWatchLabelTimeString()
+            timeLabel.setNeedsDisplay()
+            updateProgressBars()
+        }
+    }
+    
+    func handleTickCountUp() {
+        
+        timeLabel.text = stopWatchLabelTimeString()
+        timeLabel.setNeedsDisplay()
+    }
+
+    
+    func handleTimerReset() {
+        
+        timer.set(duration: game.duration)
+        timeLabel.text = stopWatchLabelTimeString()
         timeLabel.setNeedsDisplay()
     }
     
-    func handlePause(for: StopWatchTimer) {
-    }
-    
-    func handleStop(for: StopWatchTimer, timeString: String) {
-        timeLabel.text = timeString
-        timeLabel.setNeedsDisplay()
-    }
-    
-    func handleReset(for: StopWatchTimer) {
-    }
-    
-    func handleReachedZero(for: StopWatchTimer, timeString: String) {
-        timeLabel.text = timeString
-        timeLabel.setNeedsDisplay()
+    func handleReachedZero() {
+        
+        updateProgressBars()
+        resetTimeLabel(withColor: COLOR.Negation)
+        setProgressBarsColor(to: COLOR.Negation)
         icon.change(to: .StopIcon)
+        delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: nil)
     }
 }

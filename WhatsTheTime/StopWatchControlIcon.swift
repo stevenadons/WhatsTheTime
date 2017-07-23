@@ -18,6 +18,7 @@ class StopWatchControlIcon: UIView {
         case PlayIcon
         case PauseIcon
         case StopIcon
+        case NoIcon
     }
     
     
@@ -86,21 +87,17 @@ class StopWatchControlIcon: UIView {
             // Self is animating
             CATransaction.setAnimationDuration(animation.duration)
             CATransaction.setAnimationTimingFunction(animation.timingFunction)
-            
         } else {
             // Self is not animating
             CATransaction.disableActions()
         }
         
         if container.superlayer == layer {
-            
             // Properties to change when layout occurs - will animate or not
             container.frame = bounds
-            
         }
         
         if shape.superlayer == container {
-            
             // Properties to change when layout occurs - will animate or not
             shape.frame = bounds
             
@@ -121,7 +118,7 @@ class StopWatchControlIcon: UIView {
             self.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         }) { (finished) in
             self.icon = newIcon
-            UIView.animate(withDuration: 0.2, delay: 1, options: [.curveEaseOut], animations: {
+            UIView.animate(withDuration: 0.2, delay: 0.2, options: [.curveEaseOut], animations: {
                 self.alpha = 1.0
                 self.transform = CGAffineTransform.identity
             }) { (finished) in
@@ -190,6 +187,8 @@ class StopWatchControlIcon: UIView {
             path.addLine(to: CGPoint(x: bounds.width, y: bounds.height))
             path.addLine(to: CGPoint(x: 0, y: bounds.height))
             path.close()
+        case .NoIcon:
+            print("No Icon")
         }
         
         return path

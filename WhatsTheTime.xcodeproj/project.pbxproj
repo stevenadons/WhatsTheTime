@@ -32,6 +32,7 @@
 		4FB13FFE1F195EC40025088A /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB13FFD1F195EC40025088A /* GlobalConstants.swift */; };
 		4FB140001F19661F0025088A /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB13FFF1F19661F0025088A /* DismissButton.swift */; };
 		4FB140021F1966300025088A /* DismissButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FB140011F1966300025088A /* DismissButton.xib */; };
+		4FB25CB31F24D9B4008B3154 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4FB25CB21F24D9B4008B3154 /* Localizable.strings */; };
 		4FB88DE11F2248A400DDB034 /* HockeyGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE01F2248A400DDB034 /* HockeyGame.swift */; };
 		4FB88DE31F229F7F00DDB034 /* StopWatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */; };
 		4FF9D46F1F210A8F00CA687C /* EllipseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9D46E1F210A8F00CA687C /* EllipseView.swift */; };
@@ -68,6 +69,7 @@
 		4FB13FFD1F195EC40025088A /* GlobalConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		4FB13FFF1F19661F0025088A /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
 		4FB140011F1966300025088A /* DismissButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DismissButton.xib; sourceTree = "<group>"; };
+		4FB25CB21F24D9B4008B3154 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		4FB88DE01F2248A400DDB034 /* HockeyGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HockeyGame.swift; sourceTree = "<group>"; };
 		4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchTimer.swift; sourceTree = "<group>"; };
 		4FF9D46E1F210A8F00CA687C /* EllipseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EllipseView.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 			children = (
 				4FB13FFA1F195AA20025088A /* Fonts */,
 				4FB13FFD1F195EC40025088A /* GlobalConstants.swift */,
+				4FB25CB21F24D9B4008B3154 /* Localizable.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 				4F0C9BBC1F17BF9A00956C53 /* Assets.xcassets in Resources */,
 				4FB13FF91F1959560025088A /* Logo.xib in Resources */,
 				4FB13FFC1F195AAE0025088A /* agdollar.ttf in Resources */,
+				4FB25CB31F24D9B4008B3154 /* Localizable.strings in Resources */,
 				4FB140021F1966300025088A /* DismissButton.xib in Resources */,
 				4F0C9BBA1F17BF9A00956C53 /* Main.storyboard in Resources */,
 			);

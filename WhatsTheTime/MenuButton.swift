@@ -92,7 +92,7 @@ class MenuButton: UIButton {
         
         setTitle(text, for: .normal)
         setTitleColor(COLOR.Theme, for: .normal)
-        titleLabel?.font = UIFont(name: FONTNAME.MenuButton, size: 12)
+        titleLabel?.font = UIFont(name: FONTNAME.ThemeBold, size: 12)
     }
     
 

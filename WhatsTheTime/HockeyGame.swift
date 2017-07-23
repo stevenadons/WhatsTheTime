@@ -36,7 +36,8 @@ class HockeyGame {
         case WaitingToStart
         case Running
         case Pausing
-        case Ended
+        case HalfTime
+        case Finished
     }
     
     

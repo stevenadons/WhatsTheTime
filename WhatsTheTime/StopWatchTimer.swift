@@ -17,7 +17,8 @@ class StopWatchTimer {
     enum State {
         
         case WaitingToStart
-        case Running
+        case RunningCountDown
+        case RunningCountUp
         case Paused
         case Overdue
         case Ended
@@ -36,7 +37,8 @@ class StopWatchTimer {
     
     private var totalSecondsInHalf: Int = MinutesInHalf.Twenty.rawValue
     var totalSecondsToGo: Int = MinutesInHalf.Twenty.rawValue
-    private var totalSecondsOverdue: Int = 0
+    var totalSecondsOverdue: Int = 0
+    var totalSecondsCountingUp: Int = 0
     
     
     
@@ -55,97 +57,90 @@ class StopWatchTimer {
     
     func set(duration: MinutesInHalf) {
         
-        totalSecondsInHalf = duration.rawValue * 60
-        
-        
-        
+//        totalSecondsInHalf = duration.rawValue * 60
 //        totalSecondsToGo = duration.rawValue * 60
+        
+        totalSecondsInHalf = 5
         totalSecondsToGo = 5
 
     }
     
-    func start() {
+    func startCountDown() {
         
         guard state == .WaitingToStart || state == .Paused else { return }
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(tick), userInfo: nil, repeats: true)
-        state = .Running
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(tickCountDown), userInfo: nil, repeats: true)
+        state = .RunningCountDown
+    }
+    
+    func startCountUp() {
+        
+        guard state == .Ended else { return }
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(tickCountUp), userInfo: nil, repeats: true)
+        state = .RunningCountUp
     }
     
     func pause() {
         
-        guard state == .Running else { return }
+        guard state == .RunningCountDown || state == .RunningCountUp else { return }
         timer.invalidate()
-        delegate.handlePause(for: self)
         state = .Paused
     }
     
-    func stop() {
+    func stopCountDown() {
         
-        guard state == .Overdue else { return }
+        guard state == .Overdue || state == .RunningCountDown else { return }
         timer.invalidate()
         totalSecondsOverdue = 0
-        delegate.handleStop(for: self, timeString: timeString(totalSeconds: 0))
-        state = .WaitingToStart
+        state = .Ended
+    }
+    
+    func stopCountUp() {
+        
+        guard state == .RunningCountUp else { return }
+        timer.invalidate()
+        totalSecondsCountingUp = 0
+        state = .Ended
     }
     
     func reset() {
         
         guard state != .WaitingToStart else { return }
         timer.invalidate()
-        delegate.handleReset(for: self)
         totalSecondsToGo = totalSecondsInHalf
+        delegate.handleTimerReset()
         state = .WaitingToStart
     }
     
-    func timeString(totalSeconds: Int) -> String {
-        
-        var timeString: String = ""
-        if minutes(totalSeconds: totalSeconds) < 10 {
-            timeString.append("0")
-        }
-        timeString.append("\(minutes(totalSeconds: totalSeconds)):")
-        if seconds(totalSeconds: totalSeconds) < 10 {
-            timeString.append("0")
-        }
-        timeString.append("\(seconds(totalSeconds: totalSeconds))")
-        return timeString
-    }
     
     
     // MARK: - Private Methods
 
-    @objc private func tick() {
+    @objc private func tickCountDown() {
         
         if totalSecondsToGo >= 1 {
             // Count down
-            print("ticking with timestring \(timeString(totalSeconds: totalSecondsToGo))")
             totalSecondsToGo -= 1
             if totalSecondsToGo < 1 {
                 // Reached zero
-                delegate.handleReachedZero(for: self, timeString: timeString(totalSeconds: totalSecondsToGo))
                 state = .Overdue
+                delegate.handleReachedZero()
             } else {
-                // Keep on counting
-                delegate.handleTick(for: self, timeString: timeString(totalSeconds: totalSecondsToGo))
+                // Keep on counting down
+                delegate.handleTickCountDown(overdue: false)
             }
         } else {
-            // Count up
-            print("ticking overude with timestring \(timeString(totalSeconds: totalSecondsOverdue))")
+            // Overdue - count up
             totalSecondsOverdue += 1
-            delegate.handleTick(for: self, timeString: timeString(totalSeconds: totalSecondsOverdue))
+            delegate.handleTickCountDown(overdue: true)
         }
-        
     }
     
-    private func seconds(totalSeconds: Int) -> Int {
+    @objc private func tickCountUp() {
         
-        return totalSeconds % 60
+        totalSecondsCountingUp += 1
+        delegate.handleTickCountUp()
     }
-    
-    private func minutes(totalSeconds: Int) -> Int {
-        
-        return totalSeconds / 60
-    }
+
 
     
 }
