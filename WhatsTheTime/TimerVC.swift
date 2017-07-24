@@ -40,15 +40,16 @@ class TimerVC: UIViewController, Sliding {
     fileprivate var stopWatch: StopWatch!
     private var pitchContainer: ContainerView!
     private var pitch: UIView!
-    private var messageContainer: ContainerView!
+    private var messageBackground: ContainerView!
     fileprivate var messageLabel: UILabel!
     
     fileprivate var game: HockeyGame!
     
-    fileprivate var stopWatchCenterYConstraint: NSLayoutConstraint!
-    private var pitchCenterYConstraint: NSLayoutConstraint!
     private var ellipseTopConstraint: NSLayoutConstraint!
     private var ellipseBottomConstraint: NSLayoutConstraint!
+    fileprivate var stopWatchCenterYConstraint: NSLayoutConstraint!
+    private var pitchCenterYConstraint: NSLayoutConstraint!
+
     
     private let initialObjectYOffset: CGFloat = UIScreen.main.bounds.height
     
@@ -90,10 +91,10 @@ class TimerVC: UIViewController, Sliding {
         logo = Bundle.main.loadNibNamed(NIBNAME.Logo, owner: self, options: nil)?.last as! Logo
         view.addSubview(logo)
         
-        messageContainer = ContainerView()
-        messageContainer.translatesAutoresizingMaskIntoConstraints = false
-        messageContainer.backgroundColor = COLOR.DarkBackground
-        view.addSubview(messageContainer)
+        messageBackground = ContainerView()
+        messageBackground.translatesAutoresizingMaskIntoConstraints = false
+        messageBackground.backgroundColor = COLOR.DarkBackground
+        view.addSubview(messageBackground)
         
         messageLabel = UILabel()
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -105,7 +106,7 @@ class TimerVC: UIViewController, Sliding {
         messageLabel.textAlignment = .center
         messageLabel.adjustsFontSizeToFitWidth = true
         messageLabel.font = UIFont(name: FONTNAME.ThemeBold, size: 14)
-        messageContainer.addSubview(messageLabel)
+        messageBackground.addSubview(messageLabel)
         
         ellipseContainer = ContainerView()
         ellipseContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -138,10 +139,10 @@ class TimerVC: UIViewController, Sliding {
         
         // Add constraints
         
-        stopWatchCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 207) + initialObjectYOffset)
-        pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 429) + initialObjectYOffset)
-        ellipseTopConstraint = NSLayoutConstraint(item: ellipse, attribute: .top, relatedBy: .equal, toItem: ellipseContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: 60) - CoordinateScalor.convert(y: 120))
-        ellipseBottomConstraint = NSLayoutConstraint(item: ellipse, attribute: .bottom, relatedBy: .equal, toItem: ellipseContainer, attribute: .bottom, multiplier: 1, constant: CoordinateScalor.convert(y: -100) + CoordinateScalor.convert(y: 150))
+        ellipseTopConstraint = NSLayoutConstraint(item: ellipse, attribute: .top, relatedBy: .equal, toItem: ellipseContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: -120))
+        ellipseBottomConstraint = NSLayoutConstraint(item: ellipse, attribute: .bottom, relatedBy: .equal, toItem: ellipseContainer, attribute: .bottom, multiplier: 1, constant: CoordinateScalor.convert(y: 150))
+        stopWatchCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
+        pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
         
         NSLayoutConstraint.activate([
             
@@ -155,77 +156,80 @@ class TimerVC: UIViewController, Sliding {
             hamburger.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 30)),
             hamburger.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 27)),
             
-            messageContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
-            messageContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
-            messageContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            messageContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            messageBackground.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
+            messageBackground.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+            messageBackground.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            messageBackground.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            messageLabel.leadingAnchor.constraint(equalTo: messageContainer.leadingAnchor, constant: 8),
-            messageLabel.trailingAnchor.constraint(equalTo: messageContainer.trailingAnchor, constant: -8),
+            messageLabel.leadingAnchor.constraint(equalTo: messageBackground.leadingAnchor, constant: 8),
+            messageLabel.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -8),
             messageLabel.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 24)),
-            messageLabel.bottomAnchor.constraint(equalTo: messageContainer.bottomAnchor, constant: -50 - CoordinateScalor.convert(height: 30)),
+            messageLabel.bottomAnchor.constraint(equalTo: messageBackground.bottomAnchor, constant: -50 - CoordinateScalor.convert(height: 30)),
             
-            ellipseContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
-            ellipseContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
-            ellipseContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            ellipseContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            ellipseContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 60)),
+            ellipseContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: CoordinateScalor.convert(y: -100)),
+            ellipseContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(x: -250)),
+            ellipseContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: CoordinateScalor.convert(x: 250)),
             
+            ellipse.widthAnchor.constraint(equalTo: ellipseContainer.widthAnchor),
+            ellipse.centerXAnchor.constraint(equalTo: ellipseContainer.centerXAnchor),
             ellipseTopConstraint,
             ellipseBottomConstraint,
-            ellipse.leadingAnchor.constraint(equalTo: ellipseContainer.leadingAnchor, constant: CoordinateScalor.convert(x: -250)),
-            ellipse.trailingAnchor.constraint(equalTo: ellipseContainer.trailingAnchor, constant: CoordinateScalor.convert(x: 250)),
             
-            stopWatchContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
-            stopWatchContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
+            stopWatchContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 210/375),
+            stopWatchContainer.heightAnchor.constraint(equalTo: stopWatchContainer.widthAnchor, multiplier: 1),
             stopWatchContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stopWatchContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            stopWatchContainer.centerYAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 207)),
             
-            stopWatch.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 210/375),
-            stopWatch.heightAnchor.constraint(equalTo: stopWatch.widthAnchor, multiplier: 1),
+            stopWatch.widthAnchor.constraint(equalTo: stopWatchContainer.widthAnchor),
+            stopWatch.heightAnchor.constraint(equalTo: stopWatchContainer.heightAnchor),
             stopWatch.centerXAnchor.constraint(equalTo: stopWatchContainer.centerXAnchor),
             stopWatchCenterYConstraint,
             
-            pitchContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
-            pitchContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
+            pitchContainer.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 185)),
+            pitchContainer.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 111)),
             pitchContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pitchContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            pitchContainer.centerYAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 429)),
             
-            pitch.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 185)),
-            pitch.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 111)),
-            pitch.centerXAnchor.constraint(equalTo: pitchContainer.centerXAnchor),
+            pitch.leadingAnchor.constraint(equalTo: pitchContainer.leadingAnchor),
+            pitch.trailingAnchor.constraint(equalTo: pitchContainer.trailingAnchor),
+            pitch.heightAnchor.constraint(equalTo: pitchContainer.heightAnchor),
             pitchCenterYConstraint,
             
             ])
     }
     
-    
     private func animateViewsOnAppear() {
         
         slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
         
-        stopWatchCenterYConstraint.constant = CoordinateScalor.convert(y: 207)
+        stopWatchCenterYConstraint.constant = 0
         UIView.animate(withDuration: 0.8, delay: 0.3, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.stopWatchContainer.layoutIfNeeded()
         })
         
-        pitchCenterYConstraint.constant = CoordinateScalor.convert(y: 429)
+        pitchCenterYConstraint.constant = 0
         UIView.animate(withDuration: 0.8, delay: 0.6, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.pitchContainer.layoutIfNeeded()
         })
         
-        ellipseTopConstraint.constant = CoordinateScalor.convert(y: 60)
-        ellipseBottomConstraint.constant = CoordinateScalor.convert(y: -100 - 24)
+        ellipseTopConstraint.constant = 0
+        ellipseBottomConstraint.constant = CoordinateScalor.convert(y: -24)
         UIView.animate(withDuration: 4, delay: 1, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.ellipseContainer.layoutIfNeeded()
-        }, completion: nil)
+        }, completion: { (finished) in
+            print("stopWatchContainer frame in view is \(self.stopWatchContainer.frame)")
+            print("stopWatch frame in stopWatchContainer is \(self.stopWatch.frame)")
+
+        })
     }
     
     fileprivate func animateEllipse(up: Bool, color: UIColor?, completion: (() -> Void)?) {
         
-        ellipseBottomConstraint.constant = up ? CoordinateScalor.convert(y: -100 - 24) : CoordinateScalor.convert(y: -100)
+        ellipseBottomConstraint.constant = up ? CoordinateScalor.convert(y: -24) : 0
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [], animations: {
             self.ellipseContainer.layoutIfNeeded()
-            self.messageContainer.backgroundColor = (up && color != nil) ? color : UIColor.clear
+            self.messageBackground.backgroundColor = (up && color != nil) ? color : UIColor.clear
         }) { (finished) in
             self.ellipseUp = up
             completion?()

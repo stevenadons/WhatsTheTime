@@ -168,7 +168,7 @@ class StopWatch: UIControl {
         timer.reset()
         halfLabel.alpha = 1.0
         updateProgressBars()
-        resetTimeLabel(withColor: COLOR.Theme)
+        resetTimeLabel(withColor: COLOR.Theme, alpha: 1)
         setProgressBarsColor(to: COLOR.Theme)
         icon.icon = .PlayIcon
     }
@@ -202,6 +202,7 @@ class StopWatch: UIControl {
         
         // Add progressbars
         firstProgressBar = progressBarLayer(for: .First)
+        firstProgressBar.backgroundColor = UIColor.blue.cgColor
         squareContainer.addSublayer(firstProgressBar)
         secondProgressBar = progressBarLayer(for: .Second)
         squareContainer.addSublayer(secondProgressBar)
@@ -351,31 +352,35 @@ class StopWatch: UIControl {
         switch icon.icon {
             
         case .PlayIcon:
+            // Start Half or Resume after pausing
             timer.startCountDown()
             game.status = .Running
             icon.change(to: .PauseIcon)
-            icon.stopBeating()
+            icon.stopPulsing()
             delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: nil)
 
         case .PauseIcon:
+            // Pause while counting down
             timer.pause()
             game.status = .Pausing
             icon.change(to: .PlayIcon)
-            icon.startBeating()
+            icon.startPulsing()
             
         case .StopIcon:
             if game.status == .Running {
-                // Game still running (in overtime)
+                // Game running in overtime
                 timer.stopCountDown()
                 if game.half == .First {
+                    // End of first half
                     game.status = .HalfTime
                     timer.startCountUp()
-                    resetTimeLabel(withColor: COLOR.Theme)
+                    resetTimeLabel(withColor: COLOR.Theme, alpha: 1)
                     setProgressBarsColor(to: COLOR.Theme)
                     delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: nil)
                 } else {
+                    // End of second half
                     game.status = .Finished
-                    resetTimeLabel(withColor: COLOR.Theme)
+                    resetTimeLabel(withColor: COLOR.Theme, alpha: 1)
                     setProgressBarsColor(to: UIColor.clear)
                     halfLabel.alpha = 0.0
                     icon.change(to: .NoIcon)
@@ -388,7 +393,7 @@ class StopWatch: UIControl {
                 game.half = .Second
                 halfLabel.text = LS_SECONDHALFLABEL
                 timer.reset()
-                resetTimeLabel(withColor: COLOR.Theme)
+                resetTimeLabel(withColor: COLOR.Theme, alpha: 1)
                 setProgressBarsColor(to: COLOR.Theme)
                 delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: {
                     self.icon.change(to: .PlayIcon)
@@ -401,9 +406,10 @@ class StopWatch: UIControl {
         }
     }
     
-    fileprivate func resetTimeLabel(withColor color: UIColor) {
+    fileprivate func resetTimeLabel(withColor color: UIColor, alpha: CGFloat) {
         
         timeLabel.textColor = color
+        timeLabel.alpha = alpha
         timeLabel.text = stopWatchLabelTimeString()
         timeLabel.setNeedsDisplay()
     }
@@ -447,7 +453,7 @@ extension StopWatch: StopWatchTimerDelegate {
     func handleReachedZero() {
         
         updateProgressBars()
-        resetTimeLabel(withColor: COLOR.Negation)
+        resetTimeLabel(withColor: COLOR.Negation, alpha: 0.2)
         setProgressBarsColor(to: COLOR.Negation)
         icon.change(to: .StopIcon)
         delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: nil)

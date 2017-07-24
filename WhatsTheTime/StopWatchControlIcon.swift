@@ -198,18 +198,18 @@ class StopWatchControlIcon: UIView {
     
     // MARK: - Animation methods
     
-    func startBeating() {
+    func startPulsing() {
         
         guard !isBeating else { return }
         if timer == nil {
             timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { (timer) in
-                self.beat()
+                self.pulse()
             }
         }
         isBeating = true
     }
     
-    func stopBeating() {
+    func stopPulsing() {
         
         guard isBeating else { return }
         if timer != nil {
@@ -219,7 +219,7 @@ class StopWatchControlIcon: UIView {
         isBeating = false
     }
     
-    private func beat() {
+    private func pulse() {
         
         let duration = 0.2
         let scale: CGFloat = 0.90
