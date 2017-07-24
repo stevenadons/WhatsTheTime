@@ -217,11 +217,7 @@ class TimerVC: UIViewController, Sliding {
         ellipseBottomConstraint.constant = CoordinateScalor.convert(y: -24)
         UIView.animate(withDuration: 4, delay: 1, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.ellipseContainer.layoutIfNeeded()
-        }, completion: { (finished) in
-            print("stopWatchContainer frame in view is \(self.stopWatchContainer.frame)")
-            print("stopWatch frame in stopWatchContainer is \(self.stopWatch.frame)")
-
-        })
+        }, completion: nil)
     }
     
     fileprivate func animateEllipse(up: Bool, color: UIColor?, completion: (() -> Void)?) {

@@ -36,6 +36,7 @@
 		4FB25CB31F24D9B4008B3154 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4FB25CB21F24D9B4008B3154 /* Localizable.strings */; };
 		4FB88DE11F2248A400DDB034 /* HockeyGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE01F2248A400DDB034 /* HockeyGame.swift */; };
 		4FB88DE31F229F7F00DDB034 /* StopWatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */; };
+		4FD89E511F26665D005A1B7C /* StopWatchPointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD89E501F26665D005A1B7C /* StopWatchPointer.swift */; };
 		4FF9D46F1F210A8F00CA687C /* EllipseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9D46E1F210A8F00CA687C /* EllipseView.swift */; };
 		4FF9D4711F212CD900CA687C /* Hamburger.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FF9D4701F212CD900CA687C /* Hamburger.xib */; };
 		4FF9D4731F212CF000CA687C /* Hamburger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9D4721F212CF000CA687C /* Hamburger.swift */; };
@@ -74,6 +75,7 @@
 		4FB25CB21F24D9B4008B3154 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		4FB88DE01F2248A400DDB034 /* HockeyGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HockeyGame.swift; sourceTree = "<group>"; };
 		4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchTimer.swift; sourceTree = "<group>"; };
+		4FD89E501F26665D005A1B7C /* StopWatchPointer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchPointer.swift; sourceTree = "<group>"; };
 		4FF9D46E1F210A8F00CA687C /* EllipseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EllipseView.swift; sourceTree = "<group>"; };
 		4FF9D4701F212CD900CA687C /* Hamburger.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Hamburger.xib; sourceTree = "<group>"; };
 		4FF9D4721F212CF000CA687C /* Hamburger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hamburger.swift; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 				4F1BC6ED1F251FD300FE8A78 /* StopWatchSmallLabel.swift */,
 				4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */,
 				4F3874A51F237FDD000FE09A /* StopWatchControlIcon.swift */,
+				4FD89E501F26665D005A1B7C /* StopWatchPointer.swift */,
 			);
 			name = StopWatch;
 			sourceTree = "<group>";
@@ -359,6 +362,7 @@
 				4F0C9BCB1F17C10A00956C53 /* MenuVC.swift in Sources */,
 				4F0C9BD01F17C3B300956C53 /* MenuCircle.swift in Sources */,
 				4F1BC6EE1F251FD300FE8A78 /* StopWatchSmallLabel.swift in Sources */,
+				4FD89E511F26665D005A1B7C /* StopWatchPointer.swift in Sources */,
 				4F3874AA1F23BC72000FE09A /* StopWatch.swift in Sources */,
 				4F0C9BCE1F17C26A00956C53 /* Color.swift in Sources */,
 				4F9249D21F1A7270004E9CD0 /* Menu.swift in Sources */,

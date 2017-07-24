@@ -45,6 +45,7 @@ class StopWatch: UIControl {
     private var core: CALayer!
     fileprivate var firstProgressBar: CAShapeLayer!
     fileprivate var secondProgressBar: CAShapeLayer!
+    private var pointer: StopWatchPointer!
     private var halfLabel: UILabel!
     private var durationLabel: UILabel!
     
@@ -102,6 +103,9 @@ class StopWatch: UIControl {
         core.cornerRadius = core.bounds.width / 2
         
         updateProgressBars()
+        
+        pointer.frame = bounds.insetBy(dx: progressBarWidth, dy: progressBarWidth)
+        pointer.layoutSubviews()
         
         icon.frame = bounds.insetBy(dx: (130 * bounds.width / 230) / 2, dy: (130 * bounds.height / 230) / 2)
         timeLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.35)
@@ -207,6 +211,10 @@ class StopWatch: UIControl {
         secondProgressBar = progressBarLayer(for: .Second)
         squareContainer.addSublayer(secondProgressBar)
         
+        // Add pointer
+        pointer = StopWatchPointer(color: COLOR.Negation, width: CoordinateScalor.convert(width: 12))
+        addSubview(pointer)
+        
         // Add icon
         icon = StopWatchControlIcon(icon: .PlayIcon)
         icon.color = COLOR.Affirmation
@@ -223,8 +231,7 @@ class StopWatch: UIControl {
         halfLabel = StopWatchSmallLabel()
         halfLabel.font = UIFont(name: FONTNAME.ThemeBold, size: durationLabel.font.pointSize)
         addSubview(halfLabel)
-        
-        
+                
         // Bring subviews to front
         for subview in subviews {
             bringSubview(toFront: subview)
