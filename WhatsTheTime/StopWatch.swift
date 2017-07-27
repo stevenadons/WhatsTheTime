@@ -45,7 +45,7 @@ class StopWatch: UIControl {
     private var core: CALayer!
     fileprivate var firstProgressBar: CAShapeLayer!
     fileprivate var secondProgressBar: CAShapeLayer!
-    private var pointer: StopWatchPointer!
+    private var arrow: StopWatchArrow!
     private var halfLabel: UILabel!
     private var durationLabel: UILabel!
     
@@ -104,8 +104,8 @@ class StopWatch: UIControl {
         
         updateProgressBars()
         
-        pointer.frame = bounds.insetBy(dx: progressBarWidth, dy: progressBarWidth)
-        pointer.layoutSubviews()
+        arrow.frame = bounds.insetBy(dx: progressBarWidth, dy: progressBarWidth)
+        arrow.layoutSubviews()
         
         icon.frame = bounds.insetBy(dx: (130 * bounds.width / 230) / 2, dy: (130 * bounds.height / 230) / 2)
         timeLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.35)
@@ -210,10 +210,10 @@ class StopWatch: UIControl {
         squareContainer.addSublayer(firstProgressBar)
         secondProgressBar = progressBarLayer(for: .Second)
         squareContainer.addSublayer(secondProgressBar)
-        
-        // Add pointer
-        pointer = StopWatchPointer(color: COLOR.Negation, width: CoordinateScalor.convert(width: 12))
-        addSubview(pointer)
+
+        // Add arrow
+        arrow = StopWatchArrow()
+        addSubview(arrow)
         
         // Add icon
         icon = StopWatchControlIcon(icon: .PlayIcon)
@@ -361,6 +361,11 @@ class StopWatch: UIControl {
         case .PlayIcon:
             // Start Half or Resume after pausing
             timer.startCountDown()
+            if game.status == .WaitingToStart || game.status == .HalfTime {
+                arrow.startAnimation()
+            } else if game.status == .Pausing {
+                arrow.resumeAnimation()
+            }
             game.status = .Running
             icon.change(to: .PauseIcon)
             icon.stopPulsing()
@@ -369,6 +374,7 @@ class StopWatch: UIControl {
         case .PauseIcon:
             // Pause while counting down
             timer.pause()
+            arrow.pauseAnimation()
             game.status = .Pausing
             icon.change(to: .PlayIcon)
             icon.startPulsing()
@@ -377,8 +383,9 @@ class StopWatch: UIControl {
             if game.status == .Running {
                 // Game running in overtime
                 timer.stopCountDown()
+                arrow.stopAnimationAndReset()
                 if game.half == .First {
-                    // End of first half
+                    // End of first half - will enter half time count up mode
                     game.status = .HalfTime
                     timer.startCountUp()
                     resetTimeLabel(withColor: COLOR.Theme, alpha: 1)
@@ -397,6 +404,7 @@ class StopWatch: UIControl {
             } else if game.status == .HalfTime {
                 // Half time counter stopped
                 timer.stopCountUp()
+                arrow.stopAnimationAndReset()
                 game.half = .Second
                 halfLabel.text = LS_SECONDHALFLABEL
                 timer.reset()
