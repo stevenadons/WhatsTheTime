@@ -13,7 +13,7 @@ import UIKit
 protocol StopWatchDelegate: class {
     
     func handleTimerStateChange(stopWatchTimer: StopWatchTimer, completionHandler: (() -> Void)?)
-    func handleTickOverdue()
+//    func handleTickOverdue()
     func handleNewGame()
 }
 
@@ -23,36 +23,24 @@ class TimerVC: UIViewController, Sliding {
     
     // MARK: - Properties
     
-    var message: String = "" {
-        didSet {
-            if let label = messageLabel {
-                label.text = message
-                label.setNeedsDisplay()
-            }
-        }
-    }
-    
-    private var hamburger: HamburgerButton!
-    private var ellipseContainer: ContainerView!
-    private var ellipse: EllipseView!
+    private var hamburger: HamburgerButtonIconOnly!
+    private var circleContainer: ContainerView!
+    private var circle: BackgroundCircle!
     fileprivate var stopWatchContainer: ContainerView!
     fileprivate var stopWatch: StopWatch!
     private var pitchContainer: ContainerView!
     private var pitch: UIView!
-    private var messageBackground: ContainerView!
     fileprivate var messageLabel: UILabel!
     
     fileprivate var game: HockeyGame!
-    
-    private var ellipseTopConstraint: NSLayoutConstraint!
-    private var ellipseBottomConstraint: NSLayoutConstraint!
+
     fileprivate var stopWatchCenterYConstraint: NSLayoutConstraint!
     private var pitchCenterYConstraint: NSLayoutConstraint!
 
     
     private let initialObjectYOffset: CGFloat = UIScreen.main.bounds.height
     
-    fileprivate var ellipseUp: Bool = true
+    fileprivate var circleUp: Bool = true
     
     
     
@@ -83,39 +71,19 @@ class TimerVC: UIViewController, Sliding {
         
         // Add UI elements
         
-        hamburger = HamburgerButton()
+        hamburger = HamburgerButtonIconOnly()
         hamburger.addTarget(self, action: #selector(showMenu(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(hamburger)
-
-//        logo = Bundle.main.loadNibNamed(NIBNAME.Logo, owner: self, options: nil)?.last as! Logo
-//        view.addSubview(logo)
         
-        messageBackground = ContainerView()
-        messageBackground.translatesAutoresizingMaskIntoConstraints = false
-        messageBackground.backgroundColor = COLOR.DarkBackground
-        view.addSubview(messageBackground)
+        circleContainer = ContainerView()
+        circleContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(circleContainer)
         
-        messageLabel = UILabel()
-        messageLabel.translatesAutoresizingMaskIntoConstraints = false
-        messageLabel.isUserInteractionEnabled = false
-        messageLabel.backgroundColor = UIColor.clear
-        messageLabel.textColor = COLOR.White
-        message = LS_NEWGAME
-        messageLabel.text = message
-        messageLabel.textAlignment = .center
-        messageLabel.adjustsFontSizeToFitWidth = true
-        messageLabel.font = UIFont(name: FONTNAME.ThemeBold, size: 14)
-        messageBackground.addSubview(messageLabel)
-        
-        ellipseContainer = ContainerView()
-        ellipseContainer.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(ellipseContainer)
-        
-        ellipse = EllipseView()
-        ellipse.translatesAutoresizingMaskIntoConstraints = false
-        ellipse.isUserInteractionEnabled = false
-        ellipse.color = COLOR.White
-        ellipseContainer.addSubview(ellipse)
+        circle = BackgroundCircle()
+        circle.translatesAutoresizingMaskIntoConstraints = false
+        circle.isUserInteractionEnabled = false
+        circle.color = COLOR.White
+        circleContainer.addSubview(circle)
         
         stopWatchContainer = ContainerView()
         stopWatchContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -137,9 +105,7 @@ class TimerVC: UIViewController, Sliding {
         
         
         // Add constraints
-        
-        ellipseTopConstraint = NSLayoutConstraint(item: ellipse, attribute: .top, relatedBy: .equal, toItem: ellipseContainer, attribute: .top, multiplier: 1, constant: CoordinateScalor.convert(y: -120))
-        ellipseBottomConstraint = NSLayoutConstraint(item: ellipse, attribute: .bottom, relatedBy: .equal, toItem: ellipseContainer, attribute: .bottom, multiplier: 1, constant: CoordinateScalor.convert(y: 150))
+
         stopWatchCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
         pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
         
@@ -149,26 +115,16 @@ class TimerVC: UIViewController, Sliding {
             hamburger.heightAnchor.constraint(equalToConstant: 44),
             hamburger.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 30)),
             hamburger.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 13)),
+
+            circleContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 45)),
+            circleContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: CoordinateScalor.convert(y: -100)),
+            circleContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(x: -73)),
+            circleContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: CoordinateScalor.convert(x: 73)),
             
-            messageBackground.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
-            messageBackground.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
-            messageBackground.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            messageBackground.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            messageLabel.leadingAnchor.constraint(equalTo: messageBackground.leadingAnchor, constant: 8),
-            messageLabel.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -8),
-            messageLabel.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 24)),
-            messageLabel.bottomAnchor.constraint(equalTo: messageBackground.bottomAnchor, constant: -50 - CoordinateScalor.convert(height: 30)),
-            
-            ellipseContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 45)),
-            ellipseContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: CoordinateScalor.convert(y: -100)),
-            ellipseContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(x: -73)),
-            ellipseContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: CoordinateScalor.convert(x: 73)),
-            
-            ellipse.widthAnchor.constraint(equalTo: ellipseContainer.widthAnchor),
-            ellipse.centerXAnchor.constraint(equalTo: ellipseContainer.centerXAnchor),
-            ellipseTopConstraint,
-            ellipseBottomConstraint,
+            circle.centerXAnchor.constraint(equalTo: circleContainer.centerXAnchor),
+            circle.centerYAnchor.constraint(equalTo: circleContainer.centerYAnchor),
+            circle.widthAnchor.constraint(equalTo: circleContainer.widthAnchor),
+            circle.heightAnchor.constraint(equalTo: circleContainer.heightAnchor),
             
             stopWatchContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 210/375),
             stopWatchContainer.heightAnchor.constraint(equalTo: stopWatchContainer.widthAnchor, multiplier: 1),
@@ -191,6 +147,9 @@ class TimerVC: UIViewController, Sliding {
             pitchCenterYConstraint,
             
             ])
+        
+        // Inflate circle
+        circle.transform = CGAffineTransform(scaleX: 2, y: 2)
     }
     
     private func animateViewsOnAppear() {
@@ -207,23 +166,9 @@ class TimerVC: UIViewController, Sliding {
             self.pitchContainer.layoutIfNeeded()
         })
         
-        ellipseTopConstraint.constant = 0
-        ellipseBottomConstraint.constant = CoordinateScalor.convert(y: -24)
         UIView.animate(withDuration: 4, delay: 1, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
-            self.ellipseContainer.layoutIfNeeded()
+            self.circle.transform = .identity
         }, completion: nil)
-    }
-    
-    fileprivate func animateEllipse(up: Bool, color: UIColor?, completion: (() -> Void)?) {
-        
-        ellipseBottomConstraint.constant = up ? CoordinateScalor.convert(y: -24) : 0
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: [], animations: {
-            self.ellipseContainer.layoutIfNeeded()
-            self.messageBackground.backgroundColor = (up && color != nil) ? color : UIColor.clear
-        }) { (finished) in
-            self.ellipseUp = up
-            completion?()
-        }
     }
     
     
@@ -244,38 +189,26 @@ extension TimerVC: StopWatchDelegate {
         
         switch stopWatchTimer.state {
         case .WaitingToStart:
-            message = ""
-            animateEllipse(up: false, color: nil, completion: {
-                completionHandler?()
-            })
+            completionHandler?()
         case .RunningCountDown:
-            if ellipseUp {
-                message = ""
-                animateEllipse(up: false, color: nil, completion: nil)
-            }
             completionHandler?()
         case .RunningCountUp:
-            message = LS_HALFTIME
             completionHandler?()
         case .Paused:
             completionHandler?()
         case .Overdue:
-            animateEllipse(up: true, color: COLOR.DarkBackground, completion: {
-                self.message = LS_OVERTIME
-                completionHandler?()
-            })
+            completionHandler?()
         case .Ended:
-            message = LS_FULLTIME
             completionHandler?()
         }
     }
     
-    func handleTickOverdue() {
-        
-        var updatedMessage = LS_OVERDUE_MESSAGE_BEGINS
-        updatedMessage.append(stopWatch.messageLabelTimeString())
-        message = updatedMessage
-    }
+//    func handleTickOverdue() {
+//        
+//        var updatedMessage = LS_OVERDUE_MESSAGE_BEGINS
+//        updatedMessage.append(stopWatch.messageLabelTimeString())
+//        message = updatedMessage
+//    }
     
     func handleNewGame() {
         
@@ -283,8 +216,6 @@ extension TimerVC: StopWatchDelegate {
         stopWatch.game = game
         stopWatch.reset()
         stopWatch.setNeedsLayout()
-        animateEllipse(up: false, color: nil, completion: nil)
-        message = ""
     }
 
 }

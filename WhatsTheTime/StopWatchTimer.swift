@@ -123,15 +123,17 @@ class StopWatchTimer {
             if totalSecondsToGo < 1 {
                 // Reached zero
                 state = .Overdue
+                stopCountDown()
+                startCountUp()
                 delegate.handleReachedZero()
             } else {
                 // Keep on counting down
-                delegate.handleTickCountDown(overdue: false)
+                delegate.handleTickCountDown()
             }
         } else {
             // Overdue - count up
             totalSecondsOverdue += 1
-            delegate.handleTickCountDown(overdue: true)
+            delegate.handleTickCountDown()
         }
     }
     

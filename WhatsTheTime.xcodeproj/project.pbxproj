@@ -26,6 +26,8 @@
 		4F45D1A91F2C7B2D0082D93B /* HamburgerButtonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1A81F2C7B2D0082D93B /* HamburgerButtonLayer.swift */; };
 		4F45D1AB1F2C89D20082D93B /* DismissButtonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1AA1F2C89D20082D93B /* DismissButtonLayer.swift */; };
 		4F45D1AD1F2C8D410082D93B /* DismissButtonIconOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1AC1F2C8D410082D93B /* DismissButtonIconOnly.swift */; };
+		4F45D1B21F2C94370082D93B /* BackgroundCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1B11F2C94370082D93B /* BackgroundCircle.swift */; };
+		4F45D1B41F2C9ECC0082D93B /* HamburgerButtonIconOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1B31F2C9ECC0082D93B /* HamburgerButtonIconOnly.swift */; };
 		4F6FFEA41F1FE543004A2257 /* CoordinateScalor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6FFEA31F1FE543004A2257 /* CoordinateScalor.swift */; };
 		4F9249D01F1A6DD9004E9CD0 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */; };
 		4F9249D21F1A7270004E9CD0 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9249D11F1A7270004E9CD0 /* Menu.swift */; };
@@ -39,7 +41,6 @@
 		4FB25CB31F24D9B4008B3154 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4FB25CB21F24D9B4008B3154 /* Localizable.strings */; };
 		4FB88DE11F2248A400DDB034 /* HockeyGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE01F2248A400DDB034 /* HockeyGame.swift */; };
 		4FB88DE31F229F7F00DDB034 /* StopWatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */; };
-		4FF9D46F1F210A8F00CA687C /* EllipseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9D46E1F210A8F00CA687C /* EllipseView.swift */; };
 		4FF9D4811F2160D000CA687C /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9D4801F2160D000CA687C /* ContainerView.swift */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,8 @@
 		4F45D1A81F2C7B2D0082D93B /* HamburgerButtonLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButtonLayer.swift; sourceTree = "<group>"; };
 		4F45D1AA1F2C89D20082D93B /* DismissButtonLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButtonLayer.swift; sourceTree = "<group>"; };
 		4F45D1AC1F2C8D410082D93B /* DismissButtonIconOnly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButtonIconOnly.swift; sourceTree = "<group>"; };
+		4F45D1B11F2C94370082D93B /* BackgroundCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundCircle.swift; sourceTree = "<group>"; };
+		4F45D1B31F2C9ECC0082D93B /* HamburgerButtonIconOnly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButtonIconOnly.swift; sourceTree = "<group>"; };
 		4F6FFEA31F1FE543004A2257 /* CoordinateScalor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoordinateScalor.swift; sourceTree = "<group>"; };
 		4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		4F9249D11F1A7270004E9CD0 /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
@@ -78,7 +81,6 @@
 		4FB25CB21F24D9B4008B3154 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		4FB88DE01F2248A400DDB034 /* HockeyGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HockeyGame.swift; sourceTree = "<group>"; };
 		4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchTimer.swift; sourceTree = "<group>"; };
-		4FF9D46E1F210A8F00CA687C /* EllipseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EllipseView.swift; sourceTree = "<group>"; };
 		4FF9D4801F2160D000CA687C /* ContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -193,10 +195,17 @@
 				4F0C9BD51F17DF7200956C53 /* RadialGradientView.swift */,
 				4F0C9BD71F17DFEC00956C53 /* RadialGradientLayer.swift */,
 				4F6FFEA31F1FE543004A2257 /* CoordinateScalor.swift */,
-				4FF9D46E1F210A8F00CA687C /* EllipseView.swift */,
 				4FF9D4801F2160D000CA687C /* ContainerView.swift */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		4F45D1AE1F2C8EC40082D93B /* BackgroundCircle */ = {
+			isa = PBXGroup;
+			children = (
+				4F45D1B11F2C94370082D93B /* BackgroundCircle.swift */,
+			);
+			name = BackgroundCircle;
 			sourceTree = "<group>";
 		};
 		4F9249CD1F1A6D82004E9CD0 /* Storyboards */ = {
@@ -211,6 +220,7 @@
 		4F9249CE1F1A6D8B004E9CD0 /* UI Elements */ = {
 			isa = PBXGroup;
 			children = (
+				4F45D1AE1F2C8EC40082D93B /* BackgroundCircle */,
 				4FB88DDF1F22446500DDB034 /* StopWatch */,
 				4FB88DDE1F22445800DDB034 /* IconButtons */,
 				4FB88DDD1F22444D00DDB034 /* Logo */,
@@ -252,6 +262,7 @@
 			children = (
 				4F45D1A61F2C75710082D93B /* HamburgerButton.swift */,
 				4F45D1A81F2C7B2D0082D93B /* HamburgerButtonLayer.swift */,
+				4F45D1B31F2C9ECC0082D93B /* HamburgerButtonIconOnly.swift */,
 				4FB13FFF1F19661F0025088A /* DismissButton.swift */,
 				4F45D1AA1F2C89D20082D93B /* DismissButtonLayer.swift */,
 				4F45D1AC1F2C8D410082D93B /* DismissButtonIconOnly.swift */,
@@ -366,14 +377,15 @@
 				4F9249D21F1A7270004E9CD0 /* Menu.swift in Sources */,
 				4F45D1AD1F2C8D410082D93B /* DismissButtonIconOnly.swift in Sources */,
 				4F3874A61F237FDD000FE09A /* StopWatchControlIcon.swift in Sources */,
+				4F45D1B41F2C9ECC0082D93B /* HamburgerButtonIconOnly.swift in Sources */,
 				4F9249D01F1A6DD9004E9CD0 /* MenuButton.swift in Sources */,
 				4F0C9BD81F17DFEC00956C53 /* RadialGradientLayer.swift in Sources */,
 				4FB13FF71F1959430025088A /* Logo.swift in Sources */,
 				4FA04FB61F1B5077007609B9 /* UIView+AnimatingConstraints.swift in Sources */,
 				4F45D1A71F2C75710082D93B /* HamburgerButton.swift in Sources */,
+				4F45D1B21F2C94370082D93B /* BackgroundCircle.swift in Sources */,
 				4FB140001F19661F0025088A /* DismissButton.swift in Sources */,
 				4F0C9BD41F17CA8E00956C53 /* MenuCircles.swift in Sources */,
-				4FF9D46F1F210A8F00CA687C /* EllipseView.swift in Sources */,
 				4F6FFEA41F1FE543004A2257 /* CoordinateScalor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

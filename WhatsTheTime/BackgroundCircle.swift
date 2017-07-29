@@ -1,24 +1,23 @@
 //
-//  EllipseView.swift
+//  BackgroundCircle.swift
 //  WhatsTheTime
 //
-//  Created by Steven Adons on 20/07/17.
+//  Created by Steven Adons on 29/07/17.
 //  Copyright © 2017 StevenAdons. All rights reserved.
 //
 
 import UIKit
 
-class EllipseView: UIView {
+class BackgroundCircle: UIView {
 
     
     // MARK: - Properties
     
-    var container: CALayer!
-    var ellipse: CAShapeLayer!
+    var circle: CAShapeLayer!
     var path: UIBezierPath!
     var color: UIColor = UIColor.white {
         didSet {
-            ellipse.setNeedsLayout()
+            circle.setNeedsLayout()
         }
     }
     
@@ -27,14 +26,12 @@ class EllipseView: UIView {
     // MARK: - Initializers
     
     override init(frame: CGRect) {
-        
         super.init(frame: frame)
         setup()
     }
     
     
     required init?(coder aDecoder: NSCoder) {
-        
         super.init(coder: aDecoder)
         setup()
     }
@@ -44,13 +41,10 @@ class EllipseView: UIView {
     // MARK: - Public Methods
     
     override func layoutSubviews() {
-        
         super.layoutSubviews()
         layoutOrAnimateSublayers()
-        
-        ellipse.fillColor = color.cgColor
+        circle.fillColor = color.cgColor
     }
-    
     
     func layoutOrAnimateSublayers() {
         
@@ -61,40 +55,27 @@ class EllipseView: UIView {
             // Self is animating
             CATransaction.setAnimationDuration(animation.duration)
             CATransaction.setAnimationTimingFunction(animation.timingFunction)
-            
         } else {
             // Self is not animating
             CATransaction.disableActions()
         }
-        
-        if container.superlayer == layer {
-            
+        if circle.superlayer == layer {
             // Properties to change when layout occurs - will animate or not
-            container.frame = bounds
-            
-        }
-        
-        if ellipse.superlayer == container {
-            
-            // Properties to change when layout occurs - will animate or not
-            ellipse.frame = bounds
-            
+            circle.bounds = bounds.insetBy(dx: (bounds.width - bounds.height) / 2, dy: 0)
+            circle.frame.origin = CGPoint(x: (bounds.width - bounds.height) / 2, y: 0)
             //  Custom = add animations to include in CATransaction + set animated properties
             let pathAnimation = CABasicAnimation(keyPath: "path")
-            ellipse.add(pathAnimation, forKey: "path")
-            ellipse.path = UIBezierPath(ovalIn: ellipse.bounds).cgPath
+            circle.add(pathAnimation, forKey: "path")
+            circle.path = UIBezierPath(ovalIn: circle.bounds).cgPath
         }
-        
         CATransaction.commit()
     }
     
-    
     override func draw(_ rect: CGRect) {
-        
         super.draw(rect)
-        ellipse.setNeedsDisplay()
+        circle.setNeedsDisplay()
     }
-
+    
     
     
     // MARK: - Public UI Methods
@@ -109,15 +90,11 @@ class EllipseView: UIView {
         backgroundColor = UIColor.clear
         translatesAutoresizingMaskIntoConstraints = false
         
-        // Add containerView
-        container = CALayer()
-        container.backgroundColor = UIColor.clear.cgColor
-        self.layer.addSublayer(container)
-        
-        // Add ellipse
-        ellipse = CAShapeLayer()
-        ellipse.strokeColor = UIColor.clear.cgColor
-        ellipse.fillColor = color.cgColor
-        container.addSublayer(ellipse)
+        // Add circle
+        circle = CAShapeLayer()
+        circle.strokeColor = UIColor.clear.cgColor
+        circle.fillColor = color.cgColor
+        layer.addSublayer(circle)
     }
+
 }
