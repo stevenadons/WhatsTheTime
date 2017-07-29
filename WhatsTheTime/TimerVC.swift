@@ -32,7 +32,7 @@ class TimerVC: UIViewController, Sliding {
         }
     }
     
-    private var logo: Logo!
+//    private var logo: Logo!
     private var hamburger: Hamburger!
     private var ellipseContainer: ContainerView!
     private var ellipse: EllipseView!
@@ -88,8 +88,8 @@ class TimerVC: UIViewController, Sliding {
         hamburger.addTarget(self, action: #selector(showMenu(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(hamburger)
 
-        logo = Bundle.main.loadNibNamed(NIBNAME.Logo, owner: self, options: nil)?.last as! Logo
-        view.addSubview(logo)
+//        logo = Bundle.main.loadNibNamed(NIBNAME.Logo, owner: self, options: nil)?.last as! Logo
+//        view.addSubview(logo)
         
         messageBackground = ContainerView()
         messageBackground.translatesAutoresizingMaskIntoConstraints = false
@@ -146,10 +146,10 @@ class TimerVC: UIViewController, Sliding {
         
         NSLayoutConstraint.activate([
             
-            logo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logo.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 200)),
-            logo.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 40)),
-            logo.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 23)),
+//            logo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            logo.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 200)),
+//            logo.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 40)),
+//            logo.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 23)),
             
             hamburger.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 20)),
             hamburger.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 20)),

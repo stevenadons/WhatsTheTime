@@ -22,6 +22,7 @@
 		4F3874A61F237FDD000FE09A /* StopWatchControlIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3874A51F237FDD000FE09A /* StopWatchControlIcon.swift */; };
 		4F3874AA1F23BC72000FE09A /* StopWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3874A91F23BC72000FE09A /* StopWatch.swift */; };
 		4F3BEDD21F1D5F90005A2665 /* Sliding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3BEDD11F1D5F90005A2665 /* Sliding.swift */; };
+		4F45D1A71F2C75710082D93B /* HamburgerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1A61F2C75710082D93B /* HamburgerButton.swift */; };
 		4F6FFEA41F1FE543004A2257 /* CoordinateScalor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6FFEA31F1FE543004A2257 /* CoordinateScalor.swift */; };
 		4F9249D01F1A6DD9004E9CD0 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */; };
 		4F9249D21F1A7270004E9CD0 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9249D11F1A7270004E9CD0 /* Menu.swift */; };
@@ -36,9 +37,6 @@
 		4FB25CB31F24D9B4008B3154 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4FB25CB21F24D9B4008B3154 /* Localizable.strings */; };
 		4FB88DE11F2248A400DDB034 /* HockeyGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE01F2248A400DDB034 /* HockeyGame.swift */; };
 		4FB88DE31F229F7F00DDB034 /* StopWatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */; };
-		4FB92B1A1F2A7FD6000D8E7F /* StopWatchArrowLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB92B191F2A7FD6000D8E7F /* StopWatchArrowLayer.swift */; };
-		4FB92B1C1F2A81FB000D8E7F /* StopWatchArrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB92B1B1F2A81FB000D8E7F /* StopWatchArrow.swift */; };
-		4FD89E511F26665D005A1B7C /* StopWatchPointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD89E501F26665D005A1B7C /* StopWatchPointer.swift */; };
 		4FF9D46F1F210A8F00CA687C /* EllipseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9D46E1F210A8F00CA687C /* EllipseView.swift */; };
 		4FF9D4711F212CD900CA687C /* Hamburger.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FF9D4701F212CD900CA687C /* Hamburger.xib */; };
 		4FF9D4731F212CF000CA687C /* Hamburger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9D4721F212CF000CA687C /* Hamburger.swift */; };
@@ -63,6 +61,7 @@
 		4F3874A51F237FDD000FE09A /* StopWatchControlIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchControlIcon.swift; sourceTree = "<group>"; };
 		4F3874A91F23BC72000FE09A /* StopWatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatch.swift; sourceTree = "<group>"; };
 		4F3BEDD11F1D5F90005A2665 /* Sliding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sliding.swift; sourceTree = "<group>"; };
+		4F45D1A61F2C75710082D93B /* HamburgerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButton.swift; sourceTree = "<group>"; };
 		4F6FFEA31F1FE543004A2257 /* CoordinateScalor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoordinateScalor.swift; sourceTree = "<group>"; };
 		4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		4F9249D11F1A7270004E9CD0 /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
@@ -77,9 +76,6 @@
 		4FB25CB21F24D9B4008B3154 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		4FB88DE01F2248A400DDB034 /* HockeyGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HockeyGame.swift; sourceTree = "<group>"; };
 		4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchTimer.swift; sourceTree = "<group>"; };
-		4FB92B191F2A7FD6000D8E7F /* StopWatchArrowLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchArrowLayer.swift; sourceTree = "<group>"; };
-		4FB92B1B1F2A81FB000D8E7F /* StopWatchArrow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchArrow.swift; sourceTree = "<group>"; };
-		4FD89E501F26665D005A1B7C /* StopWatchPointer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchPointer.swift; sourceTree = "<group>"; };
 		4FF9D46E1F210A8F00CA687C /* EllipseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EllipseView.swift; sourceTree = "<group>"; };
 		4FF9D4701F212CD900CA687C /* Hamburger.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Hamburger.xib; sourceTree = "<group>"; };
 		4FF9D4721F212CF000CA687C /* Hamburger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hamburger.swift; sourceTree = "<group>"; };
@@ -258,6 +254,7 @@
 				4FB13FFF1F19661F0025088A /* DismissButton.swift */,
 				4FF9D4701F212CD900CA687C /* Hamburger.xib */,
 				4FF9D4721F212CF000CA687C /* Hamburger.swift */,
+				4F45D1A61F2C75710082D93B /* HamburgerButton.swift */,
 			);
 			name = IconButtons;
 			sourceTree = "<group>";
@@ -270,9 +267,6 @@
 				4F1BC6ED1F251FD300FE8A78 /* StopWatchSmallLabel.swift */,
 				4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */,
 				4F3874A51F237FDD000FE09A /* StopWatchControlIcon.swift */,
-				4FD89E501F26665D005A1B7C /* StopWatchPointer.swift */,
-				4FB92B1B1F2A81FB000D8E7F /* StopWatchArrow.swift */,
-				4FB92B191F2A7FD6000D8E7F /* StopWatchArrowLayer.swift */,
 			);
 			name = StopWatch;
 			sourceTree = "<group>";
@@ -368,10 +362,7 @@
 				4F0C9BCB1F17C10A00956C53 /* MenuVC.swift in Sources */,
 				4F0C9BD01F17C3B300956C53 /* MenuCircle.swift in Sources */,
 				4F1BC6EE1F251FD300FE8A78 /* StopWatchSmallLabel.swift in Sources */,
-				4FD89E511F26665D005A1B7C /* StopWatchPointer.swift in Sources */,
 				4F3874AA1F23BC72000FE09A /* StopWatch.swift in Sources */,
-				4FB92B1C1F2A81FB000D8E7F /* StopWatchArrow.swift in Sources */,
-				4FB92B1A1F2A7FD6000D8E7F /* StopWatchArrowLayer.swift in Sources */,
 				4F0C9BCE1F17C26A00956C53 /* Color.swift in Sources */,
 				4F9249D21F1A7270004E9CD0 /* Menu.swift in Sources */,
 				4F3874A61F237FDD000FE09A /* StopWatchControlIcon.swift in Sources */,
@@ -379,6 +370,7 @@
 				4F0C9BD81F17DFEC00956C53 /* RadialGradientLayer.swift in Sources */,
 				4FB13FF71F1959430025088A /* Logo.swift in Sources */,
 				4FA04FB61F1B5077007609B9 /* UIView+AnimatingConstraints.swift in Sources */,
+				4F45D1A71F2C75710082D93B /* HamburgerButton.swift in Sources */,
 				4FB140001F19661F0025088A /* DismissButton.swift in Sources */,
 				4F0C9BD41F17CA8E00956C53 /* MenuCircles.swift in Sources */,
 				4FF9D46F1F210A8F00CA687C /* EllipseView.swift in Sources */,
