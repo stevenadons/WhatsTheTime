@@ -32,8 +32,7 @@ class TimerVC: UIViewController, Sliding {
         }
     }
     
-//    private var logo: Logo!
-    private var hamburger: Hamburger!
+    private var hamburger: HamburgerButton!
     private var ellipseContainer: ContainerView!
     private var ellipse: EllipseView!
     fileprivate var stopWatchContainer: ContainerView!
@@ -84,7 +83,7 @@ class TimerVC: UIViewController, Sliding {
         
         // Add UI elements
         
-        hamburger = Bundle.main.loadNibNamed(NIBNAME.Hamburger, owner: self, options: nil)?.last as! Hamburger
+        hamburger = HamburgerButton()
         hamburger.addTarget(self, action: #selector(showMenu(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(hamburger)
 
@@ -146,15 +145,10 @@ class TimerVC: UIViewController, Sliding {
         
         NSLayoutConstraint.activate([
             
-//            logo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            logo.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 200)),
-//            logo.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 40)),
-//            logo.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 23)),
-            
-            hamburger.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 20)),
-            hamburger.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 20)),
+            hamburger.widthAnchor.constraint(equalToConstant: 44),
+            hamburger.heightAnchor.constraint(equalToConstant: 44),
             hamburger.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 30)),
-            hamburger.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 27)),
+            hamburger.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 13)),
             
             messageBackground.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
             messageBackground.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
@@ -166,10 +160,10 @@ class TimerVC: UIViewController, Sliding {
             messageLabel.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 24)),
             messageLabel.bottomAnchor.constraint(equalTo: messageBackground.bottomAnchor, constant: -50 - CoordinateScalor.convert(height: 30)),
             
-            ellipseContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 60)),
+            ellipseContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 45)),
             ellipseContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: CoordinateScalor.convert(y: -100)),
-            ellipseContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(x: -250)),
-            ellipseContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: CoordinateScalor.convert(x: 250)),
+            ellipseContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(x: -73)),
+            ellipseContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: CoordinateScalor.convert(x: 73)),
             
             ellipse.widthAnchor.constraint(equalTo: ellipseContainer.widthAnchor),
             ellipse.centerXAnchor.constraint(equalTo: ellipseContainer.centerXAnchor),
@@ -236,7 +230,7 @@ class TimerVC: UIViewController, Sliding {
     
     // MARK: - Private Methods
     
-    @objc private func showMenu(sender: Hamburger, forEvent event: UIEvent) {
+    @objc private func showMenu(sender: HamburgerButton, forEvent event: UIEvent) {
         
         print("menu")
     }
