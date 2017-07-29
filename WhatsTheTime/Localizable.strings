@@ -7,16 +7,13 @@
 */
 
 
-"MINUTE" = "MINUTE";
-"SECOND" = "SECOND";
-"MINUTES" = "MINUTES";
-"SECONDS" = "SECONDS";
+
 "New Game" = "New Game";
 "Game Paused" = "Game Paused";
-"OVER TIME  -  " = "OVER TIME  -  ";
 "Time Over" = "Time Over";
 "Half Time" = "Half Time";
 "Ready for H2" = "Ready for H2";
 "Full Time" = "Full Time";
 "H1" = "H1";
 "H2" = "H2";
+"RESET GAME?" = "RESET GAME?";

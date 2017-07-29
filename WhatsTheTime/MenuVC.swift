@@ -58,7 +58,6 @@ class MenuVC: UIViewController {
         logo = Bundle.main.loadNibNamed(NIBNAME.Logo, owner: self, options: nil)?.last as! Logo
         view.addSubview(logo)
         
-//        dismissButton = Bundle.main.loadNibNamed(NIBNAME.DismissButton, owner: self, options: nil)?.last as! DismissButton
         dismissButton = DismissButtonIconOnly()
         dismissButton.addTarget(self, action: #selector(handleDismiss(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(dismissButton)

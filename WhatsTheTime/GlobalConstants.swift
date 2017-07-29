@@ -65,11 +65,7 @@ let LS_READYFORH2 = NSLocalizedString("Ready for H2", comment: "H2 to begin mess
 let LS_FULLTIME = NSLocalizedString("Full Time", comment: "Full time message")
 let LS_FIRSTHALFLABEL = NSLocalizedString("H1", comment: "Half time indication label")
 let LS_SECONDHALFLABEL = NSLocalizedString("H2", comment: "Half time indication label")
-let LS_MINUTE = NSLocalizedString("MINUTE", comment: "Overdue message")
-let LS_SECOND = NSLocalizedString("SECOND", comment: "Overdue message")
-let LS_MINUTES = NSLocalizedString("MINUTES", comment: "Overdue message")
-let LS_SECONDS = NSLocalizedString("SECONDS", comment: "Overdue message")
-let LS_OVERDUE_MESSAGE_BEGINS = NSLocalizedString("OVER TIME  -  ", comment: "Overdue message")
+let LS_WARNINGRESETGAME = NSLocalizedString("RESET GAME?", comment: "When reset button tapped")
 
 
 

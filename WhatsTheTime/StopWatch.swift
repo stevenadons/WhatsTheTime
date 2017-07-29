@@ -346,6 +346,7 @@ class StopWatch: UIControl {
                     game.status = .HalfTime
                     timer.startCountUp()
                     setProgressBarsColor(to: COLOR.Theme)
+                    halfLabel.alpha = 0.0
                     message = LS_HALFTIME
                 } else {
                     // End of second half
@@ -363,6 +364,7 @@ class StopWatch: UIControl {
                 halfLabel.text = LS_SECONDHALFLABEL
                 timer.reset()
                 setProgressBarsColor(to: COLOR.Theme)
+                halfLabel.alpha = 1.0
                 message = LS_READYFORH2
                 delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: {
                     self.icon.change(to: .PlayIcon)
