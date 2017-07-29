@@ -28,7 +28,7 @@ class TimerVC: UIViewController, Sliding {
     fileprivate var stopWatchContainer: ContainerView!
     fileprivate var stopWatch: StopWatch!
     private var pitchContainer: ContainerView!
-    private var pitch: UIView!
+    private var pitch: Pitch!
     private var maskView: UIButton!
     private var undoButtonContainer: ContainerView!
     private var undoButton: UIButton!
@@ -91,10 +91,8 @@ class TimerVC: UIViewController, Sliding {
         pitchContainer.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(pitchContainer)
         
-        pitch = UIView()
-        pitch.translatesAutoresizingMaskIntoConstraints = false
+        pitch = Pitch()
         pitch.isUserInteractionEnabled = true
-        pitch.backgroundColor = COLOR.Theme
         pitchContainer.addSubview(pitch)
         
         maskView = UIButton()
@@ -266,7 +264,12 @@ class TimerVC: UIViewController, Sliding {
     // MARK: - Private Methods
     
     @objc private func showMenu(sender: HamburgerButton, forEvent event: UIEvent) {
+        // test
+//        UIView.animate(withDuration: 2, delay: 1, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
+//            self.pitch.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+//        })
         print("menu")
+        print("pitch frame is \(pitch.frame)")
     }
     
     @objc private func resetButtonTapped(sender: ResetButtonIconOnly, forEvent event: UIEvent) {

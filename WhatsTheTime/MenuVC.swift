@@ -39,7 +39,7 @@ class MenuVC: UIViewController {
         setupViews()
         
         // to skip menu
-//        handleNavigation(for: MenuItem.Timer)
+        handleNavigation(for: MenuItem.Timer)
     }
     
     

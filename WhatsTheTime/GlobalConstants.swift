@@ -20,7 +20,7 @@ enum NIBNAME {
 enum COLOR {
     
     // Standard colors
-    static let Theme = UIColor.init(hexString: "#1E2460") // Dark Blue          // Colours on Navigation Bar, Button Titles, Progress Indicator etc. "#ffcc00"
+    static let Theme = UIColor.init(hexString: "#394560") // Dark Blue 1E2460         // Colours on Navigation Bar, Button Titles, Progress Indicator etc. "#ffcc00"
 //    static let Border = UIColor.init(hexString: "#333333")                    // Hair line separators in between views.
 //    static let Shadow = UIColor.init(hexString: "#ccccc")                     // Shadow colours for card like design.
 //    
@@ -44,6 +44,8 @@ enum COLOR {
     static let MenuCircleSmallInside = UIColor(hexString: "#2E3694")
     
     static let White = UIColor(hexString: "#FFFFFF")
+    static let PitchBlue = UIColor(hexString: "#2C6DB8")
+    static let Striping = UIColor(hexString: "#FFFFFF") //6F7498
 }
 
 

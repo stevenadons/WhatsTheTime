@@ -32,6 +32,8 @@
 		4F45D1B91F2CBC1E0082D93B /* ResetButtonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1B81F2CBC1E0082D93B /* ResetButtonLayer.swift */; };
 		4F45D1BB1F2CBEBF0082D93B /* ResetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1BA1F2CBEBF0082D93B /* ResetButton.swift */; };
 		4F45D1BD1F2CBEF20082D93B /* ResetButtonIconOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1BC1F2CBEF20082D93B /* ResetButtonIconOnly.swift */; };
+		4F45D1C01F2CDBD50082D93B /* Pitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1BF1F2CDBD50082D93B /* Pitch.swift */; };
+		4F45D1C21F2CDC380082D93B /* PitchStripingLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1C11F2CDC380082D93B /* PitchStripingLayer.swift */; };
 		4F6FFEA41F1FE543004A2257 /* CoordinateScalor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6FFEA31F1FE543004A2257 /* CoordinateScalor.swift */; };
 		4F9249D01F1A6DD9004E9CD0 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */; };
 		4F9249D21F1A7270004E9CD0 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9249D11F1A7270004E9CD0 /* Menu.swift */; };
@@ -76,6 +78,8 @@
 		4F45D1B81F2CBC1E0082D93B /* ResetButtonLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetButtonLayer.swift; sourceTree = "<group>"; };
 		4F45D1BA1F2CBEBF0082D93B /* ResetButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetButton.swift; sourceTree = "<group>"; };
 		4F45D1BC1F2CBEF20082D93B /* ResetButtonIconOnly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetButtonIconOnly.swift; sourceTree = "<group>"; };
+		4F45D1BF1F2CDBD50082D93B /* Pitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pitch.swift; sourceTree = "<group>"; };
+		4F45D1C11F2CDC380082D93B /* PitchStripingLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PitchStripingLayer.swift; sourceTree = "<group>"; };
 		4F6FFEA31F1FE543004A2257 /* CoordinateScalor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoordinateScalor.swift; sourceTree = "<group>"; };
 		4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		4F9249D11F1A7270004E9CD0 /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
@@ -224,6 +228,15 @@
 			name = UndoButton;
 			sourceTree = "<group>";
 		};
+		4F45D1BE1F2CDBBA0082D93B /* HockeyPitch */ = {
+			isa = PBXGroup;
+			children = (
+				4F45D1BF1F2CDBD50082D93B /* Pitch.swift */,
+				4F45D1C11F2CDC380082D93B /* PitchStripingLayer.swift */,
+			);
+			name = HockeyPitch;
+			sourceTree = "<group>";
+		};
 		4F9249CD1F1A6D82004E9CD0 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
@@ -236,6 +249,7 @@
 		4F9249CE1F1A6D8B004E9CD0 /* UI Elements */ = {
 			isa = PBXGroup;
 			children = (
+				4F45D1BE1F2CDBBA0082D93B /* HockeyPitch */,
 				4F45D1B71F2CAE860082D93B /* UndoButton */,
 				4F45D1AE1F2C8EC40082D93B /* BackgroundCircle */,
 				4FB88DDF1F22446500DDB034 /* StopWatch */,
@@ -389,9 +403,11 @@
 				4FB88DE31F229F7F00DDB034 /* StopWatchTimer.swift in Sources */,
 				4F0C9BD61F17DF7200956C53 /* RadialGradientView.swift in Sources */,
 				4FF9D4811F2160D000CA687C /* ContainerView.swift in Sources */,
+				4F45D1C21F2CDC380082D93B /* PitchStripingLayer.swift in Sources */,
 				4F45D1BB1F2CBEBF0082D93B /* ResetButton.swift in Sources */,
 				4F0C9BCB1F17C10A00956C53 /* MenuVC.swift in Sources */,
 				4F0C9BD01F17C3B300956C53 /* MenuCircle.swift in Sources */,
+				4F45D1C01F2CDBD50082D93B /* Pitch.swift in Sources */,
 				4F1BC6EE1F251FD300FE8A78 /* StopWatchSmallLabel.swift in Sources */,
 				4F3874AA1F23BC72000FE09A /* StopWatch.swift in Sources */,
 				4F45D1AB1F2C89D20082D93B /* DismissButtonLayer.swift in Sources */,
