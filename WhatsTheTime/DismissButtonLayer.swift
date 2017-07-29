@@ -1,5 +1,5 @@
 //
-//  HamburgerButtonLayer.swift
+//  DismissButtonLayer.swift
 //  WhatsTheTime
 //
 //  Created by Steven Adons on 29/07/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HamburgerButtonLayer: CALayer {
+class DismissButtonLayer: CALayer {
 
     
     // MARK: - Properties
@@ -27,16 +27,12 @@ class HamburgerButtonLayer: CALayer {
         // Configure self
         backgroundColor = COLOR.White.cgColor
         
-        // Set up sublayers
+        // Set up and add sublayers
         shape = createShape()
-        shape.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        shape.bounds = CGRect(x: 0, y: 0, width: 44, height: 44)
-        
+        addSublayer(shape)
+
         // Set bounds if layer has to be fixed size
         bounds = CGRect(x: 0, y: 0, width: 44, height: 44)
-        
-        // Add sublayers
-        addSublayer(shape)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -50,7 +46,8 @@ class HamburgerButtonLayer: CALayer {
     override func layoutSublayers() {
         super.layoutSublayers()
         cornerRadius = min(bounds.width, bounds.height) / 2
-        self.shape.position = CGPoint(x: bounds.size.width / 2, y: bounds.size.height / 2)
+        shape.position = CGPoint(x: bounds.size.width / 2, y: bounds.size.height / 2)
+        shape.bounds = bounds
     }
     
     
@@ -69,12 +66,10 @@ class HamburgerButtonLayer: CALayer {
     
     private func createPath() -> UIBezierPath {
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: 12, y: 17))
-        path.addLine(to: CGPoint(x: 32, y: 17))
-        path.move(to: CGPoint(x: 12, y: 22))
-        path.addLine(to: CGPoint(x: 32, y: 22))
-        path.move(to: CGPoint(x: 12, y: 27))
-        path.addLine(to: CGPoint(x: 32, y: 27))
+        path.move(to: CGPoint(x: 15, y: 15))
+        path.addLine(to: CGPoint(x: 29, y: 29))
+        path.move(to: CGPoint(x: 29, y: 15))
+        path.addLine(to: CGPoint(x: 15, y: 29))
         return path
     }
 

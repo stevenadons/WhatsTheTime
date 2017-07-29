@@ -22,7 +22,7 @@ class MenuVC: UIViewController {
     // MARK: - Properties
     
     private var logo: Logo!
-    private var dismissButton: DismissButton!
+    private var dismissButton: DismissButtonIconOnly!
     private var menu: Menu!
     
     private let topCirclesInset: CGFloat = 70
@@ -39,7 +39,7 @@ class MenuVC: UIViewController {
         setupViews()
         
         // to skip menu
-        handleNavigation(for: MenuItem.Timer)
+//        handleNavigation(for: MenuItem.Timer)
     }
     
     
@@ -58,7 +58,8 @@ class MenuVC: UIViewController {
         logo = Bundle.main.loadNibNamed(NIBNAME.Logo, owner: self, options: nil)?.last as! Logo
         view.addSubview(logo)
         
-        dismissButton = Bundle.main.loadNibNamed(NIBNAME.DismissButton, owner: self, options: nil)?.last as! DismissButton
+//        dismissButton = Bundle.main.loadNibNamed(NIBNAME.DismissButton, owner: self, options: nil)?.last as! DismissButton
+        dismissButton = DismissButtonIconOnly()
         dismissButton.addTarget(self, action: #selector(handleDismiss(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(dismissButton)
         
@@ -73,10 +74,10 @@ class MenuVC: UIViewController {
             logo.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 40)),
             logo.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 23)),
             
-            dismissButton.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 20)),
-            dismissButton.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 20)),
+            dismissButton.widthAnchor.constraint(equalToConstant: 44),
+            dismissButton.heightAnchor.constraint(equalToConstant: 44),
             dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 30)),
-            dismissButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 27)),
+            dismissButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 13)),
             
             menu.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             menu.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: (topCirclesInset - bottomCirclesInset) / 2),
@@ -89,7 +90,7 @@ class MenuVC: UIViewController {
     
     // MARK: - Private Methods
     
-    @objc private func handleDismiss(sender: DismissButton, forEvent event: UIEvent) {
+    @objc private func handleDismiss(sender: DismissButtonIconOnly, forEvent event: UIEvent) {
         
         print("dismissed")
     }

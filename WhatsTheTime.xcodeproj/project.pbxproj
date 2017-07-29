@@ -24,6 +24,8 @@
 		4F3BEDD21F1D5F90005A2665 /* Sliding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3BEDD11F1D5F90005A2665 /* Sliding.swift */; };
 		4F45D1A71F2C75710082D93B /* HamburgerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1A61F2C75710082D93B /* HamburgerButton.swift */; };
 		4F45D1A91F2C7B2D0082D93B /* HamburgerButtonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1A81F2C7B2D0082D93B /* HamburgerButtonLayer.swift */; };
+		4F45D1AB1F2C89D20082D93B /* DismissButtonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1AA1F2C89D20082D93B /* DismissButtonLayer.swift */; };
+		4F45D1AD1F2C8D410082D93B /* DismissButtonIconOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1AC1F2C8D410082D93B /* DismissButtonIconOnly.swift */; };
 		4F6FFEA41F1FE543004A2257 /* CoordinateScalor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6FFEA31F1FE543004A2257 /* CoordinateScalor.swift */; };
 		4F9249D01F1A6DD9004E9CD0 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */; };
 		4F9249D21F1A7270004E9CD0 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9249D11F1A7270004E9CD0 /* Menu.swift */; };
@@ -34,7 +36,6 @@
 		4FB13FFC1F195AAE0025088A /* agdollar.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4FB13FFB1F195AAE0025088A /* agdollar.ttf */; };
 		4FB13FFE1F195EC40025088A /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB13FFD1F195EC40025088A /* GlobalConstants.swift */; };
 		4FB140001F19661F0025088A /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB13FFF1F19661F0025088A /* DismissButton.swift */; };
-		4FB140021F1966300025088A /* DismissButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FB140011F1966300025088A /* DismissButton.xib */; };
 		4FB25CB31F24D9B4008B3154 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4FB25CB21F24D9B4008B3154 /* Localizable.strings */; };
 		4FB88DE11F2248A400DDB034 /* HockeyGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE01F2248A400DDB034 /* HockeyGame.swift */; };
 		4FB88DE31F229F7F00DDB034 /* StopWatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */; };
@@ -62,6 +63,8 @@
 		4F3BEDD11F1D5F90005A2665 /* Sliding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sliding.swift; sourceTree = "<group>"; };
 		4F45D1A61F2C75710082D93B /* HamburgerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButton.swift; sourceTree = "<group>"; };
 		4F45D1A81F2C7B2D0082D93B /* HamburgerButtonLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButtonLayer.swift; sourceTree = "<group>"; };
+		4F45D1AA1F2C89D20082D93B /* DismissButtonLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButtonLayer.swift; sourceTree = "<group>"; };
+		4F45D1AC1F2C8D410082D93B /* DismissButtonIconOnly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButtonIconOnly.swift; sourceTree = "<group>"; };
 		4F6FFEA31F1FE543004A2257 /* CoordinateScalor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoordinateScalor.swift; sourceTree = "<group>"; };
 		4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		4F9249D11F1A7270004E9CD0 /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
@@ -72,7 +75,6 @@
 		4FB13FFB1F195AAE0025088A /* agdollar.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = agdollar.ttf; sourceTree = "<group>"; };
 		4FB13FFD1F195EC40025088A /* GlobalConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		4FB13FFF1F19661F0025088A /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
-		4FB140011F1966300025088A /* DismissButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DismissButton.xib; sourceTree = "<group>"; };
 		4FB25CB21F24D9B4008B3154 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		4FB88DE01F2248A400DDB034 /* HockeyGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HockeyGame.swift; sourceTree = "<group>"; };
 		4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchTimer.swift; sourceTree = "<group>"; };
@@ -248,10 +250,11 @@
 		4FB88DDE1F22445800DDB034 /* IconButtons */ = {
 			isa = PBXGroup;
 			children = (
-				4FB140011F1966300025088A /* DismissButton.xib */,
-				4FB13FFF1F19661F0025088A /* DismissButton.swift */,
 				4F45D1A61F2C75710082D93B /* HamburgerButton.swift */,
 				4F45D1A81F2C7B2D0082D93B /* HamburgerButtonLayer.swift */,
+				4FB13FFF1F19661F0025088A /* DismissButton.swift */,
+				4F45D1AA1F2C89D20082D93B /* DismissButtonLayer.swift */,
+				4F45D1AC1F2C8D410082D93B /* DismissButtonIconOnly.swift */,
 			);
 			name = IconButtons;
 			sourceTree = "<group>";
@@ -333,7 +336,6 @@
 				4FB13FF91F1959560025088A /* Logo.xib in Resources */,
 				4FB13FFC1F195AAE0025088A /* agdollar.ttf in Resources */,
 				4FB25CB31F24D9B4008B3154 /* Localizable.strings in Resources */,
-				4FB140021F1966300025088A /* DismissButton.xib in Resources */,
 				4F0C9BBA1F17BF9A00956C53 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,8 +361,10 @@
 				4F0C9BD01F17C3B300956C53 /* MenuCircle.swift in Sources */,
 				4F1BC6EE1F251FD300FE8A78 /* StopWatchSmallLabel.swift in Sources */,
 				4F3874AA1F23BC72000FE09A /* StopWatch.swift in Sources */,
+				4F45D1AB1F2C89D20082D93B /* DismissButtonLayer.swift in Sources */,
 				4F0C9BCE1F17C26A00956C53 /* Color.swift in Sources */,
 				4F9249D21F1A7270004E9CD0 /* Menu.swift in Sources */,
+				4F45D1AD1F2C8D410082D93B /* DismissButtonIconOnly.swift in Sources */,
 				4F3874A61F237FDD000FE09A /* StopWatchControlIcon.swift in Sources */,
 				4F9249D01F1A6DD9004E9CD0 /* MenuButton.swift in Sources */,
 				4F0C9BD81F17DFEC00956C53 /* RadialGradientLayer.swift in Sources */,

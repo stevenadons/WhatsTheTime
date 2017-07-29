@@ -1,15 +1,15 @@
 //
-//  DismissButton.swift
+//  DismissButtonIconOnly.swift
 //  WhatsTheTime
 //
-//  Created by Steven Adons on 14/07/17.
+//  Created by Steven Adons on 29/07/17.
 //  Copyright © 2017 StevenAdons. All rights reserved.
 //
 
 import UIKit
 
-class DismissButton: UIButton {
-    
+class DismissButtonIconOnly: UIButton {
+
     
     // MARK: - Properties
     
@@ -34,13 +34,10 @@ class DismissButton: UIButton {
         // Configuring self
         backgroundColor = UIColor.clear
         translatesAutoresizingMaskIntoConstraints = false
-        layer.shadowColor = UIColor.lightGray.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 1)
-        layer.shadowOpacity = 0.8
-        layer.shadowRadius = 3
         
         // Add (passive) shapes
         shapeLayer = DismissButtonLayer()
+        shapeLayer.backgroundColor = UIColor.clear.cgColor
         layer.addSublayer(shapeLayer)
     }
     
@@ -51,15 +48,10 @@ class DismissButton: UIButton {
         
         super.layoutSubviews()
         
-        // Cornerradius for round views
-        layer.cornerRadius = bounds.height / 2
-        
         // Adjusting sublayers dimensions to change in UIView dimensions
         shapeLayer.frame = bounds
         
     }
     
-   
-    
-    
+
 }
