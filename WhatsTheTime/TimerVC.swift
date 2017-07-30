@@ -162,10 +162,10 @@ class TimerVC: UIViewController, Sliding {
             stopWatch.centerXAnchor.constraint(equalTo: stopWatchContainer.centerXAnchor),
             stopWatchCenterYConstraint,
             
-            pitchContainer.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 185)),
-            pitchContainer.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 111)),
+            pitchContainer.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 375)),
+            pitchContainer.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 138)),
             pitchContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pitchContainer.centerYAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 429)),
+            pitchContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60),
             
             pitch.leadingAnchor.constraint(equalTo: pitchContainer.leadingAnchor),
             pitch.trailingAnchor.constraint(equalTo: pitchContainer.trailingAnchor),
@@ -240,7 +240,6 @@ class TimerVC: UIViewController, Sliding {
     }
     
     @objc private func hideUndoButton() {
-        print("\(undoButtonTopConstraint.constant)")
         if messageTimer != nil {
             messageTimer!.invalidate()
             messageTimer = nil
@@ -264,12 +263,7 @@ class TimerVC: UIViewController, Sliding {
     // MARK: - Private Methods
     
     @objc private func showMenu(sender: HamburgerButton, forEvent event: UIEvent) {
-        // test
-//        UIView.animate(withDuration: 2, delay: 1, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
-//            self.pitch.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-//        })
         print("menu")
-        print("pitch frame is \(pitch.frame)")
     }
     
     @objc private func resetButtonTapped(sender: ResetButtonIconOnly, forEvent event: UIEvent) {
@@ -303,6 +297,7 @@ class TimerVC: UIViewController, Sliding {
 
 extension TimerVC: StopWatchDelegate {
     
+    // Possibly delete?
     func handleTimerStateChange(stopWatchTimer: StopWatchTimer, completionHandler: (() -> Void)?) {
         switch stopWatchTimer.state {
         case .WaitingToStart:

@@ -2,7 +2,7 @@
 //  Pitch.swift
 //  WhatsTheTime
 //
-//  Created by Steven Adons on 29/07/17.
+//  Created by Steven Adons on 30/07/17.
 //  Copyright © 2017 StevenAdons. All rights reserved.
 //
 
@@ -13,13 +13,8 @@ class Pitch: UIView {
     
     // MARK: - Properties
     
-    private var childView: UIView!
-    private var striping: PitchStripingLayer!
-    
-    private var pitchFrame: CGRect = CGRect.zero
-    private var viewRatio: CGFloat {
-        return bounds.width / bounds.height
-    }
+    private var ball: UIView!
+    private var background: PitchBackgroundLayer!
     
     
     
@@ -37,12 +32,24 @@ class Pitch: UIView {
     
     private func setup() {
         
-        backgroundColor = COLOR.Theme
+        backgroundColor = UIColor.clear
         translatesAutoresizingMaskIntoConstraints = false
         
-        striping = PitchStripingLayer()
-        striping.frame = bounds
-        layer.addSublayer(striping)
+        ball = UIView()
+        ball.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(ball)
+        
+//        // Childviews - constraints (or in layoutSubviews ?)
+//        NSLayoutConstraint.activate([
+//            childView.centerXAnchor.constraint(equalTo: centerXAnchor),
+//            childView.centerYAnchor.constraint(equalTo: centerYAnchor),
+//            childView.heightAnchor.constraint(equalTo: heightAnchor),
+//            childView.widthAnchor.constraint(equalTo: widthAnchor),
+//            ])
+        
+        background = PitchBackgroundLayer()
+        background.frame = bounds
+        layer.addSublayer(background)
     }
     
     
@@ -50,27 +57,29 @@ class Pitch: UIView {
     // MARK: - Layout and draw methods
     
     override func layoutSubviews() {
-        
         super.layoutSubviews()
+        background.frame = bounds
+        background.setNeedsLayout()
+    }
+    
+    
+    
+    // MARK: - Hit testing
+    
+    //  Sometimes it is necessary for a view to ignore touch events and pass them through to the views below.
+    //  For example, assume a transparent overlay view placed above all other application views.
+    //  The overlay has some subviews in the form of controls and buttons which should respond to touches normally.
+    //  But touching the overlay somewhere else should pass the touch events to the views below the overlay.
+    //  http://smnh.me/hit-testing-in-ios/
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         
-        if viewRatio > striping.designRatio {
-            let inset = (bounds.width - bounds.height * striping.designRatio) / 2
-            pitchFrame = bounds.insetBy(dx: inset, dy: 0).insetBy(dx: 15, dy: 15)
-        } else {
-            let inset = (bounds.height - bounds.width / striping.designRatio) / 2
-            pitchFrame = bounds.insetBy(dx: 0, dy: inset).insetBy(dx: 15, dy: 15)
+        var hitTestView = super.hitTest(point, with: event)
+        if hitTestView == self {
+            hitTestView = nil
         }
-        
-        striping.frame = pitchFrame
-        striping.setNeedsLayout()
+        return hitTestView
     }
     
-    
-    override func draw(_ rect: CGRect) {
-        
-        super.draw(rect)
-        striping.setNeedsDisplay()
-    }
-    
+
 
 }
