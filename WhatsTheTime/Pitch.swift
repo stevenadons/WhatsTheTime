@@ -53,13 +53,12 @@ class Pitch: UIView {
     }
     
     
-    
     // MARK: - Layout and draw methods
     
     override func layoutSubviews() {
         super.layoutSubviews()
         background.frame = bounds
-        background.setNeedsLayout()
+        background.layoutIfNeeded()
     }
     
     

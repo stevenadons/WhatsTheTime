@@ -176,7 +176,6 @@ class StopWatch: UIControl {
         
         // Add progressbars
         firstProgressBar = progressBarLayer(for: .First)
-        firstProgressBar.backgroundColor = UIColor.blue.cgColor
         squareContainer.addSublayer(firstProgressBar)
         secondProgressBar = progressBarLayer(for: .Second)
         squareContainer.addSublayer(secondProgressBar)

@@ -33,18 +33,13 @@ class PitchBackgroundLayer: CALayer {
         
         // Set up sublayers
         edge = createEdge(path: edgePath())
-        edge.bounds = CGRect(x: 0, y: 0, width: 375, height: 138)
-        edge.position = position
         center = createCenter(path: centerPath())
-        center.bounds = CGRect(x: 0, y: 0, width: 375, height: 138)
-        center.position = position
-        
-        // Set bounds if layer has to be fixed size
-        bounds = CGRect(x: 0, y: 0, width: 375, height: 138)
+        striping = createStriping(path: stripingPath())
         
         // Add sublayers
         addSublayer(edge)
         addSublayer(center)
+        addSublayer(striping)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -64,6 +59,9 @@ class PitchBackgroundLayer: CALayer {
         center.bounds = bounds
         center.position = position
         center.path = centerPath().cgPath
+        striping.bounds = bounds
+        striping.position = position
+        striping.path = stripingPath().cgPath
     }
     
     
@@ -109,7 +107,7 @@ class PitchBackgroundLayer: CALayer {
         let innerInset: CGFloat = 8
         let offScreen: CGFloat = 2
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: -offScreen, y: 0 + outerInset))
+        path.move(to: CGPoint(x: -offScreen, y: outerInset))
         path.addCurve(to: CGPoint(x: width/2, y: height * 36/138 + innerInset), controlPoint1: CGPoint(x: -offScreen, y: outerInset), controlPoint2: CGPoint(x: width/4, y: height * 36/138 + innerInset))
         path.addCurve(to: CGPoint(x: width + offScreen, y: outerInset), controlPoint1: CGPoint(x: width * 3/4, y: height * 36/138 + innerInset), controlPoint2: CGPoint(x: width + offScreen, y: outerInset))
         path.addLine(to: CGPoint(x: width + offScreen, y: height - outerInset))
@@ -118,6 +116,43 @@ class PitchBackgroundLayer: CALayer {
         path.close()
         return path
     }
+    
+    private func createStriping(path: UIBezierPath) -> CAShapeLayer {
+        let shape = CAShapeLayer()
+        shape.path = path.cgPath
+        shape.strokeColor = COLOR.White.cgColor
+        shape.fillColor = UIColor.clear.cgColor
+        shape.allowsEdgeAntialiasing = true
+        return shape
+    }
 
-
+    private func stripingPath() -> UIBezierPath {
+        let width = bounds.width
+        let height = bounds.height
+        let outerInset: CGFloat = 17
+        let path = UIBezierPath()
+        
+        path.move(to: CGPoint(x: width * 22.5/375, y: outerInset + height * 6.5/138))
+        path.addLine(to: CGPoint(x: width * 22.5/375, y: height - outerInset - height * 6.5/138))
+        path.move(to: CGPoint(x: width * 56.5/375, y: outerInset + height * 14.5/138))
+        path.addLine(to: CGPoint(x: width * 56.5/375, y: height - outerInset - height * 14.5/138))
+        path.move(to: CGPoint(x: width * 96.5/375, y: outerInset + height * 20.5/138))
+        path.addLine(to: CGPoint(x: width * 96.5/375, y: height - outerInset - height * 20.5/138))
+        path.move(to: CGPoint(x: width * 141.5/375, y: outerInset + height * 24.5/138))
+        path.addLine(to: CGPoint(x: width * 141.5/375, y: height - outerInset - height * 24.5/138))
+        
+        path.move(to: CGPoint(x: width / 2, y: outerInset + height * 27/138))
+        path.addLine(to: CGPoint(x: width / 2, y: height - outerInset - height * 27/138))
+       
+        path.move(to: CGPoint(x: width - width * 22.5/375, y: outerInset + height * 6.5/138))
+        path.addLine(to: CGPoint(x: width - width * 22.5/375, y: height - outerInset - height * 6.5/138))
+        path.move(to: CGPoint(x: width - width * 56.5/375, y: outerInset + height * 14.5/138))
+        path.addLine(to: CGPoint(x: width - width * 56.5/375, y: height - outerInset - height * 14.5/138))
+        path.move(to: CGPoint(x: width - width * 96.5/375, y: outerInset + height * 20.5/138))
+        path.addLine(to: CGPoint(x: width - width * 96.5/375, y: height - outerInset - height * 20.5/138))
+        path.move(to: CGPoint(x: width - width * 141.5/375, y: outerInset + height * 24.5/138))
+        path.addLine(to: CGPoint(x: width - width * 141.5/375, y: height - outerInset - height * 24.5/138))
+        
+        return path
+    }
 }
