@@ -44,7 +44,7 @@ enum COLOR {
     static let MenuCircleSmallInside = UIColor(hexString: "#2E3694")
     
     static let White = UIColor(hexString: "#FFFFFF")
-    static let PitchBlue = UIColor(hexString: "#2C6DB8")
+    static let PitchBlue = UIColor(hexString: "#4784C9") // 2C6DB8
     static let PitchEdge = UIColor(hexString: "#8DBFF7")
     static let Striping = UIColor(hexString: "#FFFFFF") //6F7498
 }

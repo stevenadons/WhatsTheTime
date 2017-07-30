@@ -163,7 +163,7 @@ class TimerVC: UIViewController, Sliding {
             stopWatchCenterYConstraint,
             
             pitchContainer.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 375)),
-            pitchContainer.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 138)),
+            pitchContainer.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 138)), 
             pitchContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             pitchContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60),
             
