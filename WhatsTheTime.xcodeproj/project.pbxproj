@@ -44,6 +44,7 @@
 		4FB13FFC1F195AAE0025088A /* agdollar.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4FB13FFB1F195AAE0025088A /* agdollar.ttf */; };
 		4FB13FFE1F195EC40025088A /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB13FFD1F195EC40025088A /* GlobalConstants.swift */; };
 		4FB140001F19661F0025088A /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB13FFF1F19661F0025088A /* DismissButton.swift */; };
+		4FB1D07F1F30E90E00C66A4F /* Ball.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB1D07E1F30E90E00C66A4F /* Ball.swift */; };
 		4FB25CB31F24D9B4008B3154 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4FB25CB21F24D9B4008B3154 /* Localizable.strings */; };
 		4FB88DE11F2248A400DDB034 /* HockeyGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE01F2248A400DDB034 /* HockeyGame.swift */; };
 		4FB88DE31F229F7F00DDB034 /* StopWatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */; };
@@ -90,6 +91,7 @@
 		4FB13FFB1F195AAE0025088A /* agdollar.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = agdollar.ttf; sourceTree = "<group>"; };
 		4FB13FFD1F195EC40025088A /* GlobalConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		4FB13FFF1F19661F0025088A /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
+		4FB1D07E1F30E90E00C66A4F /* Ball.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ball.swift; sourceTree = "<group>"; };
 		4FB25CB21F24D9B4008B3154 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		4FB88DE01F2248A400DDB034 /* HockeyGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HockeyGame.swift; sourceTree = "<group>"; };
 		4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchTimer.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 			children = (
 				4F50BF141F2DDEAA002B2293 /* Pitch.swift */,
 				4F50BF121F2DDA7D002B2293 /* PitchBackgroundLayer.swift */,
+				4FB1D07E1F30E90E00C66A4F /* Ball.swift */,
 			);
 			name = Pitch;
 			sourceTree = "<group>";
@@ -249,13 +252,13 @@
 		4F9249CE1F1A6D8B004E9CD0 /* UI Elements */ = {
 			isa = PBXGroup;
 			children = (
-				4F45D1BE1F2CDBBA0082D93B /* Pitch */,
-				4F45D1B71F2CAE860082D93B /* UndoButton */,
-				4F45D1AE1F2C8EC40082D93B /* BackgroundCircle */,
-				4FB88DDF1F22446500DDB034 /* StopWatch */,
-				4FB88DDE1F22445800DDB034 /* IconButtons */,
 				4FB88DDD1F22444D00DDB034 /* Logo */,
 				4FB88DDC1F22444500DDB034 /* Menu */,
+				4FB88DDE1F22445800DDB034 /* IconButtons */,
+				4F45D1AE1F2C8EC40082D93B /* BackgroundCircle */,
+				4FB88DDF1F22446500DDB034 /* StopWatch */,
+				4F45D1BE1F2CDBBA0082D93B /* Pitch */,
+				4F45D1B71F2CAE860082D93B /* UndoButton */,
 			);
 			name = "UI Elements";
 			sourceTree = "<group>";
@@ -416,6 +419,7 @@
 				4F45D1BD1F2CBEF20082D93B /* ResetButtonIconOnly.swift in Sources */,
 				4F3874A61F237FDD000FE09A /* StopWatchControlIcon.swift in Sources */,
 				4F45D1B41F2C9ECC0082D93B /* HamburgerButtonIconOnly.swift in Sources */,
+				4FB1D07F1F30E90E00C66A4F /* Ball.swift in Sources */,
 				4F9249D01F1A6DD9004E9CD0 /* MenuButton.swift in Sources */,
 				4F45D1B61F2CAE820082D93B /* UndoButton.swift in Sources */,
 				4F0C9BD81F17DFEC00956C53 /* RadialGradientLayer.swift in Sources */,

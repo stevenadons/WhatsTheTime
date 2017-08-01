@@ -13,7 +13,7 @@ class Pitch: UIView {
     
     // MARK: - Properties
     
-    private var ball: UIView!
+    private var ball: Ball!
     private var background: PitchBackgroundLayer!
     
     
@@ -21,11 +21,13 @@ class Pitch: UIView {
     // MARK: - Initializing
     
     override init(frame: CGRect) {
+        
         super.init(frame: frame)
         setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
+        
         super.init(coder: aDecoder)
         setup()
     }
@@ -35,30 +37,46 @@ class Pitch: UIView {
         backgroundColor = UIColor.clear
         translatesAutoresizingMaskIntoConstraints = false
         
-        ball = UIView()
-        ball.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(ball)
-        
-//        // Childviews - constraints (or in layoutSubviews ?)
-//        NSLayoutConstraint.activate([
-//            childView.centerXAnchor.constraint(equalTo: centerXAnchor),
-//            childView.centerYAnchor.constraint(equalTo: centerYAnchor),
-//            childView.heightAnchor.constraint(equalTo: heightAnchor),
-//            childView.widthAnchor.constraint(equalTo: widthAnchor),
-//            ])
-        
         background = PitchBackgroundLayer()
         background.frame = bounds
         layer.addSublayer(background)
+        
+        ball = Ball()
+        addSubview(ball)
+        
+        // Childviews - constraints (or in layoutSubviews ?)
+        NSLayoutConstraint.activate([
+            ball.centerXAnchor.constraint(equalTo: centerXAnchor),
+            ball.centerYAnchor.constraint(equalTo: centerYAnchor),
+            ball.heightAnchor.constraint(equalToConstant: 40),
+            ball.widthAnchor.constraint(equalToConstant: 40),
+            ])
     }
     
     
     // MARK: - Layout and draw methods
     
     override func layoutSubviews() {
+        
         super.layoutSubviews()
         background.frame = bounds
         background.layoutIfNeeded()
+    }
+    
+    func showBall() {
+        
+        ball.isUserInteractionEnabled = true
+        UIView.animate(withDuration: 0.2) { 
+            self.ball.alpha = 1
+        }
+    }
+    
+    func hideBall() {
+        
+        ball.isUserInteractionEnabled = false
+        UIView.animate(withDuration: 0.2) {
+            self.ball.alpha = 0
+        }
     }
     
     

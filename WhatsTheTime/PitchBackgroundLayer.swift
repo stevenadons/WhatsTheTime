@@ -72,7 +72,7 @@ class PitchBackgroundLayer: CALayer {
         let shape = CAShapeLayer()
         shape.path = path.cgPath
         shape.strokeColor = UIColor.clear.cgColor
-        shape.fillColor = COLOR.PitchEdge.cgColor
+        shape.fillColor = COLOR.Theme.cgColor
         shape.allowsEdgeAntialiasing = true
         return shape
     }
