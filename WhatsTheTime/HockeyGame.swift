@@ -43,8 +43,8 @@ class HockeyGame {
     
     // MARK: - Properties
     
-    private var scoreHome: Int = 0
-    private var scoreAway: Int = 0
+    private(set) var homeScore: Int = 0
+    private(set) var awayScore: Int = 0
     var half: Half = .First
     var status: Status = .WaitingToStart
     var duration: MinutesInHalf = .Twenty
@@ -59,5 +59,17 @@ class HockeyGame {
         self.duration = duration
     }
     
+    
+    // MARK: - User Methods
+
+    func homeScored() {
+        
+        homeScore += 1
+    }
+    
+    func awayScored() {
+        
+        awayScore += 1
+    }
     
 }

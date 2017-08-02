@@ -49,6 +49,7 @@
 		4FB88DE11F2248A400DDB034 /* HockeyGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE01F2248A400DDB034 /* HockeyGame.swift */; };
 		4FB88DE31F229F7F00DDB034 /* StopWatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */; };
 		4FF9D4811F2160D000CA687C /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9D4801F2160D000CA687C /* ContainerView.swift */; };
+		4FFF69E61F323DA80003B361 /* ScorePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFF69E51F323DA80003B361 /* ScorePanel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -96,6 +97,7 @@
 		4FB88DE01F2248A400DDB034 /* HockeyGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HockeyGame.swift; sourceTree = "<group>"; };
 		4FB88DE21F229F7F00DDB034 /* StopWatchTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatchTimer.swift; sourceTree = "<group>"; };
 		4FF9D4801F2160D000CA687C /* ContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
+		4FFF69E51F323DA80003B361 /* ScorePanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScorePanel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -258,6 +260,7 @@
 				4F45D1AE1F2C8EC40082D93B /* BackgroundCircle */,
 				4FB88DDF1F22446500DDB034 /* StopWatch */,
 				4F45D1BE1F2CDBBA0082D93B /* Pitch */,
+				4FFF69E41F323D830003B361 /* ScorePanel */,
 				4F45D1B71F2CAE860082D93B /* UndoButton */,
 			);
 			name = "UI Elements";
@@ -317,6 +320,14 @@
 				4F3874A51F237FDD000FE09A /* StopWatchControlIcon.swift */,
 			);
 			name = StopWatch;
+			sourceTree = "<group>";
+		};
+		4FFF69E41F323D830003B361 /* ScorePanel */ = {
+			isa = PBXGroup;
+			children = (
+				4FFF69E51F323DA80003B361 /* ScorePanel.swift */,
+			);
+			name = ScorePanel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -404,6 +415,7 @@
 				4F3874A21F23698A000FE09A /* StopWatchLabel.swift in Sources */,
 				4FB13FFE1F195EC40025088A /* GlobalConstants.swift in Sources */,
 				4FB88DE31F229F7F00DDB034 /* StopWatchTimer.swift in Sources */,
+				4FFF69E61F323DA80003B361 /* ScorePanel.swift in Sources */,
 				4F0C9BD61F17DF7200956C53 /* RadialGradientView.swift in Sources */,
 				4FF9D4811F2160D000CA687C /* ContainerView.swift in Sources */,
 				4F45D1BB1F2CBEBF0082D93B /* ResetButton.swift in Sources */,

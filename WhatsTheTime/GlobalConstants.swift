@@ -70,6 +70,9 @@ let LS_FULLTIME = NSLocalizedString("Full Time", comment: "Full time message")
 let LS_FIRSTHALFLABEL = NSLocalizedString("H1", comment: "Half time indication label")
 let LS_SECONDHALFLABEL = NSLocalizedString("H2", comment: "Half time indication label")
 let LS_WARNINGRESETGAME = NSLocalizedString("RESET GAME?", comment: "When reset button tapped")
+let LS_HOME = NSLocalizedString("HOME", comment: "Name for home team")
+let LS_AWAY = NSLocalizedString("AWAY", comment: "Name for away team")
+let LS_UNDOGOAL = NSLocalizedString("UNDO GOAL", comment: "Message for undoing goal")
 
 
 

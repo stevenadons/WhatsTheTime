@@ -8,6 +8,14 @@
 
 import UIKit
 
+
+protocol BallDelegate: class {
+    
+    func homeScored()
+    func awayScored()
+}
+
+
 class Pitch: UIView {
 
     
@@ -15,6 +23,7 @@ class Pitch: UIView {
     
     private var ball: Ball!
     private var background: PitchBackgroundLayer!
+    fileprivate var delegate: PitchDelegate?
     
     
     
@@ -32,6 +41,12 @@ class Pitch: UIView {
         setup()
     }
     
+    convenience init(delegate: PitchDelegate) {
+        
+        self.init()
+        self.delegate = delegate
+    }
+    
     private func setup() {
         
         backgroundColor = UIColor.clear
@@ -41,7 +56,7 @@ class Pitch: UIView {
         background.frame = bounds
         layer.addSublayer(background)
         
-        ball = Ball()
+        ball = Ball(delegate: self)
         addSubview(ball)
         
         // Childviews - constraints (or in layoutSubviews ?)
@@ -96,7 +111,18 @@ class Pitch: UIView {
         }
         return hitTestView
     }
+}
+
+
+extension Pitch: BallDelegate {
     
-
-
+    func homeScored() {
+        
+        delegate?.scoreHome()
+    }
+    
+    func awayScored() {
+        
+        delegate?.scoreAway()
+    }
 }
