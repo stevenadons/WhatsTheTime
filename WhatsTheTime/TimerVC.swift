@@ -19,10 +19,6 @@ protocol PitchDelegate: class {
     
     func scoreHome()
     func scoreAway()
-}
-
-protocol ScorePanelDelegate: class {
-    
     func scoreLabelChanged()
 }
 
@@ -43,8 +39,6 @@ class TimerVC: UIViewController, Sliding {
     private var undoButtonContainer: ContainerView!
     private var undoButton: UIButton!
     fileprivate var messageLabel: UILabel!
-    private var scorePanelContainer: ContainerView!
-    fileprivate var scorePanel: ScorePanel!
     
     fileprivate var game: HockeyGame!
     fileprivate var stopWatchCenterYConstraint: NSLayoutConstraint!
@@ -107,11 +101,6 @@ class TimerVC: UIViewController, Sliding {
         pitch.hideBall()
         pitchContainer.addSubview(pitch)
         
-        scorePanelContainer = ContainerView()
-        view.addSubview(scorePanelContainer)
-        scorePanel = ScorePanel(delegate: self)
-        scorePanelContainer.addSubview(scorePanel)
-        
         maskView = UIButton()
         maskView.addTarget(self, action: #selector(maskViewTapped(sender:forEvent:)), for: [.touchUpInside])
         maskView.translatesAutoresizingMaskIntoConstraints = false
@@ -148,7 +137,6 @@ class TimerVC: UIViewController, Sliding {
 
         stopWatchCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
         pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
-        scorePanelCenterYConstraint = NSLayoutConstraint(item: scorePanel, attribute: .centerY, relatedBy: .equal, toItem: scorePanelContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
         undoButtonTopConstraint = NSLayoutConstraint(item: undoButton, attribute: .top, relatedBy: .equal, toItem: undoButtonContainer, attribute: .top, multiplier: 1, constant: 130)
         
         NSLayoutConstraint.activate([
@@ -177,23 +165,14 @@ class TimerVC: UIViewController, Sliding {
             stopWatch.centerXAnchor.constraint(equalTo: stopWatchContainer.centerXAnchor),
             stopWatchCenterYConstraint,
             
-            pitchContainer.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 375)),
-            pitchContainer.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 138)), 
+            pitchContainer.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 380)),
+            pitchContainer.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 202)),
             pitchContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pitchContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 55),
+            pitchContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 75),
             pitch.leadingAnchor.constraint(equalTo: pitchContainer.leadingAnchor),
             pitch.trailingAnchor.constraint(equalTo: pitchContainer.trailingAnchor),
             pitch.heightAnchor.constraint(equalTo: pitchContainer.heightAnchor),
             pitchCenterYConstraint,
-            
-            scorePanelContainer.widthAnchor.constraint(equalToConstant: 170),
-            scorePanelContainer.heightAnchor.constraint(equalToConstant: 70),
-            scorePanelContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            scorePanelContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: CoordinateScalor.convert(y: -145)),
-            scorePanel.widthAnchor.constraint(equalTo: scorePanelContainer.widthAnchor),
-            scorePanel.heightAnchor.constraint(equalTo: scorePanelContainer.heightAnchor),
-            scorePanel.centerXAnchor.constraint(equalTo: scorePanelContainer.centerXAnchor),
-            scorePanelCenterYConstraint,
             
             maskView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             maskView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -234,12 +213,12 @@ class TimerVC: UIViewController, Sliding {
     override func viewDidAppear(_ animated: Bool) {
         
         super.viewDidAppear(animated)
+        slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
         animateViewsOnAppear()
     }
     
     private func animateViewsOnAppear() {
         
-        slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
         stopWatchCenterYConstraint.constant = 0
         UIView.animate(withDuration: 0.8, delay: 0.3, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.stopWatchContainer.layoutIfNeeded()
@@ -248,11 +227,35 @@ class TimerVC: UIViewController, Sliding {
         UIView.animate(withDuration: 0.8, delay: 0.6, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.pitchContainer.layoutIfNeeded()
         })
-        scorePanelCenterYConstraint.constant = 0
-        UIView.animate(withDuration: 0.8, delay: 0.9, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
-            self.scorePanelContainer.layoutIfNeeded()
+        UIView.animate(withDuration: 1, delay: 1.0, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
+            self.circle.transform = .identity
+        }, completion: nil)
+    }
+    
+    private func shrinkViews(completion: (() -> Void)?) {
+        
+        UIView.animate(withDuration: 0.2, delay: 0.0, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
+            self.circle.transform = CGAffineTransform(scaleX: 2, y: 2)
+        }, completion: nil)
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseIn], animations: {
+            self.stopWatch.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+        }, completion: nil)
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseIn], animations: {
+            self.pitch.transform = CGAffineTransform(scaleX: 1.0, y: 0.0)
+        }, completion: { (finished) in
+            completion?()
         })
-        UIView.animate(withDuration: 1, delay: 1.3, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
+    }
+    
+    private func popUpViews() {
+        
+        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
+            self.stopWatch.transform = CGAffineTransform.identity
+        }, completion: nil)
+        UIView.animate(withDuration: 0.4, delay: 0.2, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
+            self.pitch.transform = CGAffineTransform.identity
+        }, completion: nil)
+        UIView.animate(withDuration: 1, delay: 1.0, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.circle.transform = .identity
         }, completion: nil)
     }
@@ -305,16 +308,13 @@ class TimerVC: UIViewController, Sliding {
         message = LS_WARNINGRESETGAME
         showUndoButton()
         UIView.animate(withDuration: 0.2) { 
-            self.maskView.alpha = 0.4
+            self.maskView.alpha = 0.2
 
         }
         messageTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(hideUndoButton), userInfo: nil, repeats: false)
-        print("reset?")
     }
     
     @objc private func undoButtonTapped(sender: UIButton, forEvent event: UIEvent) {
-        
-        print("undo tapped")
         
         hideUndoButton()
         if message == LS_UNDOGOAL {
@@ -324,14 +324,17 @@ class TimerVC: UIViewController, Sliding {
             }
             // to implement score countdown
         } else if message == LS_WARNINGRESETGAME {
-            stopWatch.reset()
-            handleNewGame()
+            shrinkViews(completion: {
+                self.stopWatch.reset()
+                self.pitch.resetScores()
+                self.handleNewGame()
+                self.popUpViews()
+            })
         }
     }
     
     @objc private func maskViewTapped(sender: UIButton, forEvent event: UIEvent) {
         
-        print("maskk tapped")
         hideUndoButton()
     }
 }
@@ -367,7 +370,7 @@ extension TimerVC: StopWatchDelegate {
         stopWatch.reset()
         stopWatch.setNeedsLayout()
         pitch.hideBall()
-        scorePanel.updateScore(for: game)
+        pitch.resetScores()
     }
 }
 
@@ -377,23 +380,20 @@ extension TimerVC: PitchDelegate {
     func scoreHome() {
         
         game.homeScored()
-        scorePanel.updateScore(for: game)
     }
     
     func scoreAway() {
         
         game.awayScored()
-        scorePanel.updateScore(for: game)
     }
-}
-
-
-extension TimerVC: ScorePanelDelegate {
     
     func scoreLabelChanged() {
         
         message = LS_UNDOGOAL
         showUndoButton()
+        if messageTimer != nil {
+            messageTimer?.invalidate()
+        }
         messageTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(hideUndoButton), userInfo: nil, repeats: false)
     }
 }

@@ -13,9 +13,11 @@ class Ball: UIView {
 
     // MARK: - Properties
     
-    private var leftSwipe: UISwipeGestureRecognizer!
-    private var rightSwipe: UISwipeGestureRecognizer!
-    private var centerFrame: CGRect!
+    private var pan: UIPanGestureRecognizer!
+    private var animator: UIViewPropertyAnimator!
+    var centerFrame: CGRect!
+    private var xOffset: CGFloat!
+
     fileprivate var delegate: BallDelegate?
     
     
@@ -45,13 +47,9 @@ class Ball: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         isUserInteractionEnabled = true
         clipsToBounds = true
-
-        leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleLeftSwipe(recognizer:)))
-        leftSwipe.direction = .left
-        addGestureRecognizer(leftSwipe)
-        rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleRightSwipe(recognizer:)))
-        rightSwipe.direction = .right
-        addGestureRecognizer(rightSwipe)
+        
+        pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan(pan:)))
+        addGestureRecognizer(pan)
     }
     
     
@@ -62,24 +60,25 @@ class Ball: UIView {
         
         super.layoutSubviews()
         bounds = CGRect(x: 0, y: 0, width: 40, height: 40)
-        centerFrame = CGRect(x: frame.origin.x, y: frame.origin.y, width: bounds.width, height: bounds.height)
+        centerFrame = CGRect(x: (superview!.bounds.width - bounds.width) / 2, y: (superview!.bounds.height - bounds.height) / 2, width: bounds.width, height: bounds.height)
         layer.cornerRadius = min(bounds.width, bounds.height) / 2
     }
+    
     
     func repositionBall(withDelay delay: Double) {
         
         isUserInteractionEnabled = true
-        UIView.animate(withDuration: 0.2, delay: delay, options: [.curveEaseOut], animations: {
-            self.frame = self.centerFrame
-        }) { (finished) in
+        frame = self.centerFrame
+
+        UIView.animate(withDuration: 0.2, delay: delay, options: [.curveEaseOut, .allowUserInteraction], animations: {
             self.alpha = 1.0
             self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-            UIView.animate(withDuration: 0.6, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [], animations: {
+        }) { (finished) in
+            UIView.animate(withDuration: 0.6, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [.allowUserInteraction], animations: {
                 self.transform = CGAffineTransform.identity
             }, completion: nil)
         }
     }
-    
     
     
     
@@ -94,32 +93,59 @@ class Ball: UIView {
         return false
     }
     
-    @objc private func handleLeftSwipe(recognizer: UISwipeGestureRecognizer) {
+    @objc private func handlePan(pan: UIPanGestureRecognizer) {
         
-        guard let pitch = superview else { return }
-        UIView.animate(withDuration: 0.15, delay: 0.0, options: [.curveEaseIn], animations: {
-            self.frame = self.frame.offsetBy(dx: -pitch.bounds.width / 2 - self.bounds.width / 2, dy: 0)
-        }, completion: { (finished) in
-            self.delegate?.homeScored()
-            self.alpha = 0.0
-            self.repositionBall(withDelay: 1.0)
-        })
+        let translation = pan.translation(in: superview!)
+        
+        switch pan.state {
+            
+        case .began:
+            xOffset = (UIScreen.main.bounds.width / 2 + bounds.width / 2) * copysign(1.0, translation.x)
+            animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 0.5, animations: {
+                self.frame = self.centerFrame.offsetBy(dx: self.xOffset, dy: 0)
+            })
+            animator.pauseAnimation()
+            
+        case .changed:
+            
+            if copysign(1.0, translation.x) != copysign(1.0, xOffset) {
+                xOffset = (UIScreen.main.bounds.width / 2 + bounds.width / 2) * copysign(1.0, translation.x)
+                animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 0.5, animations: {
+                    self.frame = self.centerFrame.offsetBy(dx: self.xOffset, dy: 0)
+                })
+                animator.pauseAnimation()
+            }
+            animator.fractionComplete = translation.x / xOffset
+            _ = checkBallPositionAndHandleScore(homeSide: (translation.x < 0))
+            
+        case .ended:
+            guard checkBallPositionAndHandleScore(homeSide: (translation.x < 0)) == false else { return }
+            xOffset = 0
+            animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 0.5, animations: {
+                self.frame = self.centerFrame
+            })
+            animator.startAnimation()
+            
+        default:
+            print("other pan state")
+        }
         
     }
     
-    @objc private func handleRightSwipe(recognizer: UISwipeGestureRecognizer) {
+    private func checkBallPositionAndHandleScore(homeSide: Bool) -> Bool {
         
-        guard let pitch = superview else { return }
-        UIView.animate(withDuration: 0.15, delay: 0.0, options: [.curveEaseIn], animations: {
-            self.frame = self.frame.offsetBy(dx: pitch.bounds.width / 2 + self.bounds.width / 2, dy: 0)
-        }, completion: { (finished) in
-            self.delegate?.awayScored()
-            self.alpha = 0.0
-            self.repositionBall(withDelay: 1.0)
-//            self.frame = self.centerFrame
-//            self.setNeedsLayout()
-        })
-        
+        if animator.fractionComplete > 0.70 {
+            if homeSide {
+                delegate?.homeScored()
+            } else {
+                delegate?.awayScored()
+            }
+            animator.stopAnimation(true)
+            alpha = 0
+            repositionBall(withDelay: 1.0)
+            return true
+        }
+        return false
     }
     
 }
