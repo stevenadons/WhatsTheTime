@@ -35,7 +35,17 @@ extension Sliding where Self: UIViewController {
         
         switch to {
         case .In:
+            UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
+                self.view.frame = frame
+                
+            }) { (finished) in
+                if finished {
+                    print("let's ccmplete")
+                    completion?()
+                }
+            }
             break
+        
         case .Out:
             switch offScreenPosition {
             case .Top:
@@ -47,14 +57,13 @@ extension Sliding where Self: UIViewController {
             case .Right:
                 frame.origin.x = UIScreen.main.bounds.width
             }
-        }
-        
-        UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: .curveEaseOut, animations: {
-            self.view.frame = frame
-            
-        }) { (finished) in
-            if finished {
-                completion?()
+            UIView.animate(withDuration: duration, delay: delay, options: [.curveEaseIn], animations: {
+                self.view.frame = frame
+            }) { (finished) in
+                if finished {
+                    print("let's ccmplete")
+                    completion?()
+                }
             }
         }
     }

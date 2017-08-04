@@ -83,7 +83,6 @@ class Menu: UIView {
         }
     }
     
-    
     func disableBeat() {
         
         menuCircles.disableBeat()
@@ -93,10 +92,6 @@ class Menu: UIView {
             timer = nil
         }
     }
-    
-    
-    
-    // MARK: - Private UI Methods
     
     private func setupViews() {
         
@@ -153,7 +148,6 @@ class Menu: UIView {
             ])
     }
     
-    
     @objc private func buttonTapped(sender: MenuButton, forEvent event: UIEvent) {
         
         state = .ButtonTapped
@@ -171,19 +165,24 @@ class Menu: UIView {
         }
     }
     
+    func bringToOriginal(duration: Double, delay: Double, completion: (() -> Void)?) {
+        
+        menuCircles.bringToOriginal(duration: duration, delay: delay, completion: {
+            completion?()
+        })
+    }
     
     // Total duration = 0.55
     private func animateButtons(tappedButton: MenuButton) {
         
         for button in buttons {
             if button.isEqual(tappedButton) {
-                button.fade(duration: 0.2, delay: 0.6, completion: nil)
+                button.fade(duration: 0.2, delay: 0.3, completion: nil)
             } else {
                 button.fade(duration: 0.2, delay: 0.0, completion: nil)
             }
         }
     }
-    
     
     private func animateBeat(button: MenuButton, delay: Double) {
 

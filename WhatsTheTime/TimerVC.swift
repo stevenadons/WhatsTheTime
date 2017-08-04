@@ -66,6 +66,7 @@ class TimerVC: UIViewController, Sliding {
         
         super.viewDidLoad()
         view.backgroundColor = COLOR.LightBackground
+        view.clipsToBounds = true
         game = HockeyGame(duration: .Fifteen)
         setupViews()
     }
@@ -75,7 +76,7 @@ class TimerVC: UIViewController, Sliding {
         // Add UI elements
         
         hamburger = HamburgerButtonIconOnly()
-        hamburger.addTarget(self, action: #selector(showMenu(sender:forEvent:)), for: [.touchUpInside])
+        hamburger.addTarget(self, action: #selector(menuButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(hamburger)
         
         resetButton = ResetButtonIconOnly()
@@ -134,10 +135,7 @@ class TimerVC: UIViewController, Sliding {
         
         
         // Add constraints
-
-        stopWatchCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
-        pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
-        undoButtonTopConstraint = NSLayoutConstraint(item: undoButton, attribute: .top, relatedBy: .equal, toItem: undoButtonContainer, attribute: .top, multiplier: 1, constant: 130)
+        setInitialLayoutConstraints()
         
         NSLayoutConstraint.activate([
             
@@ -199,6 +197,13 @@ class TimerVC: UIViewController, Sliding {
         circle.transform = CGAffineTransform(scaleX: 2, y: 2)
     }
     
+    private func setInitialLayoutConstraints() {
+        
+        stopWatchCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
+        pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
+        undoButtonTopConstraint = NSLayoutConstraint(item: undoButton, attribute: .top, relatedBy: .equal, toItem: undoButtonContainer, attribute: .top, multiplier: 1, constant: 130)
+    }
+    
     
     // MARK: - Drawing and laying out
     
@@ -234,14 +239,16 @@ class TimerVC: UIViewController, Sliding {
     
     private func shrinkViews(completion: (() -> Void)?) {
         
-        UIView.animate(withDuration: 0.2, delay: 0.0, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseIn], animations: {
+            self.stopWatch.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+            self.stopWatch.alpha = 0
+        }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0.2, options: [.curveEaseIn], animations: {
+            self.pitch.transform = CGAffineTransform(scaleX: 1.0, y: 0.01)
+            self.pitch.alpha = 0
+        }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0.4, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.circle.transform = CGAffineTransform(scaleX: 2, y: 2)
-        }, completion: nil)
-        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseIn], animations: {
-            self.stopWatch.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
-        }, completion: nil)
-        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseIn], animations: {
-            self.pitch.transform = CGAffineTransform(scaleX: 1.0, y: 0.0)
         }, completion: { (finished) in
             completion?()
         })
@@ -258,6 +265,14 @@ class TimerVC: UIViewController, Sliding {
         UIView.animate(withDuration: 1, delay: 1.0, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.circle.transform = .identity
         }, completion: nil)
+    }
+    
+    private func resetViews() {
+        
+        stopWatch.transform = CGAffineTransform.identity
+        pitch.transform = CGAffineTransform.identity
+        circle.transform = CGAffineTransform.identity
+        setInitialLayoutConstraints()
     }
     
     fileprivate func showUndoButton() {
@@ -296,9 +311,33 @@ class TimerVC: UIViewController, Sliding {
     
     // MARK: - Private Methods
     
-    @objc private func showMenu(sender: HamburgerButton, forEvent event: UIEvent) {
+    @objc private func menuButtonTapped(sender: HamburgerButton, forEvent event: UIEvent) {
         
-        print("menu")
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.alpha = 0.0
+        }, completion: { (finished) in
+            self.setInitialLayoutConstraints()
+            self.view.alpha  = 1.0
+        })
+        let parent = self.parent as! MenuVC
+        parent.rebuildOnReappear(delay: 0.1)
+        
+//        shrinkViews(completion: {
+//            self.slideViewController(to: .Out, offScreenPosition: .Bottom, duration: 0.3, completion: {
+//                self.setInitialLayoutConstraints()
+//                self.stopWatch.alpha = 1
+//                self.pitch.alpha = 1
+//                self.circle.transform = CGAffineTransform.identity
+//                let parent = self.parent as! MenuVC
+//                parent.rebuildOnReappear()
+//                
+////                self.willMove(toParentViewController: nil)
+////                self.view.removeFromSuperview()
+////                self.removeFromParentViewController()
+//            })
+//        })
+        
+        
     }
     
     @objc private func resetButtonTapped(sender: ResetButtonIconOnly, forEvent event: UIEvent) {

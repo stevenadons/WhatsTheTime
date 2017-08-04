@@ -81,10 +81,12 @@ class MenuCircle: UIView {
     }
     
     
-    func animateToIdentity(duration: Double, delay: Double) {
+    func animateToIdentity(duration: Double, delay: Double, completion: (() -> Void)?) {
         
-        UIView.animate(withDuration: duration, delay: delay, animations: {
+        UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.0, options: [.allowUserInteraction], animations: {
             self.transform = .identity
+        }, completion: { (finished) in
+            completion?()
         })
     }
 

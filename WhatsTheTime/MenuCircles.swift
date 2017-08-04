@@ -50,12 +50,10 @@ class MenuCircles: UIView {
         setupViews()
     }
     
-    
     required init?(coder aDecoder: NSCoder) {
         
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     convenience init(smallRatio: CGFloat, mediumRatio: CGFloat, bigRatio: CGFloat?) {
         
@@ -122,11 +120,13 @@ class MenuCircles: UIView {
     }
     
     
-    func bringToOriginal(duration: Double, delay: Double) {
+    func bringToOriginal(duration: Double, delay: Double, completion: (() -> Void)?) {
         
-        smallCircle.animateToIdentity(duration: duration, delay: delay)
-        mediumCircle.animateToIdentity(duration: duration, delay: delay + 0.05)
-        bigCircle.animateToIdentity(duration: duration, delay: delay + 0.1)
+        smallCircle.animateToIdentity(duration: duration, delay: delay, completion: nil)
+        mediumCircle.animateToIdentity(duration: duration, delay: delay + 0.05, completion: nil)
+        bigCircle.animateToIdentity(duration: duration, delay: delay + 0.1, completion: {
+            completion?()
+        })
     }
     
     
@@ -165,13 +165,13 @@ class MenuCircles: UIView {
         let scale: CGFloat = 1.05
         
         smallCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0) { 
-            self.smallCircle.animateToIdentity(duration: duration, delay: 0)
+            self.smallCircle.animateToIdentity(duration: duration, delay: 0, completion: nil)
         }
         mediumCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0.05) {
-            self.mediumCircle.animateToIdentity(duration: duration, delay: 0)
+            self.mediumCircle.animateToIdentity(duration: duration, delay: 0, completion: nil)
         }
         bigCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0.1) {
-            self.bigCircle.animateToIdentity(duration: duration, delay: 0)
+            self.bigCircle.animateToIdentity(duration: duration, delay: 0, completion: nil)
         }
     }
     

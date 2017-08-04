@@ -24,13 +24,14 @@ class MenuVC: UIViewController {
     private var logo: Logo!
     private var dismissButton: DismissButtonIconOnly!
     private var menu: Menu!
+    fileprivate var timerVC: TimerVC?
     
     private let topCirclesInset: CGFloat = 70
     private let bottomCirclesInset: CGFloat = 100
 
     
     
-    // MARK: - Public Methods
+    // MARK: - Layout And Draw Methods
 
     override func viewDidLoad() {
         
@@ -39,19 +40,14 @@ class MenuVC: UIViewController {
         setupViews()
         
         // to skip menu
-        handleNavigation(for: MenuItem.Timer)
+//        handleNavigation(for: MenuItem.Timer)
     }
-    
     
     override func viewDidAppear(_ animated: Bool) {
         
         menu.enableBeat(interval: 5)
     }
     
-    
-    
-    
-    // MARK: - Private UI Methods
     
     private func setupViews() {
         
@@ -86,6 +82,15 @@ class MenuVC: UIViewController {
         ])
     }
     
+    func rebuildOnReappear(delay: Double = 0) {
+        
+        menu.bringToOriginal(duration: 0.6, delay: delay, completion: {
+            for button in self.menu.buttons {
+                button.alpha = 1.0
+            }
+        })
+    }
+    
     
     // MARK: - Private Methods
     
@@ -93,7 +98,6 @@ class MenuVC: UIViewController {
         
         print("dismissed")
     }
-  
 }
 
 
@@ -105,7 +109,10 @@ extension MenuVC: MenuDelegate {
         var newVC = UIViewController()
         switch menuItem {
         case .Timer:
-            newVC = TimerVC()
+            if timerVC == nil {
+                timerVC = TimerVC()
+            }
+            newVC = timerVC!
         case .SetGameTime:
             print("to be implemented")
         case .EditScore:
