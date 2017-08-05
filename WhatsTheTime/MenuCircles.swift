@@ -108,37 +108,45 @@ class MenuCircles: UIView {
     
     // MARK: - Public UI Methods
     
-    func expandToFullScreen(duration: Double) {
-        
-        let diagonal = sqrt(pow(UIScreen.main.bounds.height, 2) + pow(UIScreen.main.bounds.width, 2))
-        let smallRadius = min(smallCircle.bounds.height, smallCircle.bounds.width)
-        let scale = diagonal / smallRadius * 1.5
-        
-        smallCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0, completion: nil)
-        mediumCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0.05, completion: nil)
-        bigCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0.1, completion: nil)
-    }
+//    func expandToFullScreen(duration: Double) {
+//        
+//        let diagonal = sqrt(pow(UIScreen.main.bounds.height, 2) + pow(UIScreen.main.bounds.width, 2))
+//        let smallRadius = min(smallCircle.bounds.height, smallCircle.bounds.width)
+//        let scale = diagonal / smallRadius * 1.5
+//        
+//        smallCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0, completion: nil)
+//        mediumCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0.05, completion: nil)
+//        bigCircle.animate(scale: scale, translateY: 0, duration: duration, delay: 0.1, completion: nil)
+//    }
     
     
-    func bringToOriginal(duration: Double, delay: Double, completion: (() -> Void)?) {
+    func animateToOriginalScale(duration: Double, delay: Double, completion: (() -> Void)?) {
         
-        smallCircle.animateToIdentity(duration: duration, delay: delay, completion: nil)
-        mediumCircle.animateToIdentity(duration: duration, delay: delay + 0.05, completion: nil)
-        bigCircle.animateToIdentity(duration: duration, delay: delay + 0.1, completion: {
+        alpha = 1.0
+        smallCircle.animateToIdentity(duration: duration, delay: delay, animateAlphaToOne: true, completion: nil)
+        mediumCircle.animateToIdentity(duration: duration, delay: delay + 0.05, animateAlphaToOne: true, completion: nil)
+        bigCircle.animateToIdentity(duration: duration, delay: delay + 0.1, animateAlphaToOne: true, completion: {
             completion?()
         })
     }
     
-    
-    func liftBottom(inset: CGFloat, duration: Double) {
+    func animateToDownsizedScale(duration: Double, delay: Double, completion: (() -> Void)?) {
         
-        let scale = (bounds.height - inset) / bounds.height
-        
-        smallCircle.animate(scale: scale, translateY: -inset / 2, duration: duration, delay: 0, completion: nil)
-        mediumCircle.animate(scale: scale, translateY: -inset / 2, duration: duration, delay: 0.05, completion: nil)
-        bigCircle.animate(scale: scale, translateY: -inset / 2, duration: duration, delay: 0.1, completion: nil)
+        bigCircle.animate(scale: 0.01, translateY: 0, duration: duration, delay: 0.0, animateAlphaToZero: false, completion: nil)
+        mediumCircle.animate(scale: 0.01, translateY: 0, duration: duration, delay: 0.05, animateAlphaToZero: false, completion: nil)
+        smallCircle.animate(scale: 0.01, translateY: 0, duration: duration, delay: 0.1, animateAlphaToZero: false, completion: {
+            self.alpha = 0.0
+            completion?()
+        })
     }
     
+    func scaleDown() {
+        
+        smallCircle.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        mediumCircle.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        bigCircle.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        alpha = 0.0
+    }
     
     func enableBeat(interval: Double) {
         
@@ -149,7 +157,6 @@ class MenuCircles: UIView {
         }
     }
     
-    
     func disableBeat() {
         
         if timer != nil {
@@ -157,7 +164,6 @@ class MenuCircles: UIView {
             timer = nil
         }
     }
-    
     
     private func beat() {
         

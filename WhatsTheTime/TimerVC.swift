@@ -22,15 +22,19 @@ protocol PitchDelegate: class {
     func scoreLabelChanged()
 }
 
+protocol MenuDelegate: class {
+    
+    func handleNavigation(for menuItem: MenuItem)
+}
+
 
 class TimerVC: UIViewController, Sliding {
 
     
     // MARK: - Properties
     
-    private var hamburger: HamburgerButtonIconOnly!
-    private var resetButton: ResetButtonIconOnly!
-    private var circle: BackgroundCircle!
+    fileprivate var hamburger: HamburgerButtonIconOnly!
+    fileprivate var resetButton: ResetButtonIconOnly!
     fileprivate var stopWatchContainer: ContainerView!
     fileprivate var stopWatch: StopWatch!
     private var pitchContainer: ContainerView!
@@ -39,6 +43,7 @@ class TimerVC: UIViewController, Sliding {
     private var undoButtonContainer: ContainerView!
     private var undoButton: UIButton!
     fileprivate var messageLabel: UILabel!
+    private var menu: Menu!
     
     fileprivate var game: HockeyGame!
     fileprivate var stopWatchCenterYConstraint: NSLayoutConstraint!
@@ -46,7 +51,6 @@ class TimerVC: UIViewController, Sliding {
     private var scorePanelCenterYConstraint: NSLayoutConstraint!
     private var undoButtonTopConstraint: NSLayoutConstraint!
     private let initialObjectYOffset: CGFloat = UIScreen.main.bounds.height
-    fileprivate var circleUp: Bool = true
     fileprivate var messageTimer: Timer?
     
     var message: String = "HELLO" {
@@ -65,7 +69,7 @@ class TimerVC: UIViewController, Sliding {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        view.backgroundColor = COLOR.LightBackground
+        view.backgroundColor = COLOR.White
         view.clipsToBounds = true
         game = HockeyGame(duration: .Fifteen)
         setupViews()
@@ -82,12 +86,6 @@ class TimerVC: UIViewController, Sliding {
         resetButton = ResetButtonIconOnly()
         resetButton.addTarget(self, action: #selector(resetButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(resetButton)
-        
-        circle = BackgroundCircle()
-        circle.translatesAutoresizingMaskIntoConstraints = false
-        circle.isUserInteractionEnabled = false
-        circle.color = COLOR.White
-        view.addSubview(circle)
         
         stopWatchContainer = ContainerView()
         view.addSubview(stopWatchContainer)
@@ -133,6 +131,9 @@ class TimerVC: UIViewController, Sliding {
         messageLabel.layer.add(transition, forKey: "transition")
         view.addSubview(messageLabel)
         
+        menu = Menu()
+        menu.delegate = self
+        view.addSubview(menu)
         
         // Add constraints
         setInitialLayoutConstraints()
@@ -149,11 +150,6 @@ class TimerVC: UIViewController, Sliding {
             resetButton.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 29)),
             resetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: CoordinateScalor.convert(y: -13)),
 
-            circle.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 45)),
-            circle.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: CoordinateScalor.convert(y: -100)),
-            circle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(x: -73)),
-            circle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: CoordinateScalor.convert(x: 73)),
-            
             stopWatchContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 210/375),
             stopWatchContainer.heightAnchor.constraint(equalTo: stopWatchContainer.widthAnchor, multiplier: 1),
             stopWatchContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -191,10 +187,12 @@ class TimerVC: UIViewController, Sliding {
             messageLabel.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 24)),
             messageLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50 - CoordinateScalor.convert(height: 30)),
             
+            menu.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
+            menu.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80),
+            menu.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            menu.widthAnchor.constraint(equalTo: menu.heightAnchor, multiplier: 1),
+            
             ])
-        
-        // Inflate circle
-        circle.transform = CGAffineTransform(scaleX: 2, y: 2)
     }
     
     private func setInitialLayoutConstraints() {
@@ -203,7 +201,7 @@ class TimerVC: UIViewController, Sliding {
         pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
         undoButtonTopConstraint = NSLayoutConstraint(item: undoButton, attribute: .top, relatedBy: .equal, toItem: undoButtonContainer, attribute: .top, multiplier: 1, constant: 130)
     }
-    
+        
     
     // MARK: - Drawing and laying out
     
@@ -232,9 +230,6 @@ class TimerVC: UIViewController, Sliding {
         UIView.animate(withDuration: 0.8, delay: 0.6, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.pitchContainer.layoutIfNeeded()
         })
-        UIView.animate(withDuration: 1, delay: 1.0, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
-            self.circle.transform = .identity
-        }, completion: nil)
     }
     
     private func shrinkViews(completion: (() -> Void)?) {
@@ -246,9 +241,6 @@ class TimerVC: UIViewController, Sliding {
         UIView.animate(withDuration: 0.3, delay: 0.2, options: [.curveEaseIn], animations: {
             self.pitch.transform = CGAffineTransform(scaleX: 1.0, y: 0.01)
             self.pitch.alpha = 0
-        }, completion: nil)
-        UIView.animate(withDuration: 0.3, delay: 0.4, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
-            self.circle.transform = CGAffineTransform(scaleX: 2, y: 2)
         }, completion: { (finished) in
             completion?()
         })
@@ -262,16 +254,12 @@ class TimerVC: UIViewController, Sliding {
         UIView.animate(withDuration: 0.4, delay: 0.2, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
             self.pitch.transform = CGAffineTransform.identity
         }, completion: nil)
-        UIView.animate(withDuration: 1, delay: 1.0, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
-            self.circle.transform = .identity
-        }, completion: nil)
     }
     
     private func resetViews() {
         
         stopWatch.transform = CGAffineTransform.identity
         pitch.transform = CGAffineTransform.identity
-        circle.transform = CGAffineTransform.identity
         setInitialLayoutConstraints()
     }
     
@@ -313,31 +301,11 @@ class TimerVC: UIViewController, Sliding {
     
     @objc private func menuButtonTapped(sender: HamburgerButton, forEvent event: UIEvent) {
         
-        UIView.animate(withDuration: 0.2, animations: {
-            self.view.alpha = 0.0
-        }, completion: { (finished) in
-            self.setInitialLayoutConstraints()
-            self.view.alpha  = 1.0
-        })
-        let parent = self.parent as! MenuVC
-        parent.rebuildOnReappear(delay: 0.1)
-        
-//        shrinkViews(completion: {
-//            self.slideViewController(to: .Out, offScreenPosition: .Bottom, duration: 0.3, completion: {
-//                self.setInitialLayoutConstraints()
-//                self.stopWatch.alpha = 1
-//                self.pitch.alpha = 1
-//                self.circle.transform = CGAffineTransform.identity
-//                let parent = self.parent as! MenuVC
-//                parent.rebuildOnReappear()
-//                
-////                self.willMove(toParentViewController: nil)
-////                self.view.removeFromSuperview()
-////                self.removeFromParentViewController()
-//            })
-//        })
-        
-        
+        UIView.animate(withDuration: 0.2) {
+            self.hamburger.alpha = 0.0
+            self.resetButton.alpha = 0.0
+        }
+        menu.show()
     }
     
     @objc private func resetButtonTapped(sender: ResetButtonIconOnly, forEvent event: UIEvent) {
@@ -434,6 +402,41 @@ extension TimerVC: PitchDelegate {
             messageTimer?.invalidate()
         }
         messageTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(hideUndoButton), userInfo: nil, repeats: false)
+    }
+}
+
+
+extension TimerVC: MenuDelegate {
+    
+    func handleNavigation(for menuItem: MenuItem) {
+        
+        UIView.animate(withDuration: 0.2) {
+            self.hamburger.alpha = 1.0
+            self.resetButton.alpha = 1.0
+        }
+        
+//        var newVC = UIViewController()
+//        switch menuItem {
+//        case .Timer:
+//            if timerVC == nil {
+//                timerVC = TimerVC()
+//            }
+//            newVC = timerVC!
+//        case .SetGameTime:
+//            print("to be implemented")
+//        case .EditScore:
+//            print("to be implemented")
+//        case .Documents:
+//            print("to be implemented")
+//        }
+//        
+//        let frameForView = self.view.bounds.offsetBy(dx: 0, dy: self.view.bounds.height)
+//        if let view = newVC.view {
+//            view.frame = frameForView
+//            self.addChildViewController(newVC)
+//            self.view.addSubview(view)
+//            newVC.didMove(toParentViewController: self)
+//        }
     }
 }
 

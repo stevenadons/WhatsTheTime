@@ -70,12 +70,22 @@ class MenuButton: UIButton {
     }
     
     
-    // MARK: - Public UI Methods
+    // MARK: - User Methods
     
     func fade(duration: Double, delay: Double, completion: (() -> Void)?) {
         
         UIView.animate(withDuration: duration, delay: delay, options: [.curveEaseIn], animations: {
             self.alpha = 0.0
+        }) { (finished) in
+            completion?()
+        }
+    }
+    
+    func pop(duration: Double, delay: Double, completion: (() -> Void)?) {
+
+        transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+        UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: [.allowUserInteraction], animations: {
+            self.transform = CGAffineTransform.identity
         }) { (finished) in
             completion?()
         }

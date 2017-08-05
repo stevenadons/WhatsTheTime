@@ -71,19 +71,25 @@ class MenuCircle: UIView {
     
     // MARK: - Public UI Methods
     
-    func animate(scale: CGFloat, translateY: CGFloat, duration: Double, delay: Double, completion: (() -> Void)?) {
+    func animate(scale: CGFloat, translateY: CGFloat, duration: Double, delay: Double, animateAlphaToZero: Bool = false, completion: (() -> Void)?) {
         
-        UIView.animate(withDuration: duration, delay: delay, animations: {
+        UIView.animate(withDuration: duration, delay: delay, options: [.curveEaseIn], animations: { 
+            if animateAlphaToZero {
+                self.alpha = 0.0
+            }
             self.transform = CGAffineTransform(scaleX: scale, y: scale).translatedBy(x: 0, y: translateY)
-        })  { (finished) in
+        }) { (finished) in
             completion?()
         }
     }
     
     
-    func animateToIdentity(duration: Double, delay: Double, completion: (() -> Void)?) {
+    func animateToIdentity(duration: Double, delay: Double, animateAlphaToOne: Bool = false, completion: (() -> Void)?) {
         
         UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.0, options: [.allowUserInteraction], animations: {
+            if animateAlphaToOne {
+                self.alpha = 1.0
+            }
             self.transform = .identity
         }, completion: { (finished) in
             completion?()

@@ -9,10 +9,10 @@
 import UIKit
 
 
-protocol MenuDelegate: class {
-    
-    func handleNavigation(for menuItem: MenuItem)
-}
+//protocol MenuDelegate: class {
+//    
+//    func handleNavigation(for menuItem: MenuItem)
+//}
 
 
 
@@ -45,7 +45,7 @@ class MenuVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         
-        menu.enableBeat(interval: 5)
+//        menu.enableBeat(interval: 5)
     }
     
     
@@ -59,7 +59,7 @@ class MenuVC: UIViewController {
         view.addSubview(dismissButton)
         
         menu = Menu()
-        menu.delegate = self
+//        menu.delegate = self
         view.addSubview(menu)
         
         NSLayoutConstraint.activate([
@@ -82,14 +82,14 @@ class MenuVC: UIViewController {
         ])
     }
     
-    func rebuildOnReappear(delay: Double = 0) {
-        
-        menu.bringToOriginal(duration: 0.6, delay: delay, completion: {
-            for button in self.menu.buttons {
-                button.alpha = 1.0
-            }
-        })
-    }
+//    func rebuildOnReappear(delay: Double = 0) {
+//        
+//        menu.bringToOriginal(duration: 0.6, delay: delay, completion: {
+//            for button in self.menu.buttons {
+//                button.alpha = 1.0
+//            }
+//        })
+//    }
     
     
     // MARK: - Private Methods
@@ -101,35 +101,35 @@ class MenuVC: UIViewController {
 }
 
 
-
-extension MenuVC: MenuDelegate {
-    
-    func handleNavigation(for menuItem: MenuItem) {
-        
-        var newVC = UIViewController()
-        switch menuItem {
-        case .Timer:
-            if timerVC == nil {
-                timerVC = TimerVC()
-            }
-            newVC = timerVC!
-        case .SetGameTime:
-            print("to be implemented")
-        case .EditScore:
-            print("to be implemented")
-        case .Documents:
-            print("to be implemented")
-        }
-        
-        let frameForView = self.view.bounds.offsetBy(dx: 0, dy: self.view.bounds.height)
-        if let view = newVC.view {
-            view.frame = frameForView
-            self.addChildViewController(newVC)
-            self.view.addSubview(view)
-            newVC.didMove(toParentViewController: self)
-        }
-    }
-}
+//
+//extension MenuVC: MenuDelegate {
+//    
+//    func handleNavigation(for menuItem: MenuItem) {
+//        
+//        var newVC = UIViewController()
+//        switch menuItem {
+//        case .Timer:
+//            if timerVC == nil {
+//                timerVC = TimerVC()
+//            }
+//            newVC = timerVC!
+//        case .SetGameTime:
+//            print("to be implemented")
+//        case .EditScore:
+//            print("to be implemented")
+//        case .Documents:
+//            print("to be implemented")
+//        }
+//        
+//        let frameForView = self.view.bounds.offsetBy(dx: 0, dy: self.view.bounds.height)
+//        if let view = newVC.view {
+//            view.frame = frameForView
+//            self.addChildViewController(newVC)
+//            self.view.addSubview(view)
+//            newVC.didMove(toParentViewController: self)
+//        }
+//    }
+//}
 
 
 

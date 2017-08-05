@@ -26,7 +26,6 @@
 		4F45D1A91F2C7B2D0082D93B /* HamburgerButtonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1A81F2C7B2D0082D93B /* HamburgerButtonLayer.swift */; };
 		4F45D1AB1F2C89D20082D93B /* DismissButtonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1AA1F2C89D20082D93B /* DismissButtonLayer.swift */; };
 		4F45D1AD1F2C8D410082D93B /* DismissButtonIconOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1AC1F2C8D410082D93B /* DismissButtonIconOnly.swift */; };
-		4F45D1B21F2C94370082D93B /* BackgroundCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1B11F2C94370082D93B /* BackgroundCircle.swift */; };
 		4F45D1B41F2C9ECC0082D93B /* HamburgerButtonIconOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1B31F2C9ECC0082D93B /* HamburgerButtonIconOnly.swift */; };
 		4F45D1B61F2CAE820082D93B /* UndoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1B51F2CAE820082D93B /* UndoButton.swift */; };
 		4F45D1B91F2CBC1E0082D93B /* ResetButtonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1B81F2CBC1E0082D93B /* ResetButtonLayer.swift */; };
@@ -73,7 +72,6 @@
 		4F45D1A81F2C7B2D0082D93B /* HamburgerButtonLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButtonLayer.swift; sourceTree = "<group>"; };
 		4F45D1AA1F2C89D20082D93B /* DismissButtonLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButtonLayer.swift; sourceTree = "<group>"; };
 		4F45D1AC1F2C8D410082D93B /* DismissButtonIconOnly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButtonIconOnly.swift; sourceTree = "<group>"; };
-		4F45D1B11F2C94370082D93B /* BackgroundCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundCircle.swift; sourceTree = "<group>"; };
 		4F45D1B31F2C9ECC0082D93B /* HamburgerButtonIconOnly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButtonIconOnly.swift; sourceTree = "<group>"; };
 		4F45D1B51F2CAE820082D93B /* UndoButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UndoButton.swift; sourceTree = "<group>"; };
 		4F45D1B81F2CBC1E0082D93B /* ResetButtonLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetButtonLayer.swift; sourceTree = "<group>"; };
@@ -214,14 +212,6 @@
 			name = Classes;
 			sourceTree = "<group>";
 		};
-		4F45D1AE1F2C8EC40082D93B /* BackgroundCircle */ = {
-			isa = PBXGroup;
-			children = (
-				4F45D1B11F2C94370082D93B /* BackgroundCircle.swift */,
-			);
-			name = BackgroundCircle;
-			sourceTree = "<group>";
-		};
 		4F45D1B71F2CAE860082D93B /* UndoButton */ = {
 			isa = PBXGroup;
 			children = (
@@ -255,7 +245,6 @@
 				4FB88DDD1F22444D00DDB034 /* Logo */,
 				4FB88DDC1F22444500DDB034 /* Menu */,
 				4FB88DDE1F22445800DDB034 /* IconButtons */,
-				4F45D1AE1F2C8EC40082D93B /* BackgroundCircle */,
 				4FB88DDF1F22446500DDB034 /* StopWatch */,
 				4F45D1BE1F2CDBBA0082D93B /* Pitch */,
 				4F45D1B71F2CAE860082D93B /* UndoButton */,
@@ -427,7 +416,6 @@
 				4FA04FB61F1B5077007609B9 /* UIView+AnimatingConstraints.swift in Sources */,
 				4F50BF151F2DDEAA002B2293 /* Pitch.swift in Sources */,
 				4F45D1A71F2C75710082D93B /* HamburgerButton.swift in Sources */,
-				4F45D1B21F2C94370082D93B /* BackgroundCircle.swift in Sources */,
 				4FB140001F19661F0025088A /* DismissButton.swift in Sources */,
 				4F0C9BD41F17CA8E00956C53 /* MenuCircles.swift in Sources */,
 				4F6FFEA41F1FE543004A2257 /* CoordinateScalor.swift in Sources */,
