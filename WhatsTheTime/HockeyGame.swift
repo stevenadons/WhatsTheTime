@@ -72,4 +72,14 @@ class HockeyGame {
         awayScore += 1
     }
     
+    func homeScoreMinusOne() {
+        
+        homeScore -= 1
+    }
+    
+    func awayScoreMinusOne() {
+        
+        awayScore -= 1
+    }
+    
 }

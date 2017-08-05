@@ -9,6 +9,9 @@
 import UIKit
 
 
+let distanceMoveUp: CGFloat = 110
+
+
 protocol BallDelegate: class {
     
     func homeScored()
@@ -31,6 +34,9 @@ class Pitch: UIView {
     fileprivate var delegate: PitchDelegate?
     fileprivate var homeScore: Int = 0
     fileprivate var awayScore: Int = 0
+    
+    private var swipeUp: UISwipeGestureRecognizer?
+    private var swipeDown: UISwipeGestureRecognizer?
     
     
     
@@ -142,25 +148,49 @@ class Pitch: UIView {
             ])
     }
     
+    
+    // MARK: - User methods
+    
     func showBall() {
         
         ball.isUserInteractionEnabled = true
-        UIView.animate(withDuration: 0.2) { 
-            self.ball.alpha = 1
+        if ball.alpha < 1 {
+            UIView.animate(withDuration: 0.2) {
+                self.ball.alpha = 1
+            }
         }
     }
     
     func hideBall() {
         
         ball.isUserInteractionEnabled = false
-        UIView.animate(withDuration: 0.2) {
-            self.ball.alpha = 0
+        if ball.alpha > 0 {
+            UIView.animate(withDuration: 0.2) {
+                self.ball.alpha = 0
+            }
         }
     }
     
+    func moveUp(completion: (() -> Void)?) {
+        
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction], animations: {
+            self.transform = CGAffineTransform(translationX: 0, y: CoordinateScalor.convert(y: -110))
+        }, completion: { (finished) in
+            self.configureSwipes()
+            completion?()
+        })
+    }
     
-    // MARK: - User Methods
-    
+    func moveBack(completion: (() -> Void)?) {
+        
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction], animations: {
+            self.transform = CGAffineTransform.identity
+        }, completion: { (finished) in
+            completion?()
+        })
+        disableSwipes()
+    }
+
     func resetScores() {
         
         homeScore = 0
@@ -169,6 +199,10 @@ class Pitch: UIView {
         awayScoreLabel.text = "\(awayScore)"
     }
     
+    
+    
+    // MARK: - Private Methods
+    
     fileprivate func updateScore(for game: HockeyGame) {
         
         if homeScoreLabel.text != "\(game.homeScore)" {
@@ -176,7 +210,6 @@ class Pitch: UIView {
         } else if awayScoreLabel.text != "\(game.awayScore)" {
             update(label: awayScoreLabel, withText: "\(game.awayScore)")
         }
-        
     }
     
     fileprivate func update(label: UILabel, withText text: String) {
@@ -198,22 +231,88 @@ class Pitch: UIView {
         }
     }
     
+     func configureSwipes() {
+        
+        swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(swipeUp(swipe:)))
+        swipeUp?.direction = .up
+        addGestureRecognizer(swipeUp!)
+        swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(swipeDown(swipe:)))
+        swipeDown?.direction = .down
+        addGestureRecognizer(swipeDown!)
+    }
     
-    // MARK: - Hit testing
+    private func disableSwipes() {
+        
+        gestureRecognizers?.forEach { removeGestureRecognizer($0) }
+    }
     
-    //  Sometimes it is necessary for a view to ignore touch events and pass them through to the views below.
-    //  For example, assume a transparent overlay view placed above all other application views.
-    //  The overlay has some subviews in the form of controls and buttons which should respond to touches normally.
-    //  But touching the overlay somewhere else should pass the touch events to the views below the overlay.
-    //  http://smnh.me/hit-testing-in-ios/
+    @objc private func swipeUp(swipe: UISwipeGestureRecognizer) {
+        
+        let location = swipe.location(in: self)
+        if location.x < bounds.width / 2 {
+            homeScore += 1
+            homeScoreLabel.text = "\(homeScore)"
+            delegate?.scoreHome()
+        } else {
+            awayScore += 1
+            awayScoreLabel.text = "\(awayScore)"
+            delegate?.scoreAway()
+        }
+    }
+    
+    @objc private func swipeDown(swipe: UISwipeGestureRecognizer) {
+        
+        let location = swipe.location(in: self)
+        if location.x < bounds.width / 2 {
+            print("down left")
+            guard homeScore > 0 else { return }
+            homeScore -= 1
+            homeScoreLabel.text = "\(homeScore)"
+            delegate?.scoreHomeMinusOne()
+        } else {
+            guard awayScore > 0 else { return }
+            awayScore -= 1
+            awayScoreLabel.text = "\(awayScore)"
+            delegate?.scoreAwayMinusOne()
+        }
+    }
+    
+    // Extends the touchable area of the view in order to receive touches
+    // Swipe detection in score edit mode
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         
-        var hitTestView = super.hitTest(point, with: event)
-        if hitTestView == self {
-            hitTestView = nil
+        if (!self.isUserInteractionEnabled || self.isHidden || self.alpha <= 0.01) {
+            return nil
         }
-        return hitTestView
+        let touchRect = CGRect(x: 0, y: -distanceMoveUp, width: bounds.width, height: bounds.height + distanceMoveUp)
+        if touchRect.contains(point) {
+            for subview in self.subviews.reversed() {
+                let convertedPoint = subview.convert(point, from: self)
+                let hitTestView = subview.hitTest(convertedPoint, with: event)
+                if hitTestView != nil {
+                    return hitTestView
+                }
+            }
+            return self
+        }
+        return nil
+        
+        
+        
+//        if (CGRectContainsPoint(touchRect, point)) {
+//            for (UIView *subview in [self.subviews reverseObjectEnumerator]) {
+//                CGPoint convertedPoint = [subview convertPoint:point fromView:self];
+//                UIView *hitTestView = [subview hitTest:convertedPoint withEvent:event];
+//                if (hitTestView) {
+//                    return hitTestView;
+//                }
+//            }
+//            return self;
+//        }
+//        return nil;
     }
+    
+
 }
 
 

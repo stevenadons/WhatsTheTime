@@ -73,6 +73,7 @@ let LS_WARNINGRESETGAME = NSLocalizedString("RESET GAME?", comment: "When reset 
 let LS_HOME = NSLocalizedString("HOME", comment: "Name for home team")
 let LS_AWAY = NSLocalizedString("AWAY", comment: "Name for away team")
 let LS_UNDOGOAL = NSLocalizedString("UNDO GOAL", comment: "Message for undoing goal")
+let LS_MESSAGEEDITSCORES = NSLocalizedString("SWIPE SCORE UP OR DOWN", comment: "Message to explain way to edit scores")
 
 
 

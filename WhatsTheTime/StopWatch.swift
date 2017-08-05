@@ -36,7 +36,7 @@ class StopWatch: UIControl {
     }
 
     fileprivate var delegate: StopWatchDelegate!
-    fileprivate var timer: StopWatchTimer!
+    var timer: StopWatchTimer!
     fileprivate var icon: StopWatchControlIcon!
     fileprivate var timeLabel: StopWatchLabel!
 
@@ -90,9 +90,57 @@ class StopWatch: UIControl {
         setNeedsLayout()
     }
     
+    private func setUp() {
+        
+        backgroundColor = UIColor.clear
+        
+        squareContainer = CALayer()
+        squareContainer.backgroundColor = UIColor.clear.cgColor
+        squareContainer.shouldRasterize = true
+        squareContainer.rasterizationScale = UIScreen.main.scale
+        layer.addSublayer(squareContainer)
+        
+        progressZone = CAShapeLayer()
+        progressZone.strokeColor = UIColor.clear.cgColor
+        progressZone.fillColor = COLOR.LightBackground.cgColor
+        squareContainer.addSublayer(progressZone)
+        
+        core = CALayer()
+        core.backgroundColor = COLOR.White.cgColor
+        squareContainer.addSublayer(core)
+        
+        firstProgressBar = progressBarLayer(for: .First)
+        squareContainer.addSublayer(firstProgressBar)
+        secondProgressBar = progressBarLayer(for: .Second)
+        squareContainer.addSublayer(secondProgressBar)
+        
+        icon = StopWatchControlIcon(icon: .PlayIcon)
+        icon.color = COLOR.Affirmation
+        addSubview(icon)
+        
+        timer = StopWatchTimer(delegate: self, duration: duration)
+        
+        timeLabel = StopWatchLabel(text: stopWatchLabelTimeString())
+        addSubview(timeLabel)
+        
+        durationLabel = StopWatchSmallLabel()
+        addSubview(durationLabel)
+        messageLabel = StopWatchSmallLabel()
+        message = LS_NEWGAME
+        messageLabel.font = UIFont(name: FONTNAME.ThemeBold, size: durationLabel.font.pointSize)
+        addSubview(messageLabel)
+        halfLabel = StopWatchSmallLabel()
+        halfLabel.font = UIFont(name: FONTNAME.ThemeBold, size: durationLabel.font.pointSize)
+        addSubview(halfLabel)
+        
+        for subview in subviews {
+            bringSubview(toFront: subview)
+        }
+    }
     
     
-    // MARK: - Public methods
+    
+    // MARK: - Layout and draw methods
     
     override func layoutSubviews() {
         
@@ -124,6 +172,12 @@ class StopWatch: UIControl {
             ])
     }
     
+    
+    
+    
+    
+    // MARK: - User methods
+    
     func stopWatchLabelTimeString() -> String {
         var result: String = ""
         let total = (timer.state == .RunningCountUp || timer.state == .Overdue) ? timer.totalSecondsCountingUp : timer.totalSecondsToGo
@@ -147,67 +201,33 @@ class StopWatch: UIControl {
         icon.icon = .PlayIcon
     }
     
+    func goToBackground(completion: (() -> Void)?) {
+        
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction, .curveEaseIn], animations: {
+            self.transform = CGAffineTransform(translationX: 0, y: -(230 - 120) / 2).scaledBy(x: 120/230, y: 120/230)
+            self.messageLabel.alpha = 0
+            self.durationLabel.alpha = 0
+            self.halfLabel.alpha = 0
+        }, completion: { (finished) in
+            completion?()
+        })
+    }
+    
+    func comeFromBackground(completion: (() -> Void)?) {
+        
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction, .curveEaseOut], animations: {
+            self.transform = CGAffineTransform.identity
+            self.messageLabel.alpha = 1
+            self.durationLabel.alpha = 1
+            self.halfLabel.alpha = 1
+        }, completion: { (finished) in
+            completion?()
+        })
+    }
+    
     
     
     // MARK: - Private methods
-    
-    private func setUp() {
-        
-        // Configure self
-        backgroundColor = UIColor.clear
-        
-        // Add container
-        squareContainer = CALayer()
-        squareContainer.backgroundColor = UIColor.clear.cgColor
-        squareContainer.shouldRasterize = true
-        squareContainer.rasterizationScale = UIScreen.main.scale
-        layer.addSublayer(squareContainer)
-        
-        // Add progressZone
-        progressZone = CAShapeLayer()
-        progressZone.strokeColor = UIColor.clear.cgColor
-        progressZone.fillColor = COLOR.LightBackground.cgColor
-        squareContainer.addSublayer(progressZone)
-        
-        // Add core
-        core = CALayer()
-        core.backgroundColor = COLOR.White.cgColor
-        squareContainer.addSublayer(core)
-        
-        // Add progressbars
-        firstProgressBar = progressBarLayer(for: .First)
-        squareContainer.addSublayer(firstProgressBar)
-        secondProgressBar = progressBarLayer(for: .Second)
-        squareContainer.addSublayer(secondProgressBar)
-
-        // Add icon
-        icon = StopWatchControlIcon(icon: .PlayIcon)
-        icon.color = COLOR.Affirmation
-        addSubview(icon)
-        
-        // Set up timer
-        timer = StopWatchTimer(delegate: self, duration: duration)
-        
-        // Add time label
-        timeLabel = StopWatchLabel(text: stopWatchLabelTimeString())
-        addSubview(timeLabel)
-        
-        // Add small labels
-        durationLabel = StopWatchSmallLabel()
-        addSubview(durationLabel)
-        messageLabel = StopWatchSmallLabel()
-        message = LS_NEWGAME
-        messageLabel.font = UIFont(name: FONTNAME.ThemeBold, size: durationLabel.font.pointSize)
-        addSubview(messageLabel)
-        halfLabel = StopWatchSmallLabel()
-        halfLabel.font = UIFont(name: FONTNAME.ThemeBold, size: durationLabel.font.pointSize)
-        addSubview(halfLabel)
-                
-        // Bring subviews to front
-        for subview in subviews {
-            bringSubview(toFront: subview)
-        }
-    }
     
     fileprivate func updateProgressBars() {
         
@@ -363,7 +383,9 @@ class StopWatch: UIControl {
                 halfLabel.text = LS_SECONDHALFLABEL
                 timer.reset()
                 setProgressBarsColor(to: COLOR.Theme)
-                halfLabel.alpha = 1.0
+                if durationLabel.alpha > 0 {
+                    halfLabel.alpha = 1.0
+                }
                 message = LS_READYFORH2
                 delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: {
                     self.icon.change(to: .PlayIcon)

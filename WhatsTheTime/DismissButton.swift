@@ -15,7 +15,15 @@ class DismissButton: UIButton {
     
     private var shapeLayer: DismissButtonLayer!
     
-    
+    var color: UIColor {
+        get {
+            return shapeLayer.color
+        }
+        set {
+            shapeLayer.color = newValue
+            setNeedsDisplay()
+        }
+    }
     
     // MARK: - Initializing
     
@@ -31,17 +39,13 @@ class DismissButton: UIButton {
     
     private func setup() {
         
-        // Configuring self
         backgroundColor = UIColor.clear
         translatesAutoresizingMaskIntoConstraints = false
-        layer.shadowColor = UIColor.lightGray.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 1)
-        layer.shadowOpacity = 0.8
-        layer.shadowRadius = 3
         
-        // Add (passive) shapes
         shapeLayer = DismissButtonLayer()
         layer.addSublayer(shapeLayer)
+        
+        color = COLOR.Negation
     }
     
     
@@ -50,14 +54,29 @@ class DismissButton: UIButton {
     override func layoutSubviews() {
         
         super.layoutSubviews()
-        
-        // Cornerradius for round views
         layer.cornerRadius = bounds.height / 2
-        
-        // Adjusting sublayers dimensions to change in UIView dimensions
+        layer.borderColor = color.cgColor
+        layer.borderWidth = 2
         shapeLayer.frame = bounds
-        
     }
+    
+    
+    // MARK: - User Methods
+    
+    func show() {
+        
+        UIView.animate(withDuration: 0.2) {
+            self.alpha = 1.0
+        }
+    }
+    
+    func hide() {
+        
+        UIView.animate(withDuration: 0.2) {
+            self.alpha = 0.0
+        }
+    }
+
     
    
     

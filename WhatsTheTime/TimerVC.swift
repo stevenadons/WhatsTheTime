@@ -20,6 +20,8 @@ protocol PitchDelegate: class {
     func scoreHome()
     func scoreAway()
     func scoreLabelChanged()
+    func scoreHomeMinusOne()
+    func scoreAwayMinusOne()
 }
 
 protocol MenuDelegate: class {
@@ -37,13 +39,14 @@ class TimerVC: UIViewController, Sliding {
     fileprivate var resetButton: ResetButtonIconOnly!
     fileprivate var stopWatchContainer: ContainerView!
     fileprivate var stopWatch: StopWatch!
-    private var pitchContainer: ContainerView!
+    private var pitchContainer: PitchContainerView!
     fileprivate var pitch: Pitch!
-    private var maskView: UIButton!
+    fileprivate var dismissEditMode: DismissButton!
+    fileprivate var maskView: UIButton!
     private var undoButtonContainer: ContainerView!
-    private var undoButton: UIButton!
+    fileprivate var undoButton: UIButton!
     fileprivate var messageLabel: UILabel!
-    private var menu: Menu!
+    fileprivate var menu: Menu!
     
     fileprivate var game: HockeyGame!
     fileprivate var stopWatchCenterYConstraint: NSLayoutConstraint!
@@ -52,6 +55,8 @@ class TimerVC: UIViewController, Sliding {
     private var undoButtonTopConstraint: NSLayoutConstraint!
     private let initialObjectYOffset: CGFloat = UIScreen.main.bounds.height
     fileprivate var messageTimer: Timer?
+    fileprivate let standardUndoButtonColor: UIColor = COLOR.Negation
+    fileprivate var inEditMode: Bool = false
     
     var message: String = "HELLO" {
         didSet {
@@ -87,18 +92,23 @@ class TimerVC: UIViewController, Sliding {
         resetButton.addTarget(self, action: #selector(resetButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(resetButton)
         
-        stopWatchContainer = ContainerView()
-        view.addSubview(stopWatchContainer)
-        stopWatch = StopWatch(delegate: self, game: game)
-        stopWatch.translatesAutoresizingMaskIntoConstraints = false
-        stopWatchContainer.addSubview(stopWatch)
-        
-        pitchContainer = ContainerView()
+        pitchContainer = PitchContainerView()
         view.addSubview(pitchContainer)
         pitch = Pitch(delegate: self)
         pitch.isUserInteractionEnabled = true
         pitch.hideBall()
         pitchContainer.addSubview(pitch)
+        
+        stopWatchContainer = ContainerView()
+        view.addSubview(stopWatchContainer)
+        stopWatch = StopWatch(delegate: self, game: game)
+        stopWatch.translatesAutoresizingMaskIntoConstraints = false
+        stopWatchContainer.addSubview(stopWatch)
+
+        dismissEditMode = DismissButton()
+        dismissEditMode.addTarget(self, action: #selector(dismissButtonTapped(sender:forEvent:)), for: [.touchUpInside])
+        dismissEditMode.alpha = 0
+        view.addSubview(dismissEditMode)
         
         maskView = UIButton()
         maskView.addTarget(self, action: #selector(maskViewTapped(sender:forEvent:)), for: [.touchUpInside])
@@ -150,6 +160,15 @@ class TimerVC: UIViewController, Sliding {
             resetButton.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 29)),
             resetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: CoordinateScalor.convert(y: -13)),
 
+            pitchContainer.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 380)),
+            pitchContainer.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 202)),
+            pitchContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pitchContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 75),
+            pitch.leadingAnchor.constraint(equalTo: pitchContainer.leadingAnchor),
+            pitch.trailingAnchor.constraint(equalTo: pitchContainer.trailingAnchor),
+            pitch.heightAnchor.constraint(equalTo: pitchContainer.heightAnchor),
+            pitchCenterYConstraint,
+            
             stopWatchContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 210/375),
             stopWatchContainer.heightAnchor.constraint(equalTo: stopWatchContainer.widthAnchor, multiplier: 1),
             stopWatchContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -159,14 +178,10 @@ class TimerVC: UIViewController, Sliding {
             stopWatch.centerXAnchor.constraint(equalTo: stopWatchContainer.centerXAnchor),
             stopWatchCenterYConstraint,
             
-            pitchContainer.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 380)),
-            pitchContainer.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 202)),
-            pitchContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pitchContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 75),
-            pitch.leadingAnchor.constraint(equalTo: pitchContainer.leadingAnchor),
-            pitch.trailingAnchor.constraint(equalTo: pitchContainer.trailingAnchor),
-            pitch.heightAnchor.constraint(equalTo: pitchContainer.heightAnchor),
-            pitchCenterYConstraint,
+            dismissEditMode.heightAnchor.constraint(equalToConstant: 50),
+            dismissEditMode.bottomAnchor.constraint(equalTo: undoButtonContainer.topAnchor, constant: -30),
+            dismissEditMode.widthAnchor.constraint(equalTo: dismissEditMode.heightAnchor, multiplier: 1),
+            dismissEditMode.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             maskView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             maskView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -210,15 +225,15 @@ class TimerVC: UIViewController, Sliding {
         undoButton.layer.cornerRadius = undoButton.bounds.width / 2
     }
     
-    
-    // MARK: - Animating
-    
     override func viewDidAppear(_ animated: Bool) {
         
         super.viewDidAppear(animated)
         slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
         animateViewsOnAppear()
     }
+    
+    
+    // MARK: - Private Methods
     
     private func animateViewsOnAppear() {
         
@@ -232,30 +247,6 @@ class TimerVC: UIViewController, Sliding {
         })
     }
     
-    private func shrinkViews(completion: (() -> Void)?) {
-        
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseIn], animations: {
-            self.stopWatch.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-            self.stopWatch.alpha = 0
-        }, completion: nil)
-        UIView.animate(withDuration: 0.3, delay: 0.2, options: [.curveEaseIn], animations: {
-            self.pitch.transform = CGAffineTransform(scaleX: 1.0, y: 0.01)
-            self.pitch.alpha = 0
-        }, completion: { (finished) in
-            completion?()
-        })
-    }
-    
-    private func popUpViews() {
-        
-        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
-            self.stopWatch.transform = CGAffineTransform.identity
-        }, completion: nil)
-        UIView.animate(withDuration: 0.4, delay: 0.2, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
-            self.pitch.transform = CGAffineTransform.identity
-        }, completion: nil)
-    }
-    
     private func resetViews() {
         
         stopWatch.transform = CGAffineTransform.identity
@@ -263,8 +254,13 @@ class TimerVC: UIViewController, Sliding {
         setInitialLayoutConstraints()
     }
     
-    fileprivate func showUndoButton() {
+    fileprivate func showUndoButton(withSpecificColor color: UIColor?) {
         
+        if let color = color {
+            undoButton.backgroundColor = color
+        } else {
+            undoButton.backgroundColor = standardUndoButtonColor
+        }
         guard undoButtonTopConstraint.constant != 0 else { return }
         undoButtonTopConstraint.constant = 0
         undoButton.setNeedsDisplay()
@@ -281,8 +277,6 @@ class TimerVC: UIViewController, Sliding {
             messageTimer!.invalidate()
             messageTimer = nil
         }
-        resetButton.alpha = 1.0
-        resetButton.isUserInteractionEnabled = true
         UIView.animate(withDuration: 0.2) {
             self.maskView.alpha = 0.0
         }
@@ -294,31 +288,55 @@ class TimerVC: UIViewController, Sliding {
             self.undoButtonContainer.layoutIfNeeded()
         })
     }
-   
     
-    
-    // MARK: - Private Methods
-    
-    @objc private func menuButtonTapped(sender: HamburgerButton, forEvent event: UIEvent) {
+    fileprivate func hideIcons() {
         
         UIView.animate(withDuration: 0.2) {
             self.hamburger.alpha = 0.0
             self.resetButton.alpha = 0.0
         }
+    }
+    
+    fileprivate func showIcons() {
+        
+        UIView.animate(withDuration: 0.2) {
+            self.hamburger.alpha = 1.0
+            self.resetButton.alpha = 1.0
+        }
+    }
+    
+    @objc private func menuButtonTapped(sender: HamburgerButton, forEvent event: UIEvent) {
+        
+        hideIcons()
+        hideUndoButton()
         menu.show()
     }
     
     @objc private func resetButtonTapped(sender: ResetButtonIconOnly, forEvent event: UIEvent) {
         
-        resetButton.alpha = 0.3
-        resetButton.isUserInteractionEnabled = false
         message = LS_WARNINGRESETGAME
-        showUndoButton()
+        showUndoButton(withSpecificColor: nil)
         UIView.animate(withDuration: 0.2) { 
-            self.maskView.alpha = 0.2
+            self.maskView.alpha = 0.7
 
         }
         messageTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(hideUndoButton), userInfo: nil, repeats: false)
+    }
+    
+    @objc private func dismissButtonTapped(sender: DismissButton, forEvent event: UIEvent) {
+        
+        inEditMode = false
+        dismissEditMode.hide()
+        hideUndoButton()
+        undoButton.isUserInteractionEnabled = true
+        pitch.moveBack {
+            if self.stopWatch.timer.state != .WaitingToStart && self.stopWatch.timer.state != .Ended {
+                self.pitch.showBall()
+            }
+            self.stopWatch.comeFromBackground(completion: {
+                self.showIcons()
+            })
+        }
     }
     
     @objc private func undoButtonTapped(sender: UIButton, forEvent event: UIEvent) {
@@ -331,12 +349,9 @@ class TimerVC: UIViewController, Sliding {
             }
             // to implement score countdown
         } else if message == LS_WARNINGRESETGAME {
-            shrinkViews(completion: {
-                self.stopWatch.reset()
-                self.pitch.resetScores()
-                self.handleNewGame()
-                self.popUpViews()
-            })
+            stopWatch.reset()
+            pitch.resetScores()
+            handleNewGame()
         }
     }
     
@@ -356,7 +371,9 @@ extension TimerVC: StopWatchDelegate {
             pitch.hideBall()
             completionHandler?()
         case .RunningCountDown:
-            pitch.showBall()
+            if !inEditMode {
+                pitch.showBall()
+            }
             completionHandler?()
         case .RunningCountUp:
             completionHandler?()
@@ -394,10 +411,20 @@ extension TimerVC: PitchDelegate {
         game.awayScored()
     }
     
+    func scoreHomeMinusOne() {
+        
+        game.homeScoreMinusOne()
+    }
+    
+    func scoreAwayMinusOne() {
+        
+        game.awayScoreMinusOne()
+    }
+    
     func scoreLabelChanged() {
         
         message = LS_UNDOGOAL
-        showUndoButton()
+        showUndoButton(withSpecificColor: nil)
         if messageTimer != nil {
             messageTimer?.invalidate()
         }
@@ -410,26 +437,37 @@ extension TimerVC: MenuDelegate {
     
     func handleNavigation(for menuItem: MenuItem) {
         
-        UIView.animate(withDuration: 0.2) {
-            self.hamburger.alpha = 1.0
-            self.resetButton.alpha = 1.0
-        }
-        
 //        var newVC = UIViewController()
-//        switch menuItem {
-//        case .Timer:
+        switch menuItem {
+        case .Timer:
 //            if timerVC == nil {
 //                timerVC = TimerVC()
 //            }
 //            newVC = timerVC!
-//        case .SetGameTime:
-//            print("to be implemented")
-//        case .EditScore:
-//            print("to be implemented")
-//        case .Documents:
-//            print("to be implemented")
-//        }
-//        
+            showIcons()
+            
+        case .SetGameTime:
+            print("to be implemented")
+            
+        case .EditScore:
+            inEditMode = true
+            hideIcons()
+            stopWatch.goToBackground(completion: {
+                self.pitch.hideBall()
+                self.pitch.moveUp(completion: {
+                    self.message = LS_MESSAGEEDITSCORES
+                    self.undoButton.isUserInteractionEnabled = false
+                    self.showUndoButton(withSpecificColor: COLOR.DarkBackground)
+                    self.dismissEditMode.show()
+                })
+            })
+            
+            print("to be implemented")
+            
+        case .Documents:
+            print("to be implemented")
+        }
+//
 //        let frameForView = self.view.bounds.offsetBy(dx: 0, dy: self.view.bounds.height)
 //        if let view = newVC.view {
 //            view.frame = frameForView

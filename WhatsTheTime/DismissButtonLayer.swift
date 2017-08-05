@@ -13,26 +13,27 @@ class DismissButtonLayer: CALayer {
     
     // MARK: - Properties
     
-    var shape: CAShapeLayer!
+    private var shape: CAShapeLayer!
     
+    private let designWidth: CGFloat = 44
+    private let designHeight: CGFloat = 44
+    
+    var color: UIColor = COLOR.Negation {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
     
     
     // MARK: - Initializers
     
     override init() {
         
-        // Super init
         super.init()
-        
-        // Configure self
         backgroundColor = COLOR.White.cgColor
-        
-        // Set up and add sublayers
         shape = createShape()
         addSublayer(shape)
-
-        // Set bounds if layer has to be fixed size
-        bounds = CGRect(x: 0, y: 0, width: 44, height: 44)
+        bounds = CGRect(x: 0, y: 0, width: designWidth, height: designHeight)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,6 +49,8 @@ class DismissButtonLayer: CALayer {
         cornerRadius = min(bounds.width, bounds.height) / 2
         shape.position = CGPoint(x: bounds.size.width / 2, y: bounds.size.height / 2)
         shape.bounds = bounds
+        shape.strokeColor = color.cgColor
+        shape.path = createPath().cgPath
     }
     
     
@@ -57,19 +60,21 @@ class DismissButtonLayer: CALayer {
     private func createShape() -> CAShapeLayer {
         let shape = CAShapeLayer()
         shape.path = createPath().cgPath
-        shape.lineWidth = 1
-        shape.strokeColor = COLOR.Theme.cgColor
+        shape.lineWidth = 2
+        shape.strokeColor = color.cgColor
         shape.fillColor = UIColor.clear.cgColor
         shape.allowsEdgeAntialiasing = true
         return shape
     }
     
     private func createPath() -> UIBezierPath {
+        let widthScale = bounds.width / designWidth
+        let heightScale = bounds.height / designHeight
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: 15, y: 15))
-        path.addLine(to: CGPoint(x: 29, y: 29))
-        path.move(to: CGPoint(x: 29, y: 15))
-        path.addLine(to: CGPoint(x: 15, y: 29))
+        path.move(to: CGPoint(x: 15 * widthScale, y: 15 * heightScale))
+        path.addLine(to: CGPoint(x: 29 * widthScale, y: 29 * heightScale))
+        path.move(to: CGPoint(x: 29 * widthScale, y: 15 * heightScale))
+        path.addLine(to: CGPoint(x: 15 * widthScale, y: 29 * heightScale))
         return path
     }
 
