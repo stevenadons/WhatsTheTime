@@ -35,8 +35,8 @@ class StopWatchTimer {
     private var timer: Timer!
     private var delegate: StopWatchTimerDelegate!
     
-    private var totalSecondsInHalf: Int = MinutesInHalf.Twenty.rawValue
-    var totalSecondsToGo: Int = MinutesInHalf.Twenty.rawValue
+    private var totalSecondsInHalf: Int = MINUTESINHALF.Twenty.rawValue
+    var totalSecondsToGo: Int = MINUTESINHALF.Twenty.rawValue
     var totalSecondsOverdue: Int = 0
     var totalSecondsCountingUp: Int = 0
     
@@ -44,7 +44,7 @@ class StopWatchTimer {
     
     // MARK: - Initializing
     
-    required init(delegate: StopWatchTimerDelegate, duration: MinutesInHalf) {
+    required init(delegate: StopWatchTimerDelegate, duration: MINUTESINHALF) {
         
         self.delegate = delegate
         self.totalSecondsInHalf = duration.rawValue * 60
@@ -55,7 +55,7 @@ class StopWatchTimer {
     
     // MARK: - Public Methods
     
-    func set(duration: MinutesInHalf) {
+    func set(duration: MINUTESINHALF) {
         
 //        totalSecondsInHalf = duration.rawValue * 60
 //        totalSecondsToGo = duration.rawValue * 60

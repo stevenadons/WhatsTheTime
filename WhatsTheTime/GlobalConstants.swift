@@ -9,6 +9,23 @@
 import UIKit
 
 
+enum HALF {
+    
+    case First
+    case Second
+}
+
+
+enum MINUTESINHALF: Int {
+    
+    case Fifteen = 15
+    case Twenty = 20
+    case TwentyFive = 25
+    case Thirty = 30
+    case ThirtyFive = 35
+}
+
+
 enum NIBNAME {
     
     static let Logo = "Logo"
@@ -48,6 +65,11 @@ enum COLOR {
     static let PitchEdge = UIColor(hexString: "#8DBFF7")
     static let Striping = UIColor(hexString: "#FFFFFF") //6F7498
     static let BallShining = UIColor(hexString: "#FEE43F")
+    
+    static let DurationCardOne = UIColor(hexString: "#527AFF")
+    static let DurationCardTwo = UIColor(hexString: "#435EEF")
+    static let DurationCardThree = UIColor(hexString: "#323EBF")
+    static let DurationCardFour = UIColor(hexString: "#2E3694")
 }
 
 

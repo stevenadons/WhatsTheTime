@@ -40,10 +40,10 @@ class StopWatch: UIControl {
     fileprivate var icon: StopWatchControlIcon!
     fileprivate var timeLabel: StopWatchLabel!
 
-    private var half: Half {
+    private var half: HALF {
         return game.half
     }
-    private var duration: MinutesInHalf {
+    private var duration: MINUTESINHALF {
         return game.duration
     }
 
@@ -246,7 +246,7 @@ class StopWatch: UIControl {
     
     // MARK: - Progress Bar Methods
     
-    private func progressBarLayer(for half: Half) -> CAShapeLayer {
+    private func progressBarLayer(for half: HALF) -> CAShapeLayer {
         let shape = CAShapeLayer()
         shape.strokeColor = COLOR.Theme.cgColor
         shape.lineWidth = progressBarWidth
@@ -261,7 +261,7 @@ class StopWatch: UIControl {
         return shape
     }
     
-    private func progressBarPath(for half: Half) -> UIBezierPath {
+    private func progressBarPath(for half: HALF) -> UIBezierPath {
         let path = UIBezierPath()
         switch half {
         case .First:

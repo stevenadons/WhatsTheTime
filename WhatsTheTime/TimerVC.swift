@@ -82,8 +82,6 @@ class TimerVC: UIViewController, Sliding {
     
     private func setupViews() {
         
-        // Add UI elements
-        
         hamburger = HamburgerButtonIconOnly()
         hamburger.addTarget(self, action: #selector(menuButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(hamburger)
@@ -437,17 +435,19 @@ extension TimerVC: MenuDelegate {
     
     func handleNavigation(for menuItem: MenuItem) {
         
-//        var newVC = UIViewController()
         switch menuItem {
         case .Timer:
-//            if timerVC == nil {
-//                timerVC = TimerVC()
-//            }
-//            newVC = timerVC!
             showIcons()
             
         case .SetGameTime:
-            print("to be implemented")
+            let newVC = DurationVC()
+            let frameForView = self.view.bounds.offsetBy(dx: 0, dy: self.view.bounds.height)
+            if let view = newVC.view {
+                view.frame = frameForView
+                self.addChildViewController(newVC)
+                self.view.addSubview(view)
+                newVC.didMove(toParentViewController: self)
+            }
             
         case .EditScore:
             inEditMode = true
@@ -462,19 +462,9 @@ extension TimerVC: MenuDelegate {
                 })
             })
             
-            print("to be implemented")
-            
         case .Documents:
             print("to be implemented")
         }
-//
-//        let frameForView = self.view.bounds.offsetBy(dx: 0, dy: self.view.bounds.height)
-//        if let view = newVC.view {
-//            view.frame = frameForView
-//            self.addChildViewController(newVC)
-//            self.view.addSubview(view)
-//            newVC.didMove(toParentViewController: self)
-//        }
     }
 }
 
