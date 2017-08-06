@@ -206,6 +206,8 @@ class TimerVC: UIViewController, Sliding {
             menu.widthAnchor.constraint(equalTo: menu.heightAnchor, multiplier: 1),
             
             ])
+        
+        hideIcons()
     }
     
     private func setInitialLayoutConstraints() {
@@ -218,9 +220,13 @@ class TimerVC: UIViewController, Sliding {
     
     // MARK: - Drawing and laying out
     
-    override func viewDidLayoutSubviews() {
+    override func viewWillAppear(_ animated: Bool) {
         
-        undoButton.layer.cornerRadius = undoButton.bounds.width / 2
+        super.viewWillAppear(animated)
+//        if stopWatchCenterYConstraint.constant == 0 {
+//            print("will show icons")
+//            showIcons()
+//        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -228,6 +234,11 @@ class TimerVC: UIViewController, Sliding {
         super.viewDidAppear(animated)
         slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
         animateViewsOnAppear()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        
+        undoButton.layer.cornerRadius = undoButton.bounds.width / 2
     }
     
     
@@ -242,6 +253,8 @@ class TimerVC: UIViewController, Sliding {
         pitchCenterYConstraint.constant = 0
         UIView.animate(withDuration: 0.8, delay: 0.6, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.pitchContainer.layoutIfNeeded()
+        }, completion: { (finished) in
+            self.showIcons()
         })
     }
     
@@ -440,8 +453,11 @@ extension TimerVC: MenuDelegate {
             showIcons()
             
         case .SetGameTime:
+            hideIcons()
             let newVC = DurationVC()
-            let frameForView = self.view.bounds.offsetBy(dx: 0, dy: self.view.bounds.height)
+            newVC.modalTransitionStyle = .flipHorizontal
+            newVC.onDismiss = { self.showIcons() }
+            let frameForView = self.view.bounds
             if let view = newVC.view {
                 view.frame = frameForView
                 self.addChildViewController(newVC)
@@ -463,6 +479,7 @@ extension TimerVC: MenuDelegate {
             })
             
         case .Documents:
+            hideIcons()
             print("to be implemented")
         }
     }

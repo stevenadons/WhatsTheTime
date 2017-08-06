@@ -78,6 +78,8 @@ class DurationCard: UIView {
         
         ageLabel = createAgeLabel(title: ageString)
         addSubview(ageLabel)
+        
+        windUp()
     }
     
     private func createAgeLabel(title: String) -> UILabel {
@@ -91,6 +93,12 @@ class DurationCard: UIView {
         label.textColor = COLOR.White
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }
+    
+    private func windUp() {
+        
+        transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        alpha = 0.0
     }
     
     
@@ -107,12 +115,12 @@ class DurationCard: UIView {
             
             miniStopWatch.centerXAnchor.constraint(equalTo: centerXAnchor),
             miniStopWatch.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 80 / 140),
-            miniStopWatch.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -20 * bounds.height / 140),
+            miniStopWatch.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -12 * bounds.height / 140),
             miniStopWatch.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 80 / 140),
             
             ageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             ageLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 120 / 140),
-            ageLabel.topAnchor.constraint(equalTo: centerYAnchor, constant: 30 * bounds.height / 140),
+            ageLabel.topAnchor.constraint(equalTo: centerYAnchor, constant: 38 * bounds.height / 140),
             ageLabel.heightAnchor.constraint(equalToConstant: 25 * bounds.height / 140),
             
             ])
@@ -121,10 +129,41 @@ class DurationCard: UIView {
         ageLabel.setNeedsLayout()
     }
     
-
     
-    func animateMiniStopWatch() {
+    // MARK: - User Methods
+
+    func popup(delay: Double) {
         
+        let deadline = DispatchTime.now() + DispatchTimeInterval.milliseconds(Int(delay * 1000))
+        DispatchQueue.main.asyncAfter(deadline: deadline) {
+            self.alpha = 1.0
+            UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: [.allowUserInteraction], animations: {
+                self.transform = .identity
+            }) { (finished) in
+                self.animateMiniStopWatch(duration: 0.7)
+            }
+        }
+    }
+    
+    func shrink(delay: Double) {
+        
+        let deadline = DispatchTime.now() + DispatchTimeInterval.milliseconds(Int(delay * 1000))
+        DispatchQueue.main.asyncAfter(deadline: deadline) {
+            UIView.animate(withDuration: 0.15, delay: delay, options: [.curveEaseIn], animations: { 
+                self.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+            }, completion: { (finished) in
+                self.alpha = 0.0
+            })
+        }
+    }
+    
+    
+    
+    // MARK: - Private Methods
+    
+    private func animateMiniStopWatch(duration: Double) {
+        
+        miniStopWatch.animateProgress(duration: duration)
     }
     
 }

@@ -37,6 +37,8 @@
 		4F8F56F61F375D7900ACA857 /* DurationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8F56F51F375D7900ACA857 /* DurationCard.swift */; };
 		4F8F56F81F3762D400ACA857 /* AgeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8F56F71F3762D400ACA857 /* AgeRange.swift */; };
 		4F8F56FA1F37730C00ACA857 /* MiniStopWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8F56F91F37730C00ACA857 /* MiniStopWatch.swift */; };
+		4F8F56FC1F37A0B100ACA857 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8F56FB1F37A0B100ACA857 /* BackButton.swift */; };
+		4F8F56FE1F37A0DC00ACA857 /* BackButtonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8F56FD1F37A0DC00ACA857 /* BackButtonLayer.swift */; };
 		4F9249D01F1A6DD9004E9CD0 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */; };
 		4F9249D21F1A7270004E9CD0 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9249D11F1A7270004E9CD0 /* Menu.swift */; };
 		4FA04FB61F1B5077007609B9 /* UIView+AnimatingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA04FB51F1B5077007609B9 /* UIView+AnimatingConstraints.swift */; };
@@ -87,6 +89,8 @@
 		4F8F56F51F375D7900ACA857 /* DurationCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationCard.swift; sourceTree = "<group>"; };
 		4F8F56F71F3762D400ACA857 /* AgeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeRange.swift; sourceTree = "<group>"; };
 		4F8F56F91F37730C00ACA857 /* MiniStopWatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniStopWatch.swift; sourceTree = "<group>"; };
+		4F8F56FB1F37A0B100ACA857 /* BackButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		4F8F56FD1F37A0DC00ACA857 /* BackButtonLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackButtonLayer.swift; sourceTree = "<group>"; };
 		4F9249CF1F1A6DD9004E9CD0 /* MenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		4F9249D11F1A7270004E9CD0 /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		4FA04FB51F1B5077007609B9 /* UIView+AnimatingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AnimatingConstraints.swift"; sourceTree = "<group>"; };
@@ -312,6 +316,8 @@
 				4F45D1BA1F2CBEBF0082D93B /* ResetButton.swift */,
 				4F45D1B81F2CBC1E0082D93B /* ResetButtonLayer.swift */,
 				4F45D1BC1F2CBEF20082D93B /* ResetButtonIconOnly.swift */,
+				4F8F56FB1F37A0B100ACA857 /* BackButton.swift */,
+				4F8F56FD1F37A0DC00ACA857 /* BackButtonLayer.swift */,
 			);
 			name = IconButtons;
 			sourceTree = "<group>";
@@ -428,8 +434,10 @@
 				4F0C9BCE1F17C26A00956C53 /* Color.swift in Sources */,
 				4F9249D21F1A7270004E9CD0 /* Menu.swift in Sources */,
 				4F45D1AD1F2C8D410082D93B /* DismissButtonIconOnly.swift in Sources */,
+				4F8F56FC1F37A0B100ACA857 /* BackButton.swift in Sources */,
 				4F45D1BD1F2CBEF20082D93B /* ResetButtonIconOnly.swift in Sources */,
 				4F8F56F31F375B6A00ACA857 /* DurationVC.swift in Sources */,
+				4F8F56FE1F37A0DC00ACA857 /* BackButtonLayer.swift in Sources */,
 				4F3874A61F237FDD000FE09A /* StopWatchControlIcon.swift in Sources */,
 				4F45D1B41F2C9ECC0082D93B /* HamburgerButtonIconOnly.swift in Sources */,
 				4FB1D07F1F30E90E00C66A4F /* Ball.swift in Sources */,

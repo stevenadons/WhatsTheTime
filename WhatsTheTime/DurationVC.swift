@@ -8,10 +8,14 @@
 
 import UIKit
 
-class DurationVC: UIViewController, Sliding {
+class DurationVC: UIViewController {
 
     
     // MARK: - Properties
+    
+    var onDismiss: (() -> Void)?
+    
+    private var backButton: BackButton!
     
     private var cardOne: DurationCard!
     private var cardTwo: DurationCard!
@@ -34,11 +38,22 @@ class DurationVC: UIViewController, Sliding {
     override func viewDidAppear(_ animated: Bool) {
         
         super.viewDidAppear(animated)
-        slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
-        cards.forEach { $0.setNeedsDisplay() }
+        showBackButton(delay: 0.8)
+        for card in self.cards {
+            if let index = self.cards.index(of: card) {
+                card.popup(delay: 0.2 * Double(index))
+            } else {
+                card.popup(delay: 1.0)
+            }
+        }
     }
     
     private func setupViews() {
+        
+        backButton = BackButton()
+        backButton.alpha = 0.0
+        backButton.addTarget(self, action: #selector(backButtonTapped(sender:forEvent:)), for: [.touchUpInside])
+        view.addSubview(backButton)
         
         cardOne = DurationCard(duration: .Twenty)
         cardTwo = DurationCard(duration: .TwentyFive)
@@ -54,6 +69,11 @@ class DurationVC: UIViewController, Sliding {
         view.addSubview(cardFour)
 
         NSLayoutConstraint.activate([
+            
+            backButton.widthAnchor.constraint(equalToConstant: 44),
+            backButton.heightAnchor.constraint(equalToConstant: 44),
+            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 29)),
+            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 13)),
             
             cardOne.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -padding / 2),
             cardOne.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 140 / 375),
@@ -77,8 +97,25 @@ class DurationVC: UIViewController, Sliding {
             
             ])
     }
-
     
+    
+    // MARK: - Private Methods
+    
+    @objc private func backButtonTapped(sender: BackButton, forEvent event: UIEvent) {
+        
+        willMove(toParentViewController: nil)
+        view.removeFromSuperview()
+        removeFromParentViewController()
+        onDismiss?()
+    }
+    
+    private func showBackButton(delay: Double) {
+        
+        UIView.animate(withDuration: 0.2, delay: delay, options: [], animations: { 
+            self.backButton.alpha = 1.0
+        }, completion: nil)
+    }
+
 
 
 }

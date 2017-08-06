@@ -105,7 +105,7 @@ class MiniStopWatch: UIView {
         shape.fillColor = UIColor.clear.cgColor
         shape.position = CGPoint.zero
         shape.strokeStart = 0.0
-        shape.strokeEnd = 0.4
+        shape.strokeEnd = 0.0
         shape.contentsScale = UIScreen.main.scale
         shape.path = progressBarPath().cgPath
         return shape
@@ -119,7 +119,6 @@ class MiniStopWatch: UIView {
     }
     
     
-    
     // MARK: - Layout and draw methods
     
     override func layoutSubviews() {
@@ -131,7 +130,6 @@ class MiniStopWatch: UIView {
         core.cornerRadius = core.bounds.width / 2
         
         progressBar.path = progressBarPath().cgPath
-//        updateProgressBar()
         
         NSLayoutConstraint.activate([
             
@@ -149,27 +147,20 @@ class MiniStopWatch: UIView {
     }
     
     
-    
-        // MARK: - Private methods
-    
-//    fileprivate func updateProgressBar() {
-//        
-//        progressBar.removeFromSuperlayer()
-//        progressBar = progressBarLayer()
-//        progressBar.strokeEnd = (self.half == .Second) ? strokeEndPosition(progress: 1) : strokeEndPosition(progress: timer.progress)
-//        squareContainer.addSublayer(progressBar)
-//    }
-    
-    
-    
-    // MARK: - Progress Bar Methods
-    
-    
-    
-//    private func strokeEndPosition(progress: CGFloat) -> CGFloat {
-//        let strokeField = 1.0 - progressBarStrokeInsetRatio * 2
-//        return progressBarStrokeInsetRatio + strokeField * progress
-//    }
+    // MARK: - User Methods
+
+    func animateProgress(duration: Double) {
+        
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.duration = duration * Double(self.duration.rawValue) / 30.0
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        animation.fromValue = 0.0
+        animation.toValue = CGFloat(Double(self.duration.rawValue) / 60.0)
+        progressBar.add(animation, forKey: "timer effect")
+        CATransaction.setDisableActions(true)
+        progressBar.strokeEnd = CGFloat(Double(self.duration.rawValue) / 60.0)
+        CATransaction.setDisableActions(false)
+    }
     
     
 
