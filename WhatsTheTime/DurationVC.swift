@@ -14,16 +14,17 @@ class DurationVC: UIViewController {
     // MARK: - Properties
     
     var onDismiss: (() -> Void)?
+    var onCardTapped: (() -> Void)?
     
-    private var backButton: BackButton!
+    fileprivate var backButton: BackButton!
     
-    private var cardOne: DurationCard!
-    private var cardTwo: DurationCard!
-    private var cardThree: DurationCard!
-    private var cardFour: DurationCard!
-    private var cards: [DurationCard] = []
+    fileprivate var cardOne: DurationCard!
+    fileprivate var cardTwo: DurationCard!
+    fileprivate var cardThree: DurationCard!
+    fileprivate var cardFour: DurationCard!
+    fileprivate var cards: [DurationCard] = []
     
-    private let padding: CGFloat = 8
+    fileprivate let padding: CGFloat = 8
     
     
     // MARK: - Life Cycle Methods
@@ -63,10 +64,10 @@ class DurationVC: UIViewController {
         cards.append(cardTwo)
         cards.append(cardThree)
         cards.append(cardFour)
-        view.addSubview(cardOne)
-        view.addSubview(cardTwo)
-        view.addSubview(cardThree)
-        view.addSubview(cardFour)
+        cards.forEach {
+            $0.addTarget(self, action: #selector(handleCardTapped(sender:forEvent:)), for: [.touchUpInside])
+            view.addSubview($0)
+        }
 
         NSLayoutConstraint.activate([
             
@@ -103,10 +104,7 @@ class DurationVC: UIViewController {
     
     @objc private func backButtonTapped(sender: BackButton, forEvent event: UIEvent) {
         
-        willMove(toParentViewController: nil)
-        view.removeFromSuperview()
-        removeFromParentViewController()
-        onDismiss?()
+        dismissVC()
     }
     
     private func showBackButton(delay: Double) {
@@ -115,7 +113,56 @@ class DurationVC: UIViewController {
             self.backButton.alpha = 1.0
         }, completion: nil)
     }
+    
+    fileprivate func dismissVC() {
+        
+        willMove(toParentViewController: nil)
+        view.removeFromSuperview()
+        removeFromParentViewController()
+        onDismiss?()
+    }
+    
+}
 
 
+// MARK: - Touch Methods
 
+private extension DurationVC {
+    
+    @objc func handleCardTapped(sender: DurationCard, forEvent event: UIEvent) {
+        
+        // Non selected cards fade and slide away
+        var falseCards: [DurationCard] = []
+        cards.forEach {
+            if !($0.isEqual(sender)) {
+                falseCards.append($0)
+            }
+        }
+        if falseCards.count > 0 {
+            for index in 0..<falseCards.count {
+                falseCards[index].slideAway(newAlpha: 0.2, slideDelay: Double(index) * 0.2, completion: nil)
+            }
+        }
+        
+        sender.highlight()
+
+        // Selected card border highlights
+        let animationDuration: Double = 2.0
+        let animation = CABasicAnimation(keyPath: "borderWidth")
+        animation.duration = animationDuration
+        animation.fromValue = 0.0
+        animation.toValue = 6.0
+        sender.layer.add(animation, forKey: "border")
+        sender.layer.borderWidth = 6.0
+        
+        // Dismiss VC
+        let deadline = DispatchTime.now() + DispatchTimeInterval.milliseconds(Int(animationDuration * 1000))
+        DispatchQueue.main.asyncAfter(deadline: deadline) { 
+            UserDefaults.standard.set(sender.duration.rawValue, forKey: USERDEFAULTSKEY.Duration)
+            self.onCardTapped?()
+            self.dismissVC()
+        }
+        
+    }
+    
 }

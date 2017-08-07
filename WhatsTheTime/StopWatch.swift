@@ -21,12 +21,13 @@ protocol StopWatchTimerDelegate: class {
 class StopWatch: UIControl {
     
     
-    // MARK: - Helper Classes
-    
-    
     // MARK: - Properties
     
-    var game: HockeyGame!
+    var game: HockeyGame! {
+        didSet {
+            updateDurationLabel()
+        }
+    }
     
     var message: String = LS_NEWGAME {
         didSet {
@@ -85,7 +86,7 @@ class StopWatch: UIControl {
         self.game = game
         timer.set(duration: game.duration)
         timeLabel.text = stopWatchLabelTimeString()
-        durationLabel.text = "2x\(game.duration.rawValue)min"
+        updateDurationLabel()
         halfLabel.text = LS_FIRSTHALFLABEL
         setNeedsLayout()
     }
@@ -170,8 +171,15 @@ class StopWatch: UIControl {
             halfLabel.topAnchor.constraint(equalTo: durationLabel.topAnchor, constant: durationLabel.font.pointSize),
             
             ])
+        
+        updateDurationLabel()
     }
     
+    private func updateDurationLabel() {
+        
+        durationLabel.text = "2x\(game.duration.rawValue)min"
+        durationLabel.setNeedsDisplay()
+    }
     
     
     
@@ -192,13 +200,16 @@ class StopWatch: UIControl {
         return result
     }
     
-    func reset() {
+    func reset(withGame game: HockeyGame) {
+        
+        self.game = game
         timer.reset()
         halfLabel.alpha = 1.0
         updateProgressBars()
         resetTimeLabel(withColor: COLOR.Theme, alpha: 1)
         setProgressBarsColor(to: COLOR.Theme)
         icon.icon = .PlayIcon
+        setNeedsLayout()
     }
     
     func goToBackground(completion: (() -> Void)?) {

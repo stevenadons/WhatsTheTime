@@ -47,6 +47,7 @@ class TimerVC: UIViewController, Sliding {
     fileprivate var undoButton: UIButton!
     fileprivate var messageLabel: UILabel!
     fileprivate var menu: Menu!
+    fileprivate var duration: MINUTESINHALF = .TwentyFive
     
     fileprivate var game: HockeyGame!
     fileprivate var stopWatchCenterYConstraint: NSLayoutConstraint!
@@ -76,7 +77,12 @@ class TimerVC: UIViewController, Sliding {
         super.viewDidLoad()
         view.backgroundColor = COLOR.White
         view.clipsToBounds = true
-        game = HockeyGame(duration: .Fifteen)
+        if let minutes = UserDefaults.standard.value(forKey: USERDEFAULTSKEY.Duration) as? Int {
+            if let enumCase = MINUTESINHALF(rawValue: minutes) {
+                duration = enumCase
+            }
+        }
+        game = HockeyGame(duration: duration)
         setupViews()
     }
     
@@ -360,15 +366,21 @@ class TimerVC: UIViewController, Sliding {
             }
             // to implement score countdown
         } else if message == LS_WARNINGRESETGAME {
-            stopWatch.reset()
-            pitch.resetScores()
-            handleNewGame()
+            resetWithNewGame()
         }
     }
     
     @objc private func maskViewTapped(sender: UIButton, forEvent event: UIEvent) {
         
         hideUndoButton()
+    }
+    
+    fileprivate func resetWithNewGame() {
+        
+        print("will reset to new game")
+        
+        pitch.resetScores()
+        handleNewGame()
     }
 }
 
@@ -400,10 +412,13 @@ extension TimerVC: StopWatchDelegate {
     
     func handleNewGame() {
         
-        game = HockeyGame(duration: .Fifteen)
-        stopWatch.game = game
-        stopWatch.reset()
-        stopWatch.setNeedsLayout()
+        if let minutes = UserDefaults.standard.value(forKey: USERDEFAULTSKEY.Duration) as? Int {
+            if let enumCase = MINUTESINHALF(rawValue: minutes) {
+                duration = enumCase
+            }
+        }
+        game = HockeyGame(duration: duration)
+        stopWatch.reset(withGame: game)
         pitch.hideBall()
         pitch.resetScores()
     }
@@ -457,6 +472,7 @@ extension TimerVC: MenuDelegate {
             let newVC = DurationVC()
             newVC.modalTransitionStyle = .flipHorizontal
             newVC.onDismiss = { self.showIcons() }
+            newVC.onCardTapped = { self.resetWithNewGame() }
             let frameForView = self.view.bounds
             if let view = newVC.view {
                 view.frame = frameForView

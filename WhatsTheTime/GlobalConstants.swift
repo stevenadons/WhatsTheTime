@@ -80,6 +80,12 @@ enum FONTNAME {
 }
 
 
+enum USERDEFAULTSKEY {
+    
+    static let Duration = "Duration"
+}
+
+
 
 // Localized strings
 

@@ -53,6 +53,7 @@ class MiniStopWatch: UIView {
         
         backgroundColor = UIColor.clear
         translatesAutoresizingMaskIntoConstraints = false
+        isUserInteractionEnabled = false
         
         squareContainer = CALayer()
         squareContainer.backgroundColor = UIColor.clear.cgColor
@@ -89,9 +90,9 @@ class MiniStopWatch: UIView {
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         if bold {
-            label.font = UIFont(name: FONTNAME.ThemeBold, size: 16)
+            label.font = UIFont(name: FONTNAME.ThemeBold, size: 14)
         } else {
-            label.font = UIFont(name: FONTNAME.ThemeRegular, size: 16)
+            label.font = UIFont(name: FONTNAME.ThemeRegular, size: 14)
         }
         return label
     }

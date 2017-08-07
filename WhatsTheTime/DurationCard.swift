@@ -8,14 +8,14 @@
 
 import UIKit
 
-class DurationCard: UIView {
+class DurationCard: UIButton {
 
     
     // MARK: - Properties
     
-    private var miniStopWatch: MiniStopWatch!
-    private var ageLabel: UILabel!
-    private var ageString: String = "" {
+    fileprivate var miniStopWatch: MiniStopWatch!
+    fileprivate var ageLabel: UILabel!
+    fileprivate var ageString: String = "" {
         didSet {
             ageLabel.text = ageString
             ageLabel.setNeedsDisplay()
@@ -40,7 +40,7 @@ class DurationCard: UIView {
         }
     }
     
-    
+
     // MARK: - Initializing
     
     override init(frame: CGRect) {
@@ -71,6 +71,9 @@ class DurationCard: UIView {
         backgroundColor = UIColor.cyan
         translatesAutoresizingMaskIntoConstraints = false
         
+        layer.borderColor = COLOR.Theme.cgColor
+        layer.borderWidth = 0
+        
         miniStopWatch = MiniStopWatch()
         miniStopWatch.duration = duration
         miniStopWatch.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +89,7 @@ class DurationCard: UIView {
         
         let label = UILabel()
         label.text = title
-        label.font = UIFont(name: FONTNAME.ThemeBold, size: 14)
+        label.font = UIFont(name: FONTNAME.ThemeBold, size: 12)
         label.adjustsFontSizeToFitWidth = true
         label.isUserInteractionEnabled = false
         label.textAlignment = .center
@@ -109,7 +112,7 @@ class DurationCard: UIView {
         
         super.layoutSubviews()
         
-        layer.cornerRadius = 8 * max(bounds.height, bounds.width) / 140
+        layer.cornerRadius = 4 * max(bounds.height, bounds.width) / 140
         
         NSLayoutConstraint.activate([
             
@@ -129,9 +132,13 @@ class DurationCard: UIView {
         ageLabel.setNeedsLayout()
     }
     
-    
-    // MARK: - User Methods
+}
 
+
+// MARK: - User Methods
+
+extension DurationCard {
+    
     func popup(delay: Double) {
         
         let deadline = DispatchTime.now() + DispatchTimeInterval.milliseconds(Int(delay * 1000))
@@ -149,7 +156,7 @@ class DurationCard: UIView {
         
         let deadline = DispatchTime.now() + DispatchTimeInterval.milliseconds(Int(delay * 1000))
         DispatchQueue.main.asyncAfter(deadline: deadline) {
-            UIView.animate(withDuration: 0.15, delay: delay, options: [.curveEaseIn], animations: { 
+            UIView.animate(withDuration: 0.15, delay: delay, options: [.curveEaseIn], animations: {
                 self.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
             }, completion: { (finished) in
                 self.alpha = 0.0
@@ -157,13 +164,43 @@ class DurationCard: UIView {
         }
     }
     
-    
-    
-    // MARK: - Private Methods
-    
-    private func animateMiniStopWatch(duration: Double) {
+    func slideAway(newAlpha: CGFloat, slideDelay: Double, completion: (() -> Void)?) {
         
-        miniStopWatch.animateProgress(duration: duration)
+        UIView.animate(withDuration: 0.3, delay: slideDelay, options: [.allowUserInteraction, .curveEaseIn], animations: {
+            self.alpha = newAlpha
+            self.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
+        }, completion: { (finished) in
+            completion?()
+        })
+    }
+    
+    func highlight() {
+        
+        UIView.transition(with: self, duration: 0.3, options: [.curveEaseOut], animations: {
+            self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        }) { (finished) in
+            UIView.animate(withDuration: 0.3, delay: 0.3, options: [.curveEaseIn], animations: { 
+                self.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+            }, completion: { (finished) in
+                self.alpha = 0.0
+            })
+        }
     }
     
 }
+
+
+// MARK: - Private Methods
+
+fileprivate extension DurationCard {
+    
+    func animateMiniStopWatch(duration: Double) {
+        
+        miniStopWatch.animateProgress(duration: duration)
+    }
+}
+
+
+
+
+
