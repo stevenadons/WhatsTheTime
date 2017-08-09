@@ -116,9 +116,10 @@ class DurationVC: UIViewController {
     
     fileprivate func dismissVC() {
         
-        willMove(toParentViewController: nil)
-        view.removeFromSuperview()
-        removeFromParentViewController()
+        dismiss(animated: true, completion: nil)
+//        willMove(toParentViewController: nil)
+//        view.removeFromSuperview()
+//        removeFromParentViewController()
         onDismiss?()
     }
     

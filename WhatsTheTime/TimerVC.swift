@@ -58,6 +58,7 @@ class TimerVC: UIViewController, Sliding {
     fileprivate var messageTimer: Timer?
     fileprivate let standardUndoButtonColor: UIColor = COLOR.Negation
     fileprivate var inEditMode: Bool = false
+    fileprivate var animationTransitioningDelegate: AnimationTransitioningDelegate = AnimationTransitioningDelegate()
     
     var message: String = "HELLO" {
         didSet {
@@ -377,8 +378,6 @@ class TimerVC: UIViewController, Sliding {
     
     fileprivate func resetWithNewGame() {
         
-        print("will reset to new game")
-        
         pitch.resetScores()
         handleNewGame()
     }
@@ -470,16 +469,23 @@ extension TimerVC: MenuDelegate {
         case .SetGameTime:
             hideIcons()
             let newVC = DurationVC()
-            newVC.modalTransitionStyle = .flipHorizontal
+            
+            newVC.transitioningDelegate = animationTransitioningDelegate
+            newVC.modalPresentationStyle = .custom
+//            newVC.modalTransitionStyle = .flipHorizontal
+            
             newVC.onDismiss = { self.showIcons() }
             newVC.onCardTapped = { self.resetWithNewGame() }
-            let frameForView = self.view.bounds
-            if let view = newVC.view {
-                view.frame = frameForView
-                self.addChildViewController(newVC)
-                self.view.addSubview(view)
-                newVC.didMove(toParentViewController: self)
-            }
+            
+            present(newVC, animated: true, completion: nil)
+            
+//            let frameForView = self.view.bounds
+//            if let view = newVC.view {
+//                view.frame = frameForView
+//                self.addChildViewController(newVC)
+//                self.view.addSubview(view)
+//                newVC.didMove(toParentViewController: self)
+//            }
             
         case .EditScore:
             inEditMode = true
