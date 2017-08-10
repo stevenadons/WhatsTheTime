@@ -39,7 +39,7 @@ class TimerVC: UIViewController, Sliding {
     fileprivate var resetButton: ResetButtonIconOnly!
     fileprivate var stopWatchContainer: ContainerView!
     fileprivate var stopWatch: StopWatch!
-    private var pitchContainer: PitchContainerView!
+    fileprivate var pitchContainer: PitchContainerView!
     fileprivate var pitch: Pitch!
     fileprivate var dismissEditMode: DismissButton!
     fileprivate var maskView: UIButton!
@@ -50,7 +50,7 @@ class TimerVC: UIViewController, Sliding {
     fileprivate var duration: MINUTESINHALF = .TwentyFive
     
     fileprivate var game: HockeyGame!
-    fileprivate var stopWatchCenterYConstraint: NSLayoutConstraint!
+    var stopWatchCenterYConstraint: NSLayoutConstraint!
     private var pitchCenterYConstraint: NSLayoutConstraint!
     private var scorePanelCenterYConstraint: NSLayoutConstraint!
     private var undoButtonTopConstraint: NSLayoutConstraint!
@@ -217,11 +217,15 @@ class TimerVC: UIViewController, Sliding {
         hideIcons()
     }
     
-    private func setInitialLayoutConstraints() {
+    func setInitialLayoutConstraints() {
         
         stopWatchCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
         pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
         undoButtonTopConstraint = NSLayoutConstraint(item: undoButton, attribute: .top, relatedBy: .equal, toItem: undoButtonContainer, attribute: .top, multiplier: 1, constant: 130)
+        
+//        stopWatchContainer.layoutIfNeeded()
+//        pitchContainer.layoutIfNeeded()
+//        undoButtonContainer.layoutIfNeeded()
     }
         
     
@@ -230,17 +234,20 @@ class TimerVC: UIViewController, Sliding {
     override func viewWillAppear(_ animated: Bool) {
         
         super.viewWillAppear(animated)
-//        if stopWatchCenterYConstraint.constant == 0 {
-//            print("will show icons")
-//            showIcons()
-//        }
+        
+//        self.setInitialLayoutConstraints()
+//        self.view.layoutIfNeeded()
+//        self.animateViewsOnAppear()
+//        self.showIcons()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
+        print("appearing")
         super.viewDidAppear(animated)
-        slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
+//        slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
         animateViewsOnAppear()
+        showIcons()
     }
     
     override func viewDidLayoutSubviews() {
@@ -251,7 +258,7 @@ class TimerVC: UIViewController, Sliding {
     
     // MARK: - Private Methods
     
-    private func animateViewsOnAppear() {
+    func animateViewsOnAppear() {
         
         stopWatchCenterYConstraint.constant = 0
         UIView.animate(withDuration: 0.8, delay: 0.3, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
@@ -469,23 +476,9 @@ extension TimerVC: MenuDelegate {
         case .SetGameTime:
             hideIcons()
             let newVC = DurationVC()
-            
-            newVC.transitioningDelegate = animationTransitioningDelegate
-            newVC.modalPresentationStyle = .custom
-//            newVC.modalTransitionStyle = .flipHorizontal
-            
-            newVC.onDismiss = { self.showIcons() }
+            newVC.modalTransitionStyle = .crossDissolve
             newVC.onCardTapped = { self.resetWithNewGame() }
-            
             present(newVC, animated: true, completion: nil)
-            
-//            let frameForView = self.view.bounds
-//            if let view = newVC.view {
-//                view.frame = frameForView
-//                self.addChildViewController(newVC)
-//                self.view.addSubview(view)
-//                newVC.didMove(toParentViewController: self)
-//            }
             
         case .EditScore:
             inEditMode = true

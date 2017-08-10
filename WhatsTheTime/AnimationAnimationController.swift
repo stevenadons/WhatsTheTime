@@ -61,11 +61,6 @@ class AnimationAnimationController: NSObject, UIViewControllerAnimatedTransition
         guard let presentedSnapshot = presentedVC.view.snapshotView(afterScreenUpdates: true) else { return }
         presentedSnapshot.frame = presentedVC.view.frame
 //        presentedSnapshot.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-        presentedSnapshot.layer.zPosition = UIScreen.main.bounds.width / 2
-        let rotation = CATransform3DMakeRotation(.pi/2, 0, 1, 0)
-        var transform = CATransform3DScale(rotation, 0.1, 0.1, 1)
-        transform.m34 = -1.0 / (UIScreen.main.bounds.width * 5)
-        presentedSnapshot.layer.transform = transform
         transitionContext.containerView.addSubview(presentedSnapshot)
         
         // Temporarily hide presentedVC and presentedSnapshot
@@ -78,17 +73,13 @@ class AnimationAnimationController: NSObject, UIViewControllerAnimatedTransition
             UIView.animateKeyframes(withDuration: self.duration, delay: 0, options: [.calculationModeCubic], animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0.00, relativeDuration: 0.45, animations: {
 //                    presentingSnapshot.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-                    let rotation = CATransform3DMakeRotation(-.pi/2, 0, 1, 0)
-                    var transform = CATransform3DScale(rotation, 0.1, 0.1, 1)
-                    transform.m34 = -1.0 / (UIScreen.main.bounds.width * 5)
-                    presentingSnapshot.layer.transform = transform
                 })
                 UIView.addKeyframe(withRelativeStartTime: 0.45, relativeDuration: 0.10, animations: {
                     presentingSnapshot.alpha = 0.0
                     presentedSnapshot.alpha = 1.0
                 })
                 UIView.addKeyframe(withRelativeStartTime: 0.55, relativeDuration: 0.45, animations: {
-                    presentedSnapshot.transform = .identity
+//                    presentedSnapshot.transform = .identity
                 })
             })
         }
@@ -113,7 +104,7 @@ class AnimationAnimationController: NSObject, UIViewControllerAnimatedTransition
         presentingVC.view.isHidden = false
         guard let presentingSnapshot = presentingVC.view.snapshotView(afterScreenUpdates: true) else { return }
         presentingSnapshot.frame = presentingVC.view.frame
-        presentingSnapshot.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+//        presentingSnapshot.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
         transitionContext.containerView.addSubview(presentingSnapshot)
         
         // Temporarily hide presentingVCView and presentingSnapshot
@@ -132,14 +123,14 @@ class AnimationAnimationController: NSObject, UIViewControllerAnimatedTransition
         animator.addAnimations {
             UIView.animateKeyframes(withDuration: self.duration, delay: 0, options: [.calculationModeCubic], animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0.00, relativeDuration: 0.45, animations: {
-                    presentedSnapshot.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+//                    presentedSnapshot.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
                 })
                 UIView.addKeyframe(withRelativeStartTime: 0.45, relativeDuration: 0.10, animations: {
                     presentedSnapshot.alpha = 0.0
                     presentingSnapshot.alpha = 1.0
                 })
                 UIView.addKeyframe(withRelativeStartTime: 0.55, relativeDuration: 0.45, animations: {
-                    presentingSnapshot.transform = .identity
+//                    presentingSnapshot.transform = .identity
                 })
             })
         }

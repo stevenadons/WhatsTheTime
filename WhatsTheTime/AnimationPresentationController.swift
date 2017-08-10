@@ -28,18 +28,29 @@ class AnimationPresentationController: UIPresentationController {
     override func presentationTransitionWillBegin() {
         
         chrome.frame = containerView!.bounds
-//        chrome.alpha = 0.0
-        chrome.backgroundColor = COLOR.White
+        chrome.backgroundColor = COLOR.Theme
         containerView!.insertSubview(chrome, at: 0)
         
-        // animation ofwel transitioncoordinator
+        // animation or transitioncoordinator
         let animator = UIViewPropertyAnimator(duration: 0.2, curve: .easeIn, animations: {
-//            self.chrome.alpha = 1.0
-            if let presentingVC = self.presentingViewController as? TimerVC {
-                // change UI in TimerVC (alpha, scale,...)
-            }
+//            if let presentingVC = self.presentingViewController as? TimerVC {
+//                 change UI in TimerVC (alpha, scale,...)
+//            }
         })
         animator.startAnimation()
+    }
+    
+    
+    override func dismissalTransitionWillBegin() {
+        
+        // get things from (to be dismissed) presentedviewcontroller and add to presentingviewcontroller
+        presentedViewController.transitionCoordinator?.animate(alongsideTransition: { (context) in
+//            if let presentingVC = self.presentingViewController as? TimerVC {
+//                 change UI in TimerVC (alpha, scale,...) back
+//            }
+        }, completion: { (context) in
+            self.chrome.removeFromSuperview()
+        })
     }
     
     
@@ -48,19 +59,10 @@ class AnimationPresentationController: UIPresentationController {
         if !completed { chrome.removeFromSuperview() } // if transition gets interrupted
     }
     
-    
-    override func dismissalTransitionWillBegin() {
+
+    override func dismissalTransitionDidEnd(_ completed: Bool) {
         
-        // transitioncoordinator?
-        // get things from (to be dismissed) presentedviewcontroller and add to presentingviewcontroller
-        presentedViewController.transitionCoordinator?.animate(alongsideTransition: { (context) in
-//            self.chrome.alpha = 0.0
-            if let presentingVC = self.presentingViewController as? TimerVC {
-                // change UI in TimerVC (alpha, scale,...) back
-            }
-        }, completion: { (context) in
-            self.chrome.removeFromSuperview()
-        })
+        if !completed { chrome.removeFromSuperview() } // if transition gets interrupted
     }
     
     

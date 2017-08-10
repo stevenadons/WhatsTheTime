@@ -6,6 +6,14 @@
 //  Copyright © 2017 StevenAdons. All rights reserved.
 //
 
+
+//  How to use:
+//  newVC.transitioningDelegate = animationTransitioningDelegate
+//  newVC.modalPresentationStyle = .custom
+//  newVC.modalTransitionStyle = .crossDissolve
+//  present(newVC, animated: true, completion: nil)
+
+
 import UIKit
 
 class AnimationTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {

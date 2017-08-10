@@ -147,7 +147,7 @@ extension DurationCard {
             UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: [.allowUserInteraction], animations: {
                 self.transform = .identity
             }) { (finished) in
-                self.animateMiniStopWatch(duration: 0.7)
+                self.animateMiniStopWatch(duration: 0.4)
             }
         }
     }
@@ -164,11 +164,10 @@ extension DurationCard {
         }
     }
     
-    func slideAway(newAlpha: CGFloat, slideDelay: Double, completion: (() -> Void)?) {
+    func fadeOut(delay: Double, completion: (() -> Void)?) {
         
-        UIView.animate(withDuration: 0.3, delay: slideDelay, options: [.allowUserInteraction, .curveEaseIn], animations: {
-            self.alpha = newAlpha
-            self.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
+        UIView.animate(withDuration: 0.3, delay: delay, options: [.allowUserInteraction, .curveEaseIn], animations: {
+            self.alpha = 0.0
         }, completion: { (finished) in
             completion?()
         })
@@ -176,15 +175,12 @@ extension DurationCard {
     
     func highlight() {
         
-        UIView.transition(with: self, duration: 0.3, options: [.curveEaseOut], animations: {
-            self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        }) { (finished) in
-            UIView.animate(withDuration: 0.3, delay: 0.3, options: [.curveEaseIn], animations: { 
-                self.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-            }, completion: { (finished) in
-                self.alpha = 0.0
-            })
-        }
+        let animation = CABasicAnimation(keyPath: "borderWidth")
+        animation.duration = 0.2
+        animation.fromValue = 0.0
+        animation.toValue = 6.0
+        layer.add(animation, forKey: "border")
+        layer.borderWidth = 6.0
     }
     
 }

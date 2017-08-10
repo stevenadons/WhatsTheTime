@@ -13,7 +13,6 @@ class DurationVC: UIViewController {
     
     // MARK: - Properties
     
-    var onDismiss: (() -> Void)?
     var onCardTapped: (() -> Void)?
     
     fileprivate var backButton: BackButton!
@@ -42,7 +41,7 @@ class DurationVC: UIViewController {
         showBackButton(delay: 0.8)
         for card in self.cards {
             if let index = self.cards.index(of: card) {
-                card.popup(delay: 0.2 * Double(index))
+                card.popup(delay: 0.1 * Double(index))
             } else {
                 card.popup(delay: 1.0)
             }
@@ -117,10 +116,6 @@ class DurationVC: UIViewController {
     fileprivate func dismissVC() {
         
         dismiss(animated: true, completion: nil)
-//        willMove(toParentViewController: nil)
-//        view.removeFromSuperview()
-//        removeFromParentViewController()
-        onDismiss?()
     }
     
 }
@@ -131,39 +126,10 @@ class DurationVC: UIViewController {
 private extension DurationVC {
     
     @objc func handleCardTapped(sender: DurationCard, forEvent event: UIEvent) {
-        
-        // Non selected cards fade and slide away
-        var falseCards: [DurationCard] = []
-        cards.forEach {
-            if !($0.isEqual(sender)) {
-                falseCards.append($0)
-            }
-        }
-        if falseCards.count > 0 {
-            for index in 0..<falseCards.count {
-                falseCards[index].slideAway(newAlpha: 0.2, slideDelay: Double(index) * 0.2, completion: nil)
-            }
-        }
-        
-        sender.highlight()
 
-        // Selected card border highlights
-        let animationDuration: Double = 2.0
-        let animation = CABasicAnimation(keyPath: "borderWidth")
-        animation.duration = animationDuration
-        animation.fromValue = 0.0
-        animation.toValue = 6.0
-        sender.layer.add(animation, forKey: "border")
-        sender.layer.borderWidth = 6.0
-        
-        // Dismiss VC
-        let deadline = DispatchTime.now() + DispatchTimeInterval.milliseconds(Int(animationDuration * 1000))
-        DispatchQueue.main.asyncAfter(deadline: deadline) { 
-            UserDefaults.standard.set(sender.duration.rawValue, forKey: USERDEFAULTSKEY.Duration)
-            self.onCardTapped?()
-            self.dismissVC()
-        }
-        
+        UserDefaults.standard.set(sender.duration.rawValue, forKey: USERDEFAULTSKEY.Duration)
+        onCardTapped?()
+        dismissVC()
     }
     
 }

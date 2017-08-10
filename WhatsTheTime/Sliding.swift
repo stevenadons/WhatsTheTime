@@ -40,7 +40,6 @@ extension Sliding where Self: UIViewController {
                 
             }) { (finished) in
                 if finished {
-                    print("let's ccmplete")
                     completion?()
                 }
             }
@@ -61,7 +60,6 @@ extension Sliding where Self: UIViewController {
                 self.view.frame = frame
             }) { (finished) in
                 if finished {
-                    print("let's ccmplete")
                     completion?()
                 }
             }
