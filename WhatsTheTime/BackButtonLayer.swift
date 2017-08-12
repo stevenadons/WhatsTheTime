@@ -76,4 +76,5 @@ class BackButtonLayer: CALayer {
         path.addLine(to: CGPoint(x: 16 * widthScale, y: 22 * heightScale))
         path.addLine(to: CGPoint(x: 25 * widthScale, y: 31 * heightScale))
         return path
-    }}
+    }
+}

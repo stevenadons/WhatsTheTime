@@ -13,7 +13,7 @@ class DocumentButton: UIButton {
     
     // MARK: - Properties
     
-    private var document: Document! {
+    private(set) var document: Document! {
         didSet {
             setTitle(document.buttonTitle, for: .normal)
             setNeedsDisplay()

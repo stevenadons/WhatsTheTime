@@ -231,6 +231,23 @@ class Pitch: UIView {
         }
     }
     
+    fileprivate func updateUndoGoal(label: UILabel, withText text: String) {
+        
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseOut], animations: {
+            label.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        }) { (finished) in
+            label.text = text
+            label.textColor = COLOR.Theme
+            UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: [], animations: {
+                label.transform = CGAffineTransform.identity
+            }, completion: { (finished) in
+                UIView.transition(with: label, duration: 1, options: .transitionCrossDissolve, animations: {
+                    label.textColor = COLOR.White
+                }, completion: nil)
+            })
+        }
+    }
+    
      func configureSwipes() {
         
         swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(swipeUp(swipe:)))
@@ -260,20 +277,32 @@ class Pitch: UIView {
         }
     }
     
+    
+    func homeMinusOne() {
+        
+        homeScoreLabel.layer.removeAllAnimations()
+        homeScore -= 1
+        homeScoreLabel.text = "\(homeScore)"
+        delegate?.scoreHomeMinusOne()
+    }
+    
+    func awayMinusOne() {
+        
+        awayScoreLabel.layer.removeAllAnimations()
+        awayScore -= 1
+        awayScoreLabel.text = "\(awayScore)"
+        delegate?.scoreAwayMinusOne()
+    }
+    
     @objc private func swipeDown(swipe: UISwipeGestureRecognizer) {
         
         let location = swipe.location(in: self)
         if location.x < bounds.width / 2 {
-            print("down left")
             guard homeScore > 0 else { return }
-            homeScore -= 1
-            homeScoreLabel.text = "\(homeScore)"
-            delegate?.scoreHomeMinusOne()
+            homeMinusOne()
         } else {
             guard awayScore > 0 else { return }
-            awayScore -= 1
-            awayScoreLabel.text = "\(awayScore)"
-            delegate?.scoreAwayMinusOne()
+            awayMinusOne()
         }
     }
     
@@ -296,20 +325,6 @@ class Pitch: UIView {
             return self
         }
         return nil
-        
-        
-        
-//        if (CGRectContainsPoint(touchRect, point)) {
-//            for (UIView *subview in [self.subviews reverseObjectEnumerator]) {
-//                CGPoint convertedPoint = [subview convertPoint:point fromView:self];
-//                UIView *hitTestView = [subview hitTest:convertedPoint withEvent:event];
-//                if (hitTestView) {
-//                    return hitTestView;
-//                }
-//            }
-//            return self;
-//        }
-//        return nil;
     }
     
 

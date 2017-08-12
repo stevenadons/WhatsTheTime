@@ -9,6 +9,13 @@
 import Foundation
 
 
+enum Player {
+    
+    case Home
+    case Away
+}
+
+
 class HockeyGame {
     
     
@@ -31,6 +38,7 @@ class HockeyGame {
     var half: HALF = .First
     var status: Status = .WaitingToStart
     var duration: MINUTESINHALF = .Twenty
+    private(set) var lastScored: Player?
     
     
     
@@ -48,21 +56,26 @@ class HockeyGame {
     func homeScored() {
         
         homeScore += 1
+        lastScored = .Home
     }
     
     func awayScored() {
         
         awayScore += 1
+        lastScored = .Away
     }
     
     func homeScoreMinusOne() {
         
-        homeScore -= 1
+        if homeScore >= 1 {
+            homeScore -= 1
+        }
     }
     
     func awayScoreMinusOne() {
         
-        awayScore -= 1
+        if awayScore >= 1 {
+            awayScore -= 1
+        }
     }
-    
 }

@@ -14,6 +14,7 @@ class DocumentList: UIView {
     // MARK: - Properties
     
     fileprivate var buttons: [DocumentButton] = []
+    fileprivate var delegate: DocumentListDelegate?
     
     fileprivate let topInset: CGFloat = 135
     fileprivate let bottomInset: CGFloat = 185
@@ -41,6 +42,17 @@ class DocumentList: UIView {
         setup()
     }
     
+    convenience init(delegate: DocumentListDelegate) {
+        
+        self.init()
+        convenienceSet(delegate: delegate)
+    }
+    
+    private func convenienceSet(delegate: DocumentListDelegate) {
+        
+        self.delegate = delegate
+    }
+    
     private func setup() {
         
         backgroundColor = UIColor.cyan
@@ -54,6 +66,7 @@ class DocumentList: UIView {
             } else {
                 button = DocumentButton.blueButton(document: document)
             }
+            button.addTarget(self, action: #selector(handleButtonTapped(sender:forEvent:)), for: [.touchUpInside])
             button.heightAnchor.constraint(equalToConstant: DocumentButton.fixedHeight).isActive = true
             button.widthAnchor.constraint(equalToConstant: DocumentButton.fixedWidth).isActive = true
             addSubview(button)
@@ -100,6 +113,14 @@ class DocumentList: UIView {
             ])
     }
     
+    
+    // MARK: - Touch Methods
+    
+    @objc private func handleButtonTapped(sender: DocumentButton, forEvent event: UIEvent) {
+        
+        delegate?.handleButtonTapped(sender: sender)
+    }
+
 
     // MARK: - User Methods
 

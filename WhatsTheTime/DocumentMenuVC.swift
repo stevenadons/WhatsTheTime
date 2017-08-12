@@ -8,12 +8,19 @@
 
 import UIKit
 
+
+protocol DocumentListDelegate: class {
+    
+     func handleButtonTapped(sender: DocumentButton)
+}
+
+
 class DocumentMenuVC: UIViewController {
 
     
     // MARK: - Properties
     
-    fileprivate var backButton: BackButton!
+    fileprivate var backButton: BackButtonIconOnly!
     fileprivate var documentList: DocumentList!
 
     
@@ -29,11 +36,11 @@ class DocumentMenuVC: UIViewController {
         
         view.backgroundColor = UIColor.white
 
-        documentList = DocumentList()
+        documentList = DocumentList(delegate: self)
         documentList.backgroundColor = UIColor.clear
         view.addSubview(documentList)
         
-        backButton = BackButton()
+        backButton = BackButtonIconOnly()
         backButton.alpha = 0.0
         backButton.addTarget(self, action: #selector(backButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(backButton)
@@ -81,6 +88,18 @@ class DocumentMenuVC: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+}
+
+extension DocumentMenuVC: DocumentListDelegate {
+    
+    func handleButtonTapped(sender: DocumentButton) {
+        
+        let newVC = DocumentVC()
+        newVC.urlString = sender.document.url
+        newVC.modalTransitionStyle = .crossDissolve
+        present(newVC, animated: true, completion: nil)
+    }
+
 }
 
 

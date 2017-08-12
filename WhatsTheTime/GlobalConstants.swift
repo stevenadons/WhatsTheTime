@@ -102,6 +102,7 @@ let LS_HOME = NSLocalizedString("HOME", comment: "Name for home team")
 let LS_AWAY = NSLocalizedString("AWAY", comment: "Name for away team")
 let LS_UNDOGOAL = NSLocalizedString("UNDO GOAL", comment: "Message for undoing goal")
 let LS_MESSAGEEDITSCORES = NSLocalizedString("SWIPE SCORE UP OR DOWN", comment: "Message to explain way to edit scores")
+let LS_BACKBUTTON = NSLocalizedString("BACK", comment: "Message on button to back out from document")
 
 let LS_DOCUMENTNAME_PICTOGRAMU7U8 = NSLocalizedString("VHL PICTOGRAM U7-U8", comment: "Name for document")
 let LS_DOCUMENTNAME_PICTOGRAMU9 = NSLocalizedString("VHL PICTOGRAM U9", comment: "Name for document")

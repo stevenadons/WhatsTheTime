@@ -19,6 +19,7 @@ class Ball: UIView {
     private var xOffset: CGFloat!
 
     fileprivate var delegate: BallDelegate?
+    fileprivate var shouldRecordGoal: Bool = true
     
     
     // MARK: - Initializing
@@ -68,12 +69,14 @@ class Ball: UIView {
     func repositionBall(withDelay delay: Double) {
         
         isUserInteractionEnabled = true
+        pan.cancelsTouchesInView = false
         frame = self.centerFrame
 
         UIView.animate(withDuration: 0.2, delay: delay, options: [.curveEaseOut, .allowUserInteraction], animations: {
             self.alpha = 1.0
             self.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         }) { (finished) in
+            self.shouldRecordGoal = true
             UIView.animate(withDuration: 0.6, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: [.allowUserInteraction], animations: {
                 self.transform = CGAffineTransform.identity
             }, completion: nil)
@@ -107,7 +110,6 @@ class Ball: UIView {
             animator.pauseAnimation()
             
         case .changed:
-            
             if copysign(1.0, translation.x) != copysign(1.0, xOffset) {
                 xOffset = (UIScreen.main.bounds.width / 2 + bounds.width / 2) * copysign(1.0, translation.x)
                 animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 0.5, animations: {
@@ -116,10 +118,13 @@ class Ball: UIView {
                 animator.pauseAnimation()
             }
             animator.fractionComplete = translation.x / xOffset
-            _ = checkBallPositionAndHandleScore(homeSide: (translation.x < 0))
-            
+            if animator.fractionComplete > 0.60 || abs(pan.velocity(in: self.superview!).x) > 1000 {
+                handleScore(homeSide: (translation.x < 0))
+            }
         case .ended:
-            guard checkBallPositionAndHandleScore(homeSide: (translation.x < 0)) == false else { return }
+            guard (animator.fractionComplete > 0.60 || abs(pan.velocity(in: self.superview!).x) > 1000) == false else {
+                return
+            }
             xOffset = 0
             animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 0.5, animations: {
                 self.frame = self.centerFrame
@@ -132,20 +137,19 @@ class Ball: UIView {
         
     }
     
-    private func checkBallPositionAndHandleScore(homeSide: Bool) -> Bool {
+    private func handleScore(homeSide: Bool) {
         
-        if animator.fractionComplete > 0.70 {
-            if homeSide {
-                delegate?.homeScored()
-            } else {
-                delegate?.awayScored()
-            }
-            animator.stopAnimation(true)
-            alpha = 0
-            repositionBall(withDelay: 1.0)
-            return true
+        guard shouldRecordGoal == true else { return }
+        shouldRecordGoal = false
+        isUserInteractionEnabled = false
+        if homeSide {
+            delegate?.homeScored()
+        } else {
+            delegate?.awayScored()
         }
-        return false
+        animator.stopAnimation(true)
+        alpha = 0
+        repositionBall(withDelay: 1.0)
     }
     
 }

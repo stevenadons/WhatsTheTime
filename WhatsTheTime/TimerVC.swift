@@ -43,9 +43,7 @@ class TimerVC: UIViewController, Sliding {
     fileprivate var pitch: Pitch!
     fileprivate var dismissEditMode: DismissButton!
     fileprivate var maskView: UIButton!
-    private var undoButtonContainer: ContainerView!
-    fileprivate var undoButton: UIButton!
-    fileprivate var messageLabel: UILabel!
+    fileprivate var confirmationButton: ConfirmationButton!
     fileprivate var menu: Menu!
     fileprivate var duration: MINUTESINHALF = .TwentyFive
     
@@ -53,7 +51,6 @@ class TimerVC: UIViewController, Sliding {
     var stopWatchCenterYConstraint: NSLayoutConstraint!
     private var pitchCenterYConstraint: NSLayoutConstraint!
     private var scorePanelCenterYConstraint: NSLayoutConstraint!
-    private var undoButtonTopConstraint: NSLayoutConstraint!
     private let initialObjectYOffset: CGFloat = UIScreen.main.bounds.height
     fileprivate var messageTimer: Timer?
     fileprivate let standardUndoButtonColor: UIColor = COLOR.Negation
@@ -62,10 +59,7 @@ class TimerVC: UIViewController, Sliding {
     
     var message: String = "HELLO" {
         didSet {
-            if let label = messageLabel {
-                label.text = message
-                label.setNeedsDisplay()
-            }
+            confirmationButton.setTitle(message, for: .normal)
         }
     }
     
@@ -122,35 +116,16 @@ class TimerVC: UIViewController, Sliding {
         maskView.alpha = 0.0
         view.addSubview(maskView)
         
-        undoButtonContainer = ContainerView()
-        view.addSubview(undoButtonContainer)
-        undoButton = UIButton()
-        undoButton.addTarget(self, action: #selector(undoButtonTapped(sender:forEvent:)), for: [.touchUpInside])
-        undoButton.translatesAutoresizingMaskIntoConstraints = false
-        undoButton.backgroundColor = COLOR.Negation
-        undoButtonContainer.addSubview(undoButton)
-        
-        messageLabel = UILabel()
-        messageLabel.translatesAutoresizingMaskIntoConstraints = false
-        messageLabel.isUserInteractionEnabled = false
-        messageLabel.backgroundColor = UIColor.clear
-        messageLabel.textColor = COLOR.White
-        messageLabel.text = message
-        messageLabel.textAlignment = .center
-        messageLabel.adjustsFontSizeToFitWidth = true
-        messageLabel.font = UIFont(name: FONTNAME.ThemeBold, size: 14)
-        messageLabel.layer.opacity = 0.0
-        let transition = CATransition()
-        transition.duration = 0.2
-        transition.type = kCATransitionFade
-        messageLabel.layer.add(transition, forKey: "transition")
-        view.addSubview(messageLabel)
+        confirmationButton = ConfirmationButton.redButton()
+        confirmationButton.alpha = 0.0
+        confirmationButton.setTitle(LS_BACKBUTTON, for: .normal)
+        confirmationButton.addTarget(self, action: #selector(confirmationButtonTapped(sender:forEvent:)), for: [.touchUpInside])
+        view.addSubview(confirmationButton)
         
         menu = Menu()
         menu.delegate = self
         view.addSubview(menu)
         
-        // Add constraints
         setInitialLayoutConstraints()
         
         NSLayoutConstraint.activate([
@@ -184,7 +159,7 @@ class TimerVC: UIViewController, Sliding {
             stopWatchCenterYConstraint,
             
             dismissEditMode.heightAnchor.constraint(equalToConstant: 50),
-            dismissEditMode.bottomAnchor.constraint(equalTo: undoButtonContainer.topAnchor, constant: -30),
+            dismissEditMode.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -160),
             dismissEditMode.widthAnchor.constraint(equalTo: dismissEditMode.heightAnchor, multiplier: 1),
             dismissEditMode.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
@@ -193,19 +168,10 @@ class TimerVC: UIViewController, Sliding {
             maskView.topAnchor.constraint(equalTo: view.topAnchor),
             maskView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            undoButtonContainer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2),
-            undoButtonContainer.heightAnchor.constraint(equalTo: undoButton.widthAnchor, multiplier: 1),
-            undoButtonContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            undoButtonContainer.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -130),
-            undoButton.leadingAnchor.constraint(equalTo: undoButtonContainer.leadingAnchor),
-            undoButton.trailingAnchor.constraint(equalTo: undoButtonContainer.trailingAnchor),
-            undoButton.bottomAnchor.constraint(equalTo: undoButtonContainer.bottomAnchor),
-            undoButtonTopConstraint,
-            
-            messageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            messageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
-            messageLabel.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 24)),
-            messageLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50 - CoordinateScalor.convert(height: 30)),
+            confirmationButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            confirmationButton.widthAnchor.constraint(equalToConstant: ConfirmationButton.fixedWidth),
+            confirmationButton.heightAnchor.constraint(equalToConstant: ConfirmationButton.fixedHeight),
+            confirmationButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -75),
             
             menu.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
             menu.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80),
@@ -221,7 +187,6 @@ class TimerVC: UIViewController, Sliding {
         
         stopWatchCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
         pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
-        undoButtonTopConstraint = NSLayoutConstraint(item: undoButton, attribute: .top, relatedBy: .equal, toItem: undoButtonContainer, attribute: .top, multiplier: 1, constant: 130)
     }
         
     
@@ -235,16 +200,11 @@ class TimerVC: UIViewController, Sliding {
     
     override func viewDidAppear(_ animated: Bool) {
         
-        print("appearing")
         super.viewDidAppear(animated)
         animateViewsOnAppear()
         showIcons()
     }
     
-    override func viewDidLayoutSubviews() {
-        
-        undoButton.layer.cornerRadius = undoButton.bounds.width / 2
-    }
     
     
     // MARK: - Private Methods
@@ -270,39 +230,21 @@ class TimerVC: UIViewController, Sliding {
         setInitialLayoutConstraints()
     }
     
-    fileprivate func showUndoButton(withSpecificColor color: UIColor?) {
+    fileprivate func showConfirmationButton() {
         
-        if let color = color {
-            undoButton.backgroundColor = color
-        } else {
-            undoButton.backgroundColor = standardUndoButtonColor
-        }
-        guard undoButtonTopConstraint.constant != 0 else { return }
-        undoButtonTopConstraint.constant = 0
-        undoButton.setNeedsDisplay()
-        UIView.animate(withDuration: 0.2, delay: 0.0, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [.curveEaseOut], animations: {
-            self.undoButtonContainer.layoutIfNeeded()
-        }, completion: { (finished) in
-            self.messageLabel.layer.opacity = 1.0
-        })
+        confirmationButton.grow()
     }
     
-    @objc fileprivate func hideUndoButton() {
+    @objc fileprivate func hideConfirmationButton() {
         
         if messageTimer != nil {
             messageTimer!.invalidate()
             messageTimer = nil
         }
+        confirmationButton.shrink()
         UIView.animate(withDuration: 0.2) {
             self.maskView.alpha = 0.0
         }
-        guard undoButtonTopConstraint.constant == 0 else { return }
-        undoButtonTopConstraint.constant = 130
-        undoButton.setNeedsDisplay()
-        messageLabel.layer.opacity = 0.0
-        UIView.animate(withDuration: 0.2, delay: 0.0, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [.curveEaseIn], animations: {
-            self.undoButtonContainer.layoutIfNeeded()
-        })
     }
     
     fileprivate func hideIcons() {
@@ -324,27 +266,26 @@ class TimerVC: UIViewController, Sliding {
     @objc private func menuButtonTapped(sender: HamburgerButton, forEvent event: UIEvent) {
         
         hideIcons()
-        hideUndoButton()
+        hideConfirmationButton()
         menu.show()
     }
     
     @objc private func resetButtonTapped(sender: ResetButtonIconOnly, forEvent event: UIEvent) {
         
         message = LS_WARNINGRESETGAME
-        showUndoButton(withSpecificColor: nil)
+        showConfirmationButton()
         UIView.animate(withDuration: 0.2) { 
-            self.maskView.alpha = 0.7
+            self.maskView.alpha = 0.2
 
         }
-        messageTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(hideUndoButton), userInfo: nil, repeats: false)
+        messageTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(hideConfirmationButton), userInfo: nil, repeats: false)
     }
     
     @objc private func dismissButtonTapped(sender: DismissButton, forEvent event: UIEvent) {
         
         inEditMode = false
         dismissEditMode.hide()
-        hideUndoButton()
-        undoButton.isUserInteractionEnabled = true
+        hideConfirmationButton()
         pitch.moveBack {
             if self.stopWatch.timer.state != .WaitingToStart && self.stopWatch.timer.state != .Ended {
                 self.pitch.showBall()
@@ -355,15 +296,21 @@ class TimerVC: UIViewController, Sliding {
         }
     }
     
-    @objc private func undoButtonTapped(sender: UIButton, forEvent event: UIEvent) {
+    @objc private func confirmationButtonTapped(sender: UIButton, forEvent event: UIEvent) {
         
-        hideUndoButton()
+        hideConfirmationButton()
         if message == LS_UNDOGOAL {
             if messageTimer != nil {
                 messageTimer?.invalidate()
                 messageTimer = nil
             }
-            // to implement score countdown
+            guard game.lastScored != nil else { return }
+            switch (game.lastScored)! {
+            case .Home:
+                pitch.homeMinusOne()
+            case .Away:
+                pitch.awayMinusOne()
+            }
         } else if message == LS_WARNINGRESETGAME {
             resetWithNewGame()
         }
@@ -371,7 +318,7 @@ class TimerVC: UIViewController, Sliding {
     
     @objc private func maskViewTapped(sender: UIButton, forEvent event: UIEvent) {
         
-        hideUndoButton()
+        hideConfirmationButton()
     }
     
     fileprivate func resetWithNewGame() {
@@ -447,11 +394,11 @@ extension TimerVC: PitchDelegate {
     func scoreLabelChanged() {
         
         message = LS_UNDOGOAL
-        showUndoButton(withSpecificColor: nil)
+        showConfirmationButton()
         if messageTimer != nil {
             messageTimer?.invalidate()
         }
-        messageTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(hideUndoButton), userInfo: nil, repeats: false)
+        messageTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(hideConfirmationButton), userInfo: nil, repeats: false)
     }
 }
 
@@ -478,8 +425,8 @@ extension TimerVC: MenuDelegate {
                 self.pitch.hideBall()
                 self.pitch.moveUp(completion: {
                     self.message = LS_MESSAGEEDITSCORES
-                    self.undoButton.isUserInteractionEnabled = false
-                    self.showUndoButton(withSpecificColor: COLOR.DarkBackground)
+                    self.confirmationButton.isUserInteractionEnabled = false
+                    self.showConfirmationButton()
                     self.dismissEditMode.show()
                 })
             })

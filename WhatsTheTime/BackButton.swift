@@ -21,25 +21,23 @@ class BackButton: UIButton {
     // MARK: - Initializing
     
     override init(frame: CGRect) {
-        
         super.init(frame: frame)
         setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        
         super.init(coder: aDecoder)
         setup()
     }
     
     private func setup() {
         
-        backgroundColor = UIColor.clear
+        backgroundColor = COLOR.Affirmation
         translatesAutoresizingMaskIntoConstraints = false
-//        layer.shadowColor = UIColor.lightGray.cgColor
-//        layer.shadowOffset = CGSize(width: 0, height: 1)
-//        layer.shadowOpacity = 0.8
-//        layer.shadowRadius = 3
+        layer.shadowColor = UIColor.lightGray.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 1)
+        layer.shadowOpacity = 0.8
+        layer.shadowRadius = 3
         
         shape = BackButtonLayer()
         layer.addSublayer(shape)
@@ -51,10 +49,8 @@ class BackButton: UIButton {
     override func layoutSubviews() {
         
         super.layoutSubviews()
-        
-//        layer.cornerRadius = bounds.height / 2
+        layer.cornerRadius = bounds.height / 2
         shape.frame = bounds
-        
     }
 
 }

@@ -25,6 +25,10 @@
 		4F3DB6941F3F13D300F25B72 /* DocumentMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3DB6931F3F13D300F25B72 /* DocumentMenuVC.swift */; };
 		4F3DB6961F3F14DD00F25B72 /* DocumentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3DB6951F3F14DD00F25B72 /* DocumentList.swift */; };
 		4F3DB6981F3F264500F25B72 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3DB6971F3F264500F25B72 /* Document.swift */; };
+		4F3DB69A1F3F78AC00F25B72 /* DocumentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3DB6991F3F78AC00F25B72 /* DocumentVC.swift */; };
+		4F3DB69C1F3F78F600F25B72 /* BackButtonIconOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3DB69B1F3F78F600F25B72 /* BackButtonIconOnly.swift */; };
+		4F3DB69E1F3F85D300F25B72 /* MaskWithActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3DB69D1F3F85D300F25B72 /* MaskWithActivityIndicator.swift */; };
+		4F3DB6A11F3F988200F25B72 /* ConfirmationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3DB6A01F3F988200F25B72 /* ConfirmationButton.swift */; };
 		4F45D1A71F2C75710082D93B /* HamburgerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1A61F2C75710082D93B /* HamburgerButton.swift */; };
 		4F45D1A91F2C7B2D0082D93B /* HamburgerButtonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1A81F2C7B2D0082D93B /* HamburgerButtonLayer.swift */; };
 		4F45D1AB1F2C89D20082D93B /* DismissButtonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45D1AA1F2C89D20082D93B /* DismissButtonLayer.swift */; };
@@ -84,6 +88,10 @@
 		4F3DB6931F3F13D300F25B72 /* DocumentMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentMenuVC.swift; sourceTree = "<group>"; };
 		4F3DB6951F3F14DD00F25B72 /* DocumentList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentList.swift; sourceTree = "<group>"; };
 		4F3DB6971F3F264500F25B72 /* Document.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		4F3DB6991F3F78AC00F25B72 /* DocumentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentVC.swift; sourceTree = "<group>"; };
+		4F3DB69B1F3F78F600F25B72 /* BackButtonIconOnly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackButtonIconOnly.swift; sourceTree = "<group>"; };
+		4F3DB69D1F3F85D300F25B72 /* MaskWithActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaskWithActivityIndicator.swift; sourceTree = "<group>"; };
+		4F3DB6A01F3F988200F25B72 /* ConfirmationButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmationButton.swift; sourceTree = "<group>"; };
 		4F45D1A61F2C75710082D93B /* HamburgerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButton.swift; sourceTree = "<group>"; };
 		4F45D1A81F2C7B2D0082D93B /* HamburgerButtonLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButtonLayer.swift; sourceTree = "<group>"; };
 		4F45D1AA1F2C89D20082D93B /* DismissButtonLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButtonLayer.swift; sourceTree = "<group>"; };
@@ -169,6 +177,7 @@
 				4FA04FB71F1B65B1007609B9 /* TimerVC.swift */,
 				4F8F56F21F375B6A00ACA857 /* DurationVC.swift */,
 				4F3DB6931F3F13D300F25B72 /* DocumentMenuVC.swift */,
+				4F3DB6991F3F78AC00F25B72 /* DocumentVC.swift */,
 				4FE7E0761F3B8D5D0001C399 /* AnimationTransitioning */,
 				4F0C9BB41F17BF9A00956C53 /* AppDelegate.swift */,
 			);
@@ -251,6 +260,22 @@
 			name = DocumentList;
 			sourceTree = "<group>";
 		};
+		4F3DB69F1F3F85DE00F25B72 /* ActivityIndicator */ = {
+			isa = PBXGroup;
+			children = (
+				4F3DB69D1F3F85D300F25B72 /* MaskWithActivityIndicator.swift */,
+			);
+			name = ActivityIndicator;
+			sourceTree = "<group>";
+		};
+		4F3DB6A21F3F989400F25B72 /* ConfirmationButton */ = {
+			isa = PBXGroup;
+			children = (
+				4F3DB6A01F3F988200F25B72 /* ConfirmationButton.swift */,
+			);
+			name = ConfirmationButton;
+			sourceTree = "<group>";
+		};
 		4F45D1B71F2CAE860082D93B /* UndoButton */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,6 +316,8 @@
 		4F9249CE1F1A6D8B004E9CD0 /* UI Elements */ = {
 			isa = PBXGroup;
 			children = (
+				4F3DB6A21F3F989400F25B72 /* ConfirmationButton */,
+				4F3DB69F1F3F85DE00F25B72 /* ActivityIndicator */,
 				4F3DB68C1F3F0FAE00F25B72 /* DocumentList */,
 				4F8F56F41F375D5E00ACA857 /* DurationCard */,
 				4FB88DDD1F22444D00DDB034 /* Logo */,
@@ -345,6 +372,7 @@
 				4F45D1BC1F2CBEF20082D93B /* ResetButtonIconOnly.swift */,
 				4F8F56FB1F37A0B100ACA857 /* BackButton.swift */,
 				4F8F56FD1F37A0DC00ACA857 /* BackButtonLayer.swift */,
+				4F3DB69B1F3F78F600F25B72 /* BackButtonIconOnly.swift */,
 			);
 			name = IconButtons;
 			sourceTree = "<group>";
@@ -471,10 +499,12 @@
 				4F1BC6EE1F251FD300FE8A78 /* StopWatchSmallLabel.swift in Sources */,
 				4F3874AA1F23BC72000FE09A /* StopWatch.swift in Sources */,
 				4FD69D531F3671310035E5BA /* PitchContainerView.swift in Sources */,
+				4F3DB6A11F3F988200F25B72 /* ConfirmationButton.swift in Sources */,
 				4F3DB6961F3F14DD00F25B72 /* DocumentList.swift in Sources */,
 				4F45D1AB1F2C89D20082D93B /* DismissButtonLayer.swift in Sources */,
 				4F0C9BCE1F17C26A00956C53 /* Color.swift in Sources */,
 				4F9249D21F1A7270004E9CD0 /* Menu.swift in Sources */,
+				4F3DB69E1F3F85D300F25B72 /* MaskWithActivityIndicator.swift in Sources */,
 				4F45D1AD1F2C8D410082D93B /* DismissButtonIconOnly.swift in Sources */,
 				4F8F56FC1F37A0B100ACA857 /* BackButton.swift in Sources */,
 				4F45D1BD1F2CBEF20082D93B /* ResetButtonIconOnly.swift in Sources */,
@@ -486,11 +516,13 @@
 				4FE7E0711F3B8CE30001C399 /* AnimationTransitioningDelegate.swift in Sources */,
 				4F9249D01F1A6DD9004E9CD0 /* MenuButton.swift in Sources */,
 				4F45D1B61F2CAE820082D93B /* UndoButton.swift in Sources */,
+				4F3DB69A1F3F78AC00F25B72 /* DocumentVC.swift in Sources */,
 				4F0C9BD81F17DFEC00956C53 /* RadialGradientLayer.swift in Sources */,
 				4FB13FF71F1959430025088A /* Logo.swift in Sources */,
 				4F3DB6941F3F13D300F25B72 /* DocumentMenuVC.swift in Sources */,
 				4FA04FB61F1B5077007609B9 /* UIView+AnimatingConstraints.swift in Sources */,
 				4F50BF151F2DDEAA002B2293 /* Pitch.swift in Sources */,
+				4F3DB69C1F3F78F600F25B72 /* BackButtonIconOnly.swift in Sources */,
 				4F45D1A71F2C75710082D93B /* HamburgerButton.swift in Sources */,
 				4FB140001F19661F0025088A /* DismissButton.swift in Sources */,
 				4F0C9BD41F17CA8E00956C53 /* MenuCircles.swift in Sources */,

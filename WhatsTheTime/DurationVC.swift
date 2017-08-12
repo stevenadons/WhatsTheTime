@@ -15,7 +15,7 @@ class DurationVC: UIViewController {
     
     var onCardTapped: (() -> Void)?
     
-    fileprivate var backButton: BackButton!
+    fileprivate var backButton: BackButtonIconOnly!
     
     fileprivate var cardOne: DurationCard!
     fileprivate var cardTwo: DurationCard!
@@ -50,7 +50,7 @@ class DurationVC: UIViewController {
     
     private func setupViews() {
         
-        backButton = BackButton()
+        backButton = BackButtonIconOnly()
         backButton.alpha = 0.0
         backButton.addTarget(self, action: #selector(backButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(backButton)
