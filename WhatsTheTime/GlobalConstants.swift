@@ -103,6 +103,14 @@ let LS_AWAY = NSLocalizedString("AWAY", comment: "Name for away team")
 let LS_UNDOGOAL = NSLocalizedString("UNDO GOAL", comment: "Message for undoing goal")
 let LS_MESSAGEEDITSCORES = NSLocalizedString("SWIPE SCORE UP OR DOWN", comment: "Message to explain way to edit scores")
 
+let LS_DOCUMENTNAME_PICTOGRAMU7U8 = NSLocalizedString("VHL PICTOGRAM U7-U8", comment: "Name for document")
+let LS_DOCUMENTNAME_PICTOGRAMU9 = NSLocalizedString("VHL PICTOGRAM U9", comment: "Name for document")
+let LS_DOCUMENTNAME_PICTOGRAMU10U12 = NSLocalizedString("VHL PICTOGRAM U10-U12", comment: "Name for document")
+let LS_DOCUMENTNAME_VHLSHOOTOUTS = NSLocalizedString("VHL SHOOT-OUTS U10", comment: "Name for document")
+let LS_DOCUMENTNAME_VHLRULESU7U12 = NSLocalizedString("VHL RULES U7-U12", comment: "Name for document")
+let LS_DOCUMENTNAME_VHLRULESU14U19 = NSLocalizedString("VHL RULES U14-U19", comment: "Name for document")
+let LS_DOCUMENTNAME_KBHBRULES = NSLocalizedString("KBHB RULES", comment: "Name for document")
+
 
 
 

@@ -222,10 +222,6 @@ class TimerVC: UIViewController, Sliding {
         stopWatchCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
         pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
         undoButtonTopConstraint = NSLayoutConstraint(item: undoButton, attribute: .top, relatedBy: .equal, toItem: undoButtonContainer, attribute: .top, multiplier: 1, constant: 130)
-        
-//        stopWatchContainer.layoutIfNeeded()
-//        pitchContainer.layoutIfNeeded()
-//        undoButtonContainer.layoutIfNeeded()
     }
         
     
@@ -234,18 +230,13 @@ class TimerVC: UIViewController, Sliding {
     override func viewWillAppear(_ animated: Bool) {
         
         super.viewWillAppear(animated)
-        
-//        self.setInitialLayoutConstraints()
-//        self.view.layoutIfNeeded()
-//        self.animateViewsOnAppear()
-//        self.showIcons()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
         print("appearing")
         super.viewDidAppear(animated)
-//        slideViewController(to: .In, offScreenPosition: .Bottom, completion: nil)
         animateViewsOnAppear()
         showIcons()
     }
@@ -495,7 +486,9 @@ extension TimerVC: MenuDelegate {
             
         case .Documents:
             hideIcons()
-            print("to be implemented")
+            let newVC = DocumentMenuVC()
+            newVC.modalTransitionStyle = .crossDissolve
+            present(newVC, animated: true, completion: nil)
         }
     }
 }
