@@ -61,7 +61,7 @@ class BackButtonLayer: CALayer {
     private func createShape() -> CAShapeLayer {
         let shape = CAShapeLayer()
         shape.path = createPath().cgPath
-        shape.lineWidth = 1
+        shape.lineWidth = 3
         shape.strokeColor = color.cgColor
         shape.fillColor = UIColor.clear.cgColor
         shape.allowsEdgeAntialiasing = true

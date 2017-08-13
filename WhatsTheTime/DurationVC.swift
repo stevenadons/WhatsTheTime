@@ -16,14 +16,14 @@ class DurationVC: UIViewController {
     var onCardTapped: (() -> Void)?
     
     fileprivate var backButton: BackButtonIconOnly!
-    
+    fileprivate var titleLabel: UILabel!
     fileprivate var cardOne: DurationCard!
     fileprivate var cardTwo: DurationCard!
     fileprivate var cardThree: DurationCard!
     fileprivate var cardFour: DurationCard!
     fileprivate var cards: [DurationCard] = []
     
-    fileprivate let padding: CGFloat = 8
+    fileprivate let padding: CGFloat = 18
     
     
     // MARK: - Life Cycle Methods
@@ -55,6 +55,9 @@ class DurationVC: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(backButton)
         
+        titleLabel = titleLabel(text: LS_TITLE_SETGAMETIME)
+        view.addSubview(titleLabel)
+        
         cardOne = DurationCard(duration: .Twenty)
         cardTwo = DurationCard(duration: .TwentyFive)
         cardThree = DurationCard(duration: .Thirty)
@@ -74,6 +77,11 @@ class DurationVC: UIViewController {
             backButton.heightAnchor.constraint(equalToConstant: 44),
             backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 29)),
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 13)),
+            
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.widthAnchor.constraint(equalToConstant: 200),
+            titleLabel.heightAnchor.constraint(equalToConstant: 25),
+            titleLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
             
             cardOne.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -padding / 2),
             cardOne.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 140 / 375),
@@ -96,6 +104,19 @@ class DurationVC: UIViewController {
             cardFour.topAnchor.constraint(equalTo: cardThree.topAnchor),
             
             ])
+    }
+    
+    private func titleLabel(text: String) -> UILabel {
+        
+        let label = UILabel()
+        label.text = text
+        label.font = UIFont(name: FONTNAME.ThemeBold, size: 16)
+        label.adjustsFontSizeToFitWidth = true
+        label.isUserInteractionEnabled = false
+        label.textAlignment = .center
+        label.textColor = COLOR.Theme
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }
     
     

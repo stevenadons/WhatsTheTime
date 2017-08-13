@@ -33,7 +33,7 @@ class DocumentVC: UIViewController {
     
     private func setup() {
         
-        view.backgroundColor = COLOR.LightBackground
+        view.backgroundColor = COLOR.White
         
         webContainerView = UIView()
         webContainerView.translatesAutoresizingMaskIntoConstraints = false

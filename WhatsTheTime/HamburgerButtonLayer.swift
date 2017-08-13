@@ -60,7 +60,7 @@ class HamburgerButtonLayer: CALayer {
     private func createShape() -> CAShapeLayer {
         let shape = CAShapeLayer()
         shape.path = createPath().cgPath
-        shape.lineWidth = 1
+        shape.lineWidth = 2.5
         shape.strokeColor = COLOR.Theme.cgColor
         shape.fillColor = UIColor.clear.cgColor
         shape.allowsEdgeAntialiasing = true

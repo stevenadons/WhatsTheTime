@@ -394,7 +394,9 @@ extension TimerVC: PitchDelegate {
     func scoreLabelChanged() {
         
         message = LS_UNDOGOAL
-        showConfirmationButton()
+        if confirmationButton.alpha == 0 {
+            showConfirmationButton()
+        }
         if messageTimer != nil {
             messageTimer?.invalidate()
         }

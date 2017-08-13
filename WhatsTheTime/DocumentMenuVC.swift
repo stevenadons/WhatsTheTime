@@ -21,6 +21,7 @@ class DocumentMenuVC: UIViewController {
     // MARK: - Properties
     
     fileprivate var backButton: BackButtonIconOnly!
+    fileprivate var titleLabel: UILabel!
     fileprivate var documentList: DocumentList!
 
     
@@ -45,6 +46,9 @@ class DocumentMenuVC: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(backButton)
         
+        titleLabel = titleLabel(text: LS_TITLE_DOCUMENTS)
+        view.addSubview(titleLabel)
+        
         NSLayoutConstraint.activate([
             
             documentList.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -57,7 +61,25 @@ class DocumentMenuVC: UIViewController {
             backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 29)),
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 13)),
             
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.widthAnchor.constraint(equalToConstant: 200),
+            titleLabel.heightAnchor.constraint(equalToConstant: 25),
+            titleLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
+            
             ])
+    }
+    
+    private func titleLabel(text: String) -> UILabel {
+        
+        let label = UILabel()
+        label.text = text
+        label.font = UIFont(name: FONTNAME.ThemeBold, size: 16)
+        label.adjustsFontSizeToFitWidth = true
+        label.isUserInteractionEnabled = false
+        label.textAlignment = .center
+        label.textColor = COLOR.Theme
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }
     
     override func viewDidAppear(_ animated: Bool) {

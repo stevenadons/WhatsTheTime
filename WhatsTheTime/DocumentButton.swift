@@ -67,19 +67,10 @@ class DocumentButton: UIButton {
 
 extension DocumentButton {
     
-    class func blueButton(document: Document) -> DocumentButton {
-        
+    class func button(document: Document, color: UIColor, titleColor: UIColor) -> DocumentButton {
         let button = DocumentButton(document: document)
-        button.backgroundColor = COLOR.Theme
-        button.setTitleColor(COLOR.White, for: .normal)
-        return button
-    }
-    
-    class func yellowButton(document: Document) -> DocumentButton {
-        
-        let button = DocumentButton(document: document)
-        button.backgroundColor = COLOR.Affirmation
-        button.setTitleColor(COLOR.Theme, for: .normal)
+        button.backgroundColor = color
+        button.setTitleColor(titleColor, for: .normal)
         return button
     }
 }

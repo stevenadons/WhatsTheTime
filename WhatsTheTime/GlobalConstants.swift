@@ -49,8 +49,8 @@ enum COLOR {
 //    static let LightText = UIColor.init(hexString: "#cccccc")
 //    static let IntermediateText = UIColor.init(hexString: "#999999")
 //    
-    static let Affirmation = UIColor.init(hexString: "#F4AB23") // Orange yellow // Colour to show success, something right for user. "#00ff66""
-    static let Negation = UIColor.init(hexString: "#980822")                  // Colour to show error, some danger zones for user. ff3300
+    static let Affirmation = UIColor.init(hexString: "#F7BD52") // F4AB23 // Colour to show success, something right for user. "#00ff66""
+    static let Negation = UIColor.init(hexString: "#F0505A") // 980822             // Colour to show error, some danger zones for user. ff3300
     
     // Custom colors
     static let MenuCircleBigOutside = UIColor(hexString: "#4C54A6")
@@ -61,15 +61,23 @@ enum COLOR {
     static let MenuCircleSmallInside = UIColor(hexString: "#2E3694")
     
     static let White = UIColor(hexString: "#FFFFFF")
-    static let PitchBlue = UIColor(hexString: "#4784C9") // 2C6DB8
+    static let PitchBlue = UIColor(hexString: "#3D8FE5") // 4784C9
     static let PitchEdge = UIColor(hexString: "#8DBFF7")
     static let Striping = UIColor(hexString: "#FFFFFF") //6F7498
     static let BallShining = UIColor(hexString: "#FEE43F")
     
-    static let DurationCardOne = UIColor(hexString: "#527AFF")
-    static let DurationCardTwo = UIColor(hexString: "#435EEF")
-    static let DurationCardThree = UIColor(hexString: "#323EBF")
-    static let DurationCardFour = UIColor(hexString: "#2E3694")
+    static let Blue = UIColor(hexString: "#3D8FE5") 
+    static let BlueLight = UIColor(hexString: "#8FC0F2")
+    static let BlueDark = UIColor(hexString: "#0862BF")
+    static let Green = UIColor(hexString: "#60D44B")
+    static let GreenLight = UIColor(hexString: "#A9EF9E")
+    static let GreenDark = UIColor(hexString: "#25A111")
+    static let Orange = UIColor(hexString: "#F7BD52")
+    static let OrangeLight = UIColor(hexString: "#FFDEA2")
+    static let OrangeDark = UIColor(hexString: "#B57C12")
+    static let Red = UIColor(hexString: "#F0505A")
+    static let RedLight = UIColor(hexString: "#FCA1A8")
+    static let RedDark = UIColor(hexString: "#B0121E")
 }
 
 
@@ -103,6 +111,10 @@ let LS_AWAY = NSLocalizedString("AWAY", comment: "Name for away team")
 let LS_UNDOGOAL = NSLocalizedString("UNDO GOAL", comment: "Message for undoing goal")
 let LS_MESSAGEEDITSCORES = NSLocalizedString("SWIPE SCORE UP OR DOWN", comment: "Message to explain way to edit scores")
 let LS_BACKBUTTON = NSLocalizedString("BACK", comment: "Message on button to back out from document")
+
+let LS_TITLE_SETGAMETIME = NSLocalizedString("SET GAME TIME", comment: "title for duration VC")
+let LS_TITLE_DOCUMENTS = NSLocalizedString("DOCUMENTS", comment: "Title for document list VC")
+
 
 let LS_DOCUMENTNAME_PICTOGRAMU7U8 = NSLocalizedString("VHL PICTOGRAM U7-U8", comment: "Name for document")
 let LS_DOCUMENTNAME_PICTOGRAMU9 = NSLocalizedString("VHL PICTOGRAM U9", comment: "Name for document")

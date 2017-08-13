@@ -375,7 +375,6 @@ class StopWatch: UIControl {
                     // End of first half - will enter half time count up mode
                     game.status = .HalfTime
                     timer.startCountUp()
-                    setProgressBarsColor(to: COLOR.Theme)
                     halfLabel.alpha = 0.0
                     message = LS_HALFTIME
                 } else {
@@ -449,7 +448,6 @@ extension StopWatch: StopWatchTimerDelegate {
         updateProgressBars()
         message = LS_OVERTIME
         resetTimeLabel(withColor: COLOR.Negation, alpha: 1)
-        setProgressBarsColor(to: COLOR.Negation)
         icon.change(to: .StopIcon)
         delegate?.handleTimerStateChange(stopWatchTimer: timer, completionHandler: nil)
     }

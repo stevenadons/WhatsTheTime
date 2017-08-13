@@ -61,10 +61,14 @@ class DocumentList: UIView {
         for index in 0..<Document.allDocuments().count {
             let document = Document.allDocuments()[index]
             let button: DocumentButton
-            if index == 3 || index == 6 {
-                button = DocumentButton.yellowButton(document: document)
+            if index < 3 {
+                button = DocumentButton.button(document: document, color: COLOR.Blue, titleColor: COLOR.White)
+            } else if index == 3 {
+                button = DocumentButton.button(document: document, color: COLOR.Green, titleColor: COLOR.White)
+            } else if index == 4 || index == 5 {
+                button = DocumentButton.button(document: document, color: COLOR.Orange, titleColor: COLOR.Theme)
             } else {
-                button = DocumentButton.blueButton(document: document)
+                button = DocumentButton.button(document: document, color: COLOR.Red, titleColor: COLOR.White)
             }
             button.addTarget(self, action: #selector(handleButtonTapped(sender:forEvent:)), for: [.touchUpInside])
             button.heightAnchor.constraint(equalToConstant: DocumentButton.fixedHeight).isActive = true

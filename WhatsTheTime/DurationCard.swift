@@ -25,18 +25,23 @@ class DurationCard: UIButton {
         didSet {
             switch duration {
             case .Twenty:
-                backgroundColor = COLOR.DurationCardOne
+                backgroundColor = COLOR.Blue
+                miniStopWatch.color = COLOR.BlueLight
             case .TwentyFive:
-                backgroundColor = COLOR.DurationCardTwo
+                backgroundColor = COLOR.Green
+                miniStopWatch.color = COLOR.GreenLight
             case .Thirty:
-                backgroundColor = COLOR.DurationCardThree
+                backgroundColor = COLOR.Orange
+                miniStopWatch.color = COLOR.OrangeLight
             case .ThirtyFive:
-                backgroundColor = COLOR.DurationCardFour
+                backgroundColor = COLOR.Red
+                miniStopWatch.color = COLOR.RedLight
             default:
                 backgroundColor = COLOR.White
             }
             ageString = AgeRange.uString(for: duration)
             miniStopWatch.duration = duration
+            miniStopWatch.setNeedsDisplay()
         }
     }
     
@@ -73,6 +78,10 @@ class DurationCard: UIButton {
         
         layer.borderColor = COLOR.Theme.cgColor
         layer.borderWidth = 0
+        layer.shadowColor = UIColor.lightGray.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 1)
+        layer.shadowOpacity = 0.8
+        layer.shadowRadius = 3
         
         miniStopWatch = MiniStopWatch()
         miniStopWatch.duration = duration
@@ -89,7 +98,7 @@ class DurationCard: UIButton {
         
         let label = UILabel()
         label.text = title
-        label.font = UIFont(name: FONTNAME.ThemeBold, size: 12)
+        label.font = UIFont(name: FONTNAME.ThemeBold, size: 14)
         label.adjustsFontSizeToFitWidth = true
         label.isUserInteractionEnabled = false
         label.textAlignment = .center
@@ -112,7 +121,7 @@ class DurationCard: UIButton {
         
         super.layoutSubviews()
         
-        layer.cornerRadius = 4 * max(bounds.height, bounds.width) / 140
+        layer.cornerRadius = 8 * max(bounds.height, bounds.width) / 140
         
         NSLayoutConstraint.activate([
             

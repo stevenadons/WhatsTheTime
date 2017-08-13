@@ -129,9 +129,7 @@ class StopWatchControlIcon: UIView {
             UIView.animate(withDuration: 0.2, delay: 0.2, options: [.curveEaseOut], animations: {
                 self.alpha = 1.0
                 self.transform = CGAffineTransform.identity
-            }) { (finished) in
-                print("finished")
-            }
+            })
         }
     }
     

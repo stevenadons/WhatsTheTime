@@ -19,6 +19,12 @@ class MiniStopWatch: UIView {
             durationLabel.setNeedsDisplay()
         }
     }
+    var color: UIColor = COLOR.White {
+        didSet {
+            core.backgroundColor = color.cgColor
+            core.setNeedsDisplay()
+        }
+    }
     
     private var squareContainer: CALayer!
     private var progressZone: CAShapeLayer!
@@ -90,7 +96,7 @@ class MiniStopWatch: UIView {
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         if bold {
-            label.font = UIFont(name: FONTNAME.ThemeBold, size: 14)
+            label.font = UIFont(name: FONTNAME.ThemeBold, size: 16)
         } else {
             label.font = UIFont(name: FONTNAME.ThemeRegular, size: 14)
         }
