@@ -72,15 +72,21 @@ class DotMenuMainButton: UIButton {
     // MARK: - User Methods
     
     func invertColors() {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
         buttonLayer.shapeColor = bgColor
-        buttonLayer.bgColor = shapeColor
-        buttonLayer.setNeedsDisplay()
+        buttonLayer.bgColor = COLOR.Blue
+        CATransaction.commit()
+//        buttonLayer.setNeedsDisplay()
     }
     
     func resetColors() {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
         buttonLayer.shapeColor = shapeColor
         buttonLayer.bgColor = bgColor
-        buttonLayer.setNeedsDisplay()
+        CATransaction.commit()
+//        buttonLayer.setNeedsDisplay()
     }
     
 

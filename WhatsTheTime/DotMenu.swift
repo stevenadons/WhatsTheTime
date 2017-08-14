@@ -52,27 +52,27 @@ class DotMenu: UIView {
         tap = UITapGestureRecognizer(target: self, action: #selector(hideButtons))
         addGestureRecognizer(tap)
         
-        menuButton = DotMenuMainButton(shapeColor: UIColor.blue, bgColor: UIColor.white)
+        menuButton = DotMenuMainButton(shapeColor: COLOR.Theme, bgColor: UIColor.white)
         menuButton.addTarget(self, action: #selector(handleMenuButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         menuButton.frame = CGRect(x: 0, y: 0, width: buttonWidth, height: buttonHeight)
         menuButton.frame.origin = CGPoint(x: 22, y: 35)
         addSubview(menuButton)
         
-        editButton = DotMenuItemButton(shapeColor: UIColor.blue, bgColor: UIColor.white, path: pathEditButton(buttonWidth: buttonWidth, buttonHeight: buttonHeight))
+        editButton = DotMenuItemButton(shapeColor: COLOR.Theme, bgColor: UIColor.white, path: pathEditButton(buttonWidth: buttonWidth, buttonHeight: buttonHeight))
         editButton.tag = 1
         editButton.addTarget(self, action: #selector(handleOtherButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         editButton.frame = CGRect(x: 0, y: 0, width: buttonWidth, height: buttonHeight)
         editButton.frame.origin = CGPoint(x: 22, y: menuButton.frame.origin.y + editButton.bounds.height + padding)
         insertSubview(editButton, belowSubview: menuButton)
         
-        timeButton = DotMenuItemButton(shapeColor: UIColor.blue, bgColor: UIColor.white, path: pathTimeButton(buttonWidth: buttonWidth, buttonHeight: buttonHeight))
+        timeButton = DotMenuItemButton(shapeColor: COLOR.Theme, bgColor: UIColor.white, path: pathTimeButton(buttonWidth: buttonWidth, buttonHeight: buttonHeight))
         timeButton.tag = 2
         timeButton.addTarget(self, action: #selector(handleOtherButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         timeButton.frame = CGRect(x: 0, y: 0, width: buttonWidth, height: buttonHeight)
         timeButton.frame.origin = CGPoint(x: 22, y: editButton.frame.origin.y + timeButton.bounds.height + padding)
         insertSubview(timeButton, belowSubview: editButton)
         
-        documentButton = DotMenuItemButton(shapeColor: UIColor.blue, bgColor: UIColor.white, path: pathDocumentButton(buttonWidth: buttonWidth, buttonHeight: buttonHeight))
+        documentButton = DotMenuItemButton(shapeColor: COLOR.Theme, bgColor: UIColor.white, path: pathDocumentButton(buttonWidth: buttonWidth, buttonHeight: buttonHeight))
         documentButton.tag = 3
         documentButton.addTarget(self, action: #selector(handleOtherButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         documentButton.frame = CGRect(x: 0, y: 0, width: buttonWidth, height: buttonHeight)
@@ -113,24 +113,23 @@ class DotMenu: UIView {
     
     
     @objc private func handleMenuButtonTapped(sender: MenuButton, forEvent event: UIEvent) {
-        
         if menuButton.transform == .identity {
             hideButtons()
+            delegate.handleDotMenuButtonTapped(buttonNumber: 0) // Main Menu Button has no tag
         } else {
             showButtons()
         }
     }
     
     @objc private func handleOtherButtonTapped(sender: UIButton, forEvent event: UIEvent) {
-        
         hideButtons()
-        delegate.handleDotMenuButtonTapped(buttonNumber: sender.tag)
+        delegate.handleDotMenuButtonTapped(buttonNumber: sender.tag) // Item Buttons have tags 1 to 3
     }
     
     private func showButtons() {
         menuButton.invertColors()
         UIView.animate(withDuration: 0.2, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0, options: [], animations: {
-            self.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+            self.backgroundColor = UIColor.black.withAlphaComponent(0.75)
             self.menuButton.transform = .identity
             self.editButton.transform = .identity
             self.timeButton.transform = .identity

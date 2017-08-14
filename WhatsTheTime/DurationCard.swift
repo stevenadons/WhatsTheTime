@@ -78,10 +78,10 @@ class DurationCard: UIButton {
         
         layer.borderColor = COLOR.Theme.cgColor
         layer.borderWidth = 0
-        layer.shadowColor = UIColor.lightGray.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 1)
-        layer.shadowOpacity = 0.8
-        layer.shadowRadius = 3
+//        layer.shadowColor = UIColor.lightGray.cgColor
+//        layer.shadowOffset = CGSize(width: 0, height: 1)
+//        layer.shadowOpacity = 0.8
+//        layer.shadowRadius = 3
         
         miniStopWatch = MiniStopWatch()
         miniStopWatch.duration = duration

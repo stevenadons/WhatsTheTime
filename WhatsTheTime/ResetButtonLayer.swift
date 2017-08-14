@@ -62,7 +62,7 @@ class ResetButtonLayer: CALayer {
     private func createShape(path: UIBezierPath) -> CAShapeLayer {
         let shape = CAShapeLayer()
         shape.path = path.cgPath
-        shape.lineWidth = 2
+        shape.lineWidth = 1.5
         shape.strokeColor = COLOR.Theme.cgColor
         shape.fillColor = UIColor.clear.cgColor
         shape.allowsEdgeAntialiasing = true

@@ -24,11 +24,6 @@ protocol PitchDelegate: class {
     func scoreAwayMinusOne()
 }
 
-protocol MenuDelegate: class {
-    
-    func handleNavigation(for menuItem: MenuItem)
-}
-
 protocol DotMenuDelegate {
     
     func handleDotMenuButtonTapped(buttonNumber: Int)
@@ -40,7 +35,6 @@ class TimerVC: UIViewController, Sliding {
     
     // MARK: - Properties
     
-    fileprivate var hamburger: HamburgerButtonIconOnly!
     fileprivate var resetButton: ResetButtonIconOnly!
     fileprivate var stopWatchContainer: ContainerView!
     fileprivate var stopWatch: StopWatch!
@@ -50,10 +44,7 @@ class TimerVC: UIViewController, Sliding {
     fileprivate var maskView: UIButton!
     fileprivate var confirmationButton: ConfirmationButton!
     fileprivate var dotMenu: DotMenu!
-
-    fileprivate var menu: Menu!
     fileprivate var duration: MINUTESINHALF = .TwentyFive
-    
     fileprivate var game: HockeyGame!
     var stopWatchCenterYConstraint: NSLayoutConstraint!
     private var pitchCenterYConstraint: NSLayoutConstraint!
@@ -90,10 +81,6 @@ class TimerVC: UIViewController, Sliding {
     
     private func setupViews() {
         
-        hamburger = HamburgerButtonIconOnly()
-        hamburger.addTarget(self, action: #selector(menuButtonTapped(sender:forEvent:)), for: [.touchUpInside])
-        view.addSubview(hamburger)
-        
         resetButton = ResetButtonIconOnly()
         resetButton.addTarget(self, action: #selector(resetButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(resetButton)
@@ -116,6 +103,8 @@ class TimerVC: UIViewController, Sliding {
         dismissEditMode.alpha = 0
         view.addSubview(dismissEditMode)
         
+        dotMenu = DotMenu(inView: self.view, delegate: self)
+        
         maskView = UIButton()
         maskView.addTarget(self, action: #selector(maskViewTapped(sender:forEvent:)), for: [.touchUpInside])
         maskView.translatesAutoresizingMaskIntoConstraints = false
@@ -129,20 +118,9 @@ class TimerVC: UIViewController, Sliding {
         confirmationButton.addTarget(self, action: #selector(confirmationButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(confirmationButton)
         
-        menu = Menu()
-        menu.delegate = self
-        view.addSubview(menu)
-        
-        dotMenu = DotMenu(inView: self.view, delegate: self)
-        
         setInitialLayoutConstraints()
         
         NSLayoutConstraint.activate([
-            
-            hamburger.widthAnchor.constraint(equalToConstant: 44),
-            hamburger.heightAnchor.constraint(equalToConstant: 44),
-            hamburger.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 29)),
-            hamburger.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CoordinateScalor.convert(y: 13)),
             
             resetButton.widthAnchor.constraint(equalToConstant: 44),
             resetButton.heightAnchor.constraint(equalToConstant: 44),
@@ -181,11 +159,6 @@ class TimerVC: UIViewController, Sliding {
             confirmationButton.widthAnchor.constraint(equalToConstant: ConfirmationButton.fixedWidth),
             confirmationButton.heightAnchor.constraint(equalToConstant: ConfirmationButton.fixedHeight),
             confirmationButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -75),
-            
-            menu.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
-            menu.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80),
-            menu.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            menu.widthAnchor.constraint(equalTo: menu.heightAnchor, multiplier: 1),
             
             ])
         
@@ -259,7 +232,7 @@ class TimerVC: UIViewController, Sliding {
     fileprivate func hideIcons() {
         
         UIView.animate(withDuration: 0.2) {
-            self.hamburger.alpha = 0.0
+            self.dotMenu.alpha = 0.0
             self.resetButton.alpha = 0.0
         }
     }
@@ -267,16 +240,9 @@ class TimerVC: UIViewController, Sliding {
     fileprivate func showIcons() {
         
         UIView.animate(withDuration: 0.2) {
-            self.hamburger.alpha = 1.0
+            self.dotMenu.alpha = 1.0
             self.resetButton.alpha = 1.0
         }
-    }
-    
-    @objc private func menuButtonTapped(sender: HamburgerButton, forEvent event: UIEvent) {
-        
-        hideIcons()
-        hideConfirmationButton()
-        menu.show()
     }
     
     @objc private func resetButtonTapped(sender: ResetButtonIconOnly, forEvent event: UIEvent) {
@@ -284,7 +250,7 @@ class TimerVC: UIViewController, Sliding {
         message = LS_WARNINGRESETGAME
         showConfirmationButton()
         UIView.animate(withDuration: 0.2) { 
-            self.maskView.alpha = 0.2
+            self.maskView.alpha = 0.75
 
         }
         messageTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(hideConfirmationButton), userInfo: nil, repeats: false)
@@ -414,22 +380,14 @@ extension TimerVC: PitchDelegate {
 }
 
 
-extension TimerVC: MenuDelegate {
+extension TimerVC: DotMenuDelegate {
     
-    func handleNavigation(for menuItem: MenuItem) {
+    func handleDotMenuButtonTapped(buttonNumber: Int) {
         
-        switch menuItem {
-        case .Timer:
-            showIcons()
-            
-        case .SetGameTime:
-            hideIcons()
-            let newVC = DurationVC()
-            newVC.modalTransitionStyle = .crossDissolve
-            newVC.onCardTapped = { self.resetWithNewGame() }
-            present(newVC, animated: true, completion: nil)
-            
-        case .EditScore:
+        print("number \(buttonNumber) tapped")
+        switch buttonNumber {
+        case 1:
+            // Edit Scores
             inEditMode = true
             hideIcons()
             stopWatch.goToBackground(completion: {
@@ -442,21 +400,25 @@ extension TimerVC: MenuDelegate {
                 })
             })
             
-        case .Documents:
+        case 2:
+            // Set Game Time
+            hideIcons()
+            let newVC = DurationVC()
+            newVC.modalTransitionStyle = .crossDissolve
+            newVC.onCardTapped = { self.resetWithNewGame() }
+            present(newVC, animated: true, completion: nil)
+        
+        case 3:
+            // View Documents
             hideIcons()
             let newVC = DocumentMenuVC()
             newVC.modalTransitionStyle = .crossDissolve
             present(newVC, animated: true, completion: nil)
+            
+        default:
+            // Menu Collapsing
+            showIcons()
         }
-    }
-}
-
-
-extension TimerVC: DotMenuDelegate {
-    
-    func handleDotMenuButtonTapped(buttonNumber: Int) {
-        
-        print("number \(buttonNumber) tapped")
     }
 }
 

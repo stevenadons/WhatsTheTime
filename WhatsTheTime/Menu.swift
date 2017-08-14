@@ -34,7 +34,7 @@ class Menu: UIView {
     
     var menuCircles: MenuCircles!
     var buttons: [MenuButton] = []
-    var delegate: MenuDelegate?
+//    var delegate: MenuDelegate?
     var selectedMenuItem: MenuItem?
     
     private var containerView: UIView = UIView()
@@ -178,7 +178,7 @@ class Menu: UIView {
         disableBeat()
         
         menuCircles.animateToDownsizedScale(duration: 0.4, delay: 0.0, completion: {
-            self.delegate?.handleNavigation(for: sender.menuItem)
+//            self.delegate?.handleNavigation(for: sender.menuItem)
         })
         for button in buttons {
             let delay: Double = button.isEqual(sender) ? 0.2 : 0.0
