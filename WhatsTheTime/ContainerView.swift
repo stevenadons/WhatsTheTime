@@ -30,7 +30,7 @@ class ContainerView: UIView {
     private func setup() {
         
         backgroundColor = UIColor.clear
-        translatesAutoresizingMaskIntoConstraints = false
+        translatesAutoresizingMaskIntoConstraints = false 
     }
     
     
