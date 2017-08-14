@@ -29,6 +29,11 @@ protocol MenuDelegate: class {
     func handleNavigation(for menuItem: MenuItem)
 }
 
+protocol DotMenuDelegate {
+    
+    func handleDotMenuButtonTapped(buttonNumber: Int)
+}
+
 
 class TimerVC: UIViewController, Sliding {
 
@@ -439,6 +444,15 @@ extension TimerVC: MenuDelegate {
             newVC.modalTransitionStyle = .crossDissolve
             present(newVC, animated: true, completion: nil)
         }
+    }
+}
+
+
+extension TimerVC: DotMenuDelegate {
+    
+    func handleDotMenuButtonTapped(buttonNumber: Int) {
+        
+        print("number \(buttonNumber) tapped")
     }
 }
 
