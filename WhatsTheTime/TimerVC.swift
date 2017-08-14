@@ -49,6 +49,8 @@ class TimerVC: UIViewController, Sliding {
     fileprivate var dismissEditMode: DismissButton!
     fileprivate var maskView: UIButton!
     fileprivate var confirmationButton: ConfirmationButton!
+    fileprivate var dotMenu: DotMenu!
+
     fileprivate var menu: Menu!
     fileprivate var duration: MINUTESINHALF = .TwentyFive
     
@@ -130,6 +132,8 @@ class TimerVC: UIViewController, Sliding {
         menu = Menu()
         menu.delegate = self
         view.addSubview(menu)
+        
+        dotMenu = DotMenu(inView: self.view, delegate: self)
         
         setInitialLayoutConstraints()
         
