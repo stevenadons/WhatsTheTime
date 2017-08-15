@@ -43,6 +43,7 @@
 		4F65C9A01F42FA2400B79FE1 /* NewGameButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F65C99F1F42FA2400B79FE1 /* NewGameButton.swift */; };
 		4F65C9A21F42FA4900B79FE1 /* NewGameButtonLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F65C9A11F42FA4900B79FE1 /* NewGameButtonLayer.swift */; };
 		4F65C9A41F42FA6700B79FE1 /* NewGameButtonIconOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F65C9A31F42FA6700B79FE1 /* NewGameButtonIconOnly.swift */; };
+		4F65C9A61F43254E00B79FE1 /* BallShinySpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F65C9A51F43254E00B79FE1 /* BallShinySpot.swift */; };
 		4F6FFEA41F1FE543004A2257 /* CoordinateScalor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6FFEA31F1FE543004A2257 /* CoordinateScalor.swift */; };
 		4F8F56F31F375B6A00ACA857 /* DurationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8F56F21F375B6A00ACA857 /* DurationVC.swift */; };
 		4F8F56F61F375D7900ACA857 /* DurationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8F56F51F375D7900ACA857 /* DurationCard.swift */; };
@@ -109,6 +110,7 @@
 		4F65C99F1F42FA2400B79FE1 /* NewGameButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameButton.swift; sourceTree = "<group>"; };
 		4F65C9A11F42FA4900B79FE1 /* NewGameButtonLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameButtonLayer.swift; sourceTree = "<group>"; };
 		4F65C9A31F42FA6700B79FE1 /* NewGameButtonIconOnly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameButtonIconOnly.swift; sourceTree = "<group>"; };
+		4F65C9A51F43254E00B79FE1 /* BallShinySpot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BallShinySpot.swift; sourceTree = "<group>"; };
 		4F6FFEA31F1FE543004A2257 /* CoordinateScalor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoordinateScalor.swift; sourceTree = "<group>"; };
 		4F8F56F21F375B6A00ACA857 /* DurationVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationVC.swift; sourceTree = "<group>"; };
 		4F8F56F51F375D7900ACA857 /* DurationCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationCard.swift; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				4F50BF141F2DDEAA002B2293 /* Pitch.swift */,
 				4F50BF121F2DDA7D002B2293 /* PitchBackgroundLayer.swift */,
 				4FB1D07E1F30E90E00C66A4F /* Ball.swift */,
+				4F65C9A51F43254E00B79FE1 /* BallShinySpot.swift */,
 				4FD69D521F3671310035E5BA /* PitchContainerView.swift */,
 			);
 			name = Pitch;
@@ -494,6 +497,7 @@
 			files = (
 				4FB88DE11F2248A400DDB034 /* HockeyGame.swift in Sources */,
 				4F0C9BB51F17BF9A00956C53 /* AppDelegate.swift in Sources */,
+				4F65C9A61F43254E00B79FE1 /* BallShinySpot.swift in Sources */,
 				4F8F56FA1F37730C00ACA857 /* MiniStopWatch.swift in Sources */,
 				4F8F56F61F375D7900ACA857 /* DurationCard.swift in Sources */,
 				4FE7E0731F3B8D160001C399 /* AnimationPresentationController.swift in Sources */,

@@ -118,7 +118,7 @@ class StopWatch: UIControl {
         squareContainer.addSublayer(secondProgressBar)
         
         icon = StopWatchControlIcon(icon: .PlayIcon)
-        icon.color = COLOR.Affirmation
+        icon.color = COLOR.LightBackground
         addSubview(icon)
         
         timer = StopWatchTimer(delegate: self, duration: duration)

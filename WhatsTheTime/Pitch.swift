@@ -41,25 +41,21 @@ class Pitch: UIView {
     // MARK: - Initializing
     
     override init(frame: CGRect) {
-        
         super.init(frame: frame)
         setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        
         super.init(coder: aDecoder)
         setup()
     }
     
     convenience init(delegate: PitchDelegate) {
-        
         self.init()
         self.delegate = delegate
     }
     
     private func setup() {
-        
         backgroundColor = UIColor.clear
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -77,7 +73,6 @@ class Pitch: UIView {
     }
     
     private func nameLabel(title: String) -> UILabel {
-        
         let label = UILabel()
         label.text = title
         label.font = UIFont(name: FONTNAME.ThemeBold, size: 16)
@@ -90,7 +85,6 @@ class Pitch: UIView {
     }
     
     private func scoreLabel() -> UILabel {
-        
         let label = UILabel()
         label.text = "0"
         label.font = UIFont(name: FONTNAME.ThemeBold, size: 56)
@@ -106,7 +100,6 @@ class Pitch: UIView {
     // MARK: - Layout and draw methods
     
     override func layoutSubviews() {
-        
         super.layoutSubviews()
         background.frame = bounds
         background.layoutIfNeeded()
@@ -135,7 +128,6 @@ class Pitch: UIView {
     // MARK: - User methods
     
     func showBall() {
-        
         ball.isUserInteractionEnabled = true
         if ball.alpha < 1 {
             UIView.animate(withDuration: 0.2) {
@@ -145,7 +137,6 @@ class Pitch: UIView {
     }
     
     func hideBall() {
-        
         ball.isUserInteractionEnabled = false
         if ball.alpha > 0 {
             UIView.animate(withDuration: 0.2) {
@@ -155,7 +146,6 @@ class Pitch: UIView {
     }
     
     func moveUp(completion: (() -> Void)?) {
-        
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction], animations: {
             self.transform = CGAffineTransform(translationX: 0, y: CoordinateScalor.convert(y: -110))
         }, completion: { (finished) in
@@ -165,7 +155,6 @@ class Pitch: UIView {
     }
     
     func moveBack(completion: (() -> Void)?) {
-        
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction], animations: {
             self.transform = CGAffineTransform.identity
         }, completion: { (finished) in
@@ -175,7 +164,6 @@ class Pitch: UIView {
     }
 
     func resetScores() {
-        
         homeScore = 0
         homeScoreLabel.text = "\(homeScore)"
         awayScore = 0
@@ -187,7 +175,6 @@ class Pitch: UIView {
     // MARK: - Private Methods
     
     fileprivate func updateScore(for game: HockeyGame) {
-        
         if homeScoreLabel.text != "\(game.homeScore)" {
             update(label: homeScoreLabel, withText: "\(game.homeScore)")
         } else if awayScoreLabel.text != "\(game.awayScore)" {
@@ -196,13 +183,12 @@ class Pitch: UIView {
     }
     
     fileprivate func update(label: UILabel, withText text: String) {
-        
         UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseOut], animations: {
             label.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         }) { (finished) in
             label.text = text
             label.transform = CGAffineTransform(scaleX: 3.5, y: 3.5)
-            label.textColor = COLOR.Affirmation
+            label.textColor = COLOR.BallBody
             UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: [], animations: {
                 label.transform = CGAffineTransform.identity
             }, completion: { (finished) in
@@ -214,25 +200,7 @@ class Pitch: UIView {
         }
     }
     
-    fileprivate func updateUndoGoal(label: UILabel, withText text: String) {
-        
-        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseOut], animations: {
-            label.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-        }) { (finished) in
-            label.text = text
-            label.textColor = COLOR.Theme
-            UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: [], animations: {
-                label.transform = CGAffineTransform.identity
-            }, completion: { (finished) in
-                UIView.transition(with: label, duration: 1, options: .transitionCrossDissolve, animations: {
-                    label.textColor = COLOR.White
-                }, completion: nil)
-            })
-        }
-    }
-    
-     func configureSwipes() {
-        
+    func configureSwipes() {
         swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(swipeUp(swipe:)))
         swipeUp?.direction = .up
         addGestureRecognizer(swipeUp!)
@@ -242,12 +210,10 @@ class Pitch: UIView {
     }
     
     private func disableSwipes() {
-        
         gestureRecognizers?.forEach { removeGestureRecognizer($0) }
     }
     
     @objc private func swipeUp(swipe: UISwipeGestureRecognizer) {
-        
         let location = swipe.location(in: self)
         if location.x < bounds.width / 2 {
             homeScore += 1
@@ -262,7 +228,6 @@ class Pitch: UIView {
     
     
     func homeMinusOne() {
-        
         homeScoreLabel.layer.removeAllAnimations()
         homeScore -= 1
         homeScoreLabel.text = "\(homeScore)"
@@ -270,7 +235,6 @@ class Pitch: UIView {
     }
     
     func awayMinusOne() {
-        
         awayScoreLabel.layer.removeAllAnimations()
         awayScore -= 1
         awayScoreLabel.text = "\(awayScore)"
@@ -278,7 +242,6 @@ class Pitch: UIView {
     }
     
     @objc private func swipeDown(swipe: UISwipeGestureRecognizer) {
-        
         let location = swipe.location(in: self)
         if location.x < bounds.width / 2 {
             guard homeScore > 0 else { return }
@@ -292,7 +255,6 @@ class Pitch: UIView {
     // Extends the touchable area of the view in order to receive touches
     // Swipe detection in score edit mode
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        
         if (!self.isUserInteractionEnabled || self.isHidden || self.alpha <= 0.01) {
             return nil
         }
@@ -317,14 +279,12 @@ class Pitch: UIView {
 extension Pitch: BallDelegate {
     
     func homeScored() {
-        
         homeScore += 1
         update(label: homeScoreLabel, withText: "\(homeScore)")
         delegate?.scoreHome()
     }
     
     func awayScored() {
-        
         awayScore += 1
         update(label: awayScoreLabel, withText: "\(awayScore)")
         delegate?.scoreAway()

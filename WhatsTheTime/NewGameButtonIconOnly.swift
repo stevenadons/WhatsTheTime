@@ -44,10 +44,7 @@ class NewGameButtonIconOnly: UIButton {
     override func layoutSubviews() {
         
         super.layoutSubviews()
-        
-        //        layer.cornerRadius = bounds.height / 2
         shape.frame = bounds
-        
     }
 
 }

@@ -91,4 +91,12 @@ extension ConfirmationButton {
         button.setTitleColor(COLOR.Theme, for: .normal)
         return button
     }
+    
+    class func themeButton() -> ConfirmationButton {
+        
+        let button = ConfirmationButton()
+        button.backgroundColor = COLOR.Theme
+        button.setTitleColor(COLOR.White, for: .normal)
+        return button
+    }
 }

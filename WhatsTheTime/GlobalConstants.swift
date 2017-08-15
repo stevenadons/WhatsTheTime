@@ -64,7 +64,8 @@ enum COLOR {
     static let PitchBlue = UIColor(hexString: "#3D8FE5") // 4784C9
     static let PitchEdge = UIColor(hexString: "#8DBFF7")
     static let Striping = UIColor(hexString: "#FFFFFF") //6F7498
-    static let BallShining = UIColor(hexString: "#FEE43F")
+    static let BallShining = UIColor(hexString: "#FFFEE5")
+    static let BallBody = UIColor(hexString: "#FFFA41")
     
     static let Blue = UIColor(hexString: "#3D8FE5") 
     static let BlueLight = UIColor(hexString: "#8FC0F2")

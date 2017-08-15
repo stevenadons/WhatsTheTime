@@ -13,6 +13,8 @@ class Ball: UIView {
 
     // MARK: - Properties
     
+    private var shinySpot: BallShinySpot!
+    
     private var pan: UIPanGestureRecognizer!
     private var animator: UIViewPropertyAnimator!
     private var haptic: UIImpactFeedbackGenerator?
@@ -42,14 +44,20 @@ class Ball: UIView {
         
         self.init()
         self.delegate = delegate
+        shinySpot = BallShinySpot()
+        layer.addSublayer(shinySpot)
     }
     
     private func setup() {
         
-        layer.backgroundColor = COLOR.Affirmation.cgColor
+        layer.backgroundColor = COLOR.BallBody.cgColor
+        layer.shadowColor = UIColor.darkGray.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 3)
+        layer.shadowOpacity = 0.5
+        layer.shadowRadius = 10
+        
         translatesAutoresizingMaskIntoConstraints = false
         isUserInteractionEnabled = true
-        clipsToBounds = true
         
         pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan(pan:)))
         addGestureRecognizer(pan)
@@ -65,6 +73,8 @@ class Ball: UIView {
         bounds = CGRect(x: 0, y: 0, width: 40, height: 40)
         centerFrame = CGRect(x: (superview!.bounds.width - bounds.width) / 2, y: (superview!.bounds.height - bounds.height) / 2, width: bounds.width, height: bounds.height)
         layer.cornerRadius = min(bounds.width, bounds.height) / 2
+        layer.shadowPath = UIBezierPath(ovalIn: bounds).cgPath
+        shinySpot.frame = bounds
     }
     
     
