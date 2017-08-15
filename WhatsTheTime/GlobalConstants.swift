@@ -105,15 +105,18 @@ let LS_READYFORH2 = NSLocalizedString("Ready for H2", comment: "H2 to begin mess
 let LS_FULLTIME = NSLocalizedString("Full Time", comment: "Full time message")
 let LS_FIRSTHALFLABEL = NSLocalizedString("H1", comment: "Half time indication label")
 let LS_SECONDHALFLABEL = NSLocalizedString("H2", comment: "Half time indication label")
-let LS_WARNINGRESETGAME = NSLocalizedString("RESET GAME?", comment: "When reset button tapped")
+let LS_WARNINGRESETGAME = NSLocalizedString("RESET GAME", comment: "When reset button tapped")
+let LS_WARNINGNEWGAME = NSLocalizedString("NEW GAME", comment: "When stopwatch is tapped for new game")
+
 let LS_HOME = NSLocalizedString("HOME", comment: "Name for home team")
 let LS_AWAY = NSLocalizedString("AWAY", comment: "Name for away team")
 let LS_UNDOGOAL = NSLocalizedString("UNDO GOAL", comment: "Message for undoing goal")
 let LS_MESSAGEEDITSCORES = NSLocalizedString("SWIPE SCORE UP OR DOWN", comment: "Message to explain way to edit scores")
 let LS_BACKBUTTON = NSLocalizedString("BACK", comment: "Message on button to back out from document")
 
-let LS_TITLE_SETGAMETIME = NSLocalizedString("SET GAME TIME", comment: "title for duration VC")
-let LS_TITLE_DOCUMENTS = NSLocalizedString("DOCUMENTS", comment: "Title for document list VC")
+let LS_TITLE_EDITSCORE = NSLocalizedString("EDIT SCORE", comment: "title for edit score menu button")
+let LS_TITLE_SETGAMETIME = NSLocalizedString("SET GAME TIME", comment: "title for duration VC and menu button")
+let LS_TITLE_DOCUMENTS = NSLocalizedString("DOCUMENTS", comment: "Title for document list VC and menu button")
 
 
 let LS_DOCUMENTNAME_PICTOGRAMU7U8 = NSLocalizedString("VHL PICTOGRAM U7-U8", comment: "Name for document")

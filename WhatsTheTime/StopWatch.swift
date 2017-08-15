@@ -40,7 +40,7 @@ class StopWatch: UIControl {
     var timer: StopWatchTimer!
     fileprivate var icon: StopWatchControlIcon!
     fileprivate var timeLabel: StopWatchLabel!
-
+    
     private var half: HALF {
         return game.half
     }
@@ -56,6 +56,8 @@ class StopWatch: UIControl {
     private var messageLabel: UILabel!
     private var halfLabel: UILabel!
     private var durationLabel: UILabel!
+    
+    fileprivate var haptic: UINotificationFeedbackGenerator?
     
     private let progressBarWidth: CGFloat = 18
     private let progressBarStrokeInsetRatio: CGFloat = 0.005
@@ -201,9 +203,10 @@ class StopWatch: UIControl {
     }
     
     func reset(withGame game: HockeyGame) {
-        
         self.game = game
         timer.reset()
+        message = LS_NEWGAME
+        halfLabel.text = LS_FIRSTHALFLABEL
         halfLabel.alpha = 1.0
         updateProgressBars()
         resetTimeLabel(withColor: COLOR.Theme, alpha: 1)
@@ -369,6 +372,7 @@ class StopWatch: UIControl {
             
         case .StopIcon:
             timer.stopCountUp()
+            haptic = nil
             if game.status == .Running {
                 // Game running in overtime
                 if game.half == .First {
@@ -404,8 +408,7 @@ class StopWatch: UIControl {
             resetTimeLabel(withColor: COLOR.Theme, alpha: 1)
             
         case .NoIcon:
-            message = LS_NEWGAME
-            delegate?.handleNewGame()
+            delegate?.handleTappedForNewGame()
         }
     }
     
@@ -422,6 +425,17 @@ class StopWatch: UIControl {
         secondProgressBar.strokeColor = newColor.cgColor
         secondProgressBar.setNeedsDisplay()
     }
+    
+    // MARK: - Haptic
+    
+    fileprivate func prepareHapticIfNeeded() {
+        guard #available(iOS 10.0, *) else { return }
+        if haptic == nil {
+            haptic = UINotificationFeedbackGenerator()
+            haptic!.prepare()
+        }
+    }
+
 }
 
 
@@ -436,6 +450,10 @@ extension StopWatch: StopWatchTimerDelegate {
     func handleTickCountUp() {
         timeLabel.text = stopWatchLabelTimeString()
         timeLabel.setNeedsDisplay()
+        if message == LS_OVERTIME {
+            haptic?.notificationOccurred(.warning)
+            prepareHapticIfNeeded()
+        }
     }
     
     func handleTimerReset() {
@@ -445,6 +463,9 @@ extension StopWatch: StopWatchTimerDelegate {
     }
     
     func handleReachedZero() {
+        prepareHapticIfNeeded()
+        haptic?.notificationOccurred(.warning)
+        prepareHapticIfNeeded()
         updateProgressBars()
         message = LS_OVERTIME
         resetTimeLabel(withColor: COLOR.Negation, alpha: 1)

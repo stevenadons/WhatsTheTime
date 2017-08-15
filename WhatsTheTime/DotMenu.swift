@@ -135,9 +135,9 @@ class DotMenu: UIView {
             self.timeButton.transform = .identity
             self.documentButton.transform = .identity
         }, completion: {(finished) in
-            self.editLabel.grow(text: "EDIT SCORES", duration: 0.05)
-            self.timeLabel.grow(text: "SET GAME TIME", duration: 0.05)
-            self.documentLabel.grow(text: "VIEW DOCUMENTS", duration: 0.05)
+            self.editLabel.grow(text: LS_TITLE_EDITSCORE, duration: 0.1)
+            self.timeLabel.grow(text: LS_TITLE_SETGAMETIME, duration: 0.1, delay: 0.1)
+            self.documentLabel.grow(text: LS_TITLE_DOCUMENTS, duration: 0.1, delay: 0.2)
         })
     }
     

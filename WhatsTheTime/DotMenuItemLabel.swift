@@ -50,10 +50,12 @@ class DotMenuItemLabel: UILabel {
     
     // MARK: - User Methods
     
-    func grow(text: String, duration: Double) {
+    func grow(text: String, duration: Double, delay: Double = 0.0) {
         let charCount = text.characters.count
+        let fireDate = Date(timeIntervalSinceNow: delay)
         var index: Int = 0
         let _ = Timer.scheduledTimer(withTimeInterval: duration / Double(charCount), repeats: true) { (timer) in
+            guard Date() >= fireDate else { return }
             self.title = "\(String(text.characters.prefix(index)))"
             index += 1
             if index > charCount {

@@ -1,19 +1,19 @@
 //
-//  HamburgerButton.swift
+//  NewGameButton.swift
 //  WhatsTheTime
 //
-//  Created by Steven Adons on 29/07/17.
+//  Created by Steven Adons on 15/08/17.
 //  Copyright © 2017 StevenAdons. All rights reserved.
 //
 
 import UIKit
 
-class HamburgerButton: UIButton {
+class NewGameButton: UIButton {
 
     
     // MARK: - Properties
     
-    private var hamburger: HamburgerButtonLayer!
+    private var shapeLayer: NewGameButtonLayer!
     
     
     
@@ -31,7 +31,6 @@ class HamburgerButton: UIButton {
     
     private func setup() {
         
-        // Configuring self
         backgroundColor = UIColor.clear
         translatesAutoresizingMaskIntoConstraints = false
         layer.shadowColor = UIColor.lightGray.cgColor
@@ -39,9 +38,8 @@ class HamburgerButton: UIButton {
         layer.shadowOpacity = 0.8
         layer.shadowRadius = 3
         
-        // Add (passive) shapes
-        hamburger = HamburgerButtonLayer()
-        layer.addSublayer(hamburger)
+        shapeLayer = NewGameButtonLayer()
+        layer.addSublayer(shapeLayer)
     }
     
     
@@ -51,14 +49,9 @@ class HamburgerButton: UIButton {
         
         super.layoutSubviews()
         
-        // Cornerradius for round views
         layer.cornerRadius = bounds.height / 2
-        
-        // Adjusting sublayers dimensions to change in UIView dimensions
-        hamburger.frame = bounds
+        shapeLayer.frame = bounds
         
     }
-    
- 
 
 }

@@ -12,7 +12,7 @@ import UIKit
 protocol StopWatchDelegate: class {
     
     func handleTimerStateChange(stopWatchTimer: StopWatchTimer, completionHandler: (() -> Void)?)
-    func handleNewGame()
+    func handleTappedForNewGame()
 }
 
 protocol PitchDelegate: class {
@@ -35,7 +35,7 @@ class TimerVC: UIViewController, Sliding {
     
     // MARK: - Properties
     
-    fileprivate var resetButton: ResetButtonIconOnly!
+    fileprivate var resetButton: NewGameButtonIconOnly! // ResetButtonIconOnly!
     fileprivate var stopWatchContainer: ContainerView!
     fileprivate var stopWatch: StopWatch!
     fileprivate var pitchContainer: PitchContainerView!
@@ -66,7 +66,6 @@ class TimerVC: UIViewController, Sliding {
     // MARK: - Loading
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         view.backgroundColor = COLOR.White
         view.clipsToBounds = true
@@ -80,8 +79,7 @@ class TimerVC: UIViewController, Sliding {
     }
     
     private func setupViews() {
-        
-        resetButton = ResetButtonIconOnly()
+        resetButton = NewGameButtonIconOnly() // ResetButtonIconOnly()
         resetButton.addTarget(self, action: #selector(resetButtonTapped(sender:forEvent:)), for: [.touchUpInside])
         view.addSubview(resetButton)
         
@@ -124,8 +122,8 @@ class TimerVC: UIViewController, Sliding {
             
             resetButton.widthAnchor.constraint(equalToConstant: 44),
             resetButton.heightAnchor.constraint(equalToConstant: 44),
-            resetButton.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 29)),
-            resetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: CoordinateScalor.convert(y: -13)),
+            resetButton.topAnchor.constraint(equalTo: view.topAnchor, constant: CoordinateScalor.convert(y: 36)),
+            resetButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: CoordinateScalor.convert(y: -22)),
 
             pitchContainer.widthAnchor.constraint(equalToConstant: CoordinateScalor.convert(width: 380)),
             pitchContainer.heightAnchor.constraint(equalToConstant: CoordinateScalor.convert(height: 202)),
@@ -166,7 +164,6 @@ class TimerVC: UIViewController, Sliding {
     }
     
     func setInitialLayoutConstraints() {
-        
         stopWatchCenterYConstraint = NSLayoutConstraint(item: stopWatch, attribute: .centerY, relatedBy: .equal, toItem: stopWatchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
         pitchCenterYConstraint = NSLayoutConstraint(item: pitch, attribute: .centerY, relatedBy: .equal, toItem: pitchContainer, attribute: .centerY, multiplier: 1, constant: UIScreen.main.bounds.height)
     }
@@ -175,13 +172,11 @@ class TimerVC: UIViewController, Sliding {
     // MARK: - Drawing and laying out
     
     override func viewWillAppear(_ animated: Bool) {
-        
         super.viewWillAppear(animated)
 
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
         super.viewDidAppear(animated)
         animateViewsOnAppear()
         showIcons()
@@ -192,7 +187,6 @@ class TimerVC: UIViewController, Sliding {
     // MARK: - Private Methods
     
     func animateViewsOnAppear() {
-        
         stopWatchCenterYConstraint.constant = 0
         UIView.animate(withDuration: 0.8, delay: 0.3, usingSpringWithDamping: 5, initialSpringVelocity: 0.0, options: [], animations: {
             self.stopWatchContainer.layoutIfNeeded()
@@ -206,19 +200,16 @@ class TimerVC: UIViewController, Sliding {
     }
     
     private func resetViews() {
-        
         stopWatch.transform = CGAffineTransform.identity
         pitch.transform = CGAffineTransform.identity
         setInitialLayoutConstraints()
     }
     
     fileprivate func showConfirmationButton() {
-        
         confirmationButton.grow()
     }
     
     @objc fileprivate func hideConfirmationButton() {
-        
         if messageTimer != nil {
             messageTimer!.invalidate()
             messageTimer = nil
@@ -229,8 +220,16 @@ class TimerVC: UIViewController, Sliding {
         }
     }
     
+    fileprivate func temporarilyShowConfButtonWithMask(message: String) {
+        self.message = message
+        showConfirmationButton()
+        UIView.animate(withDuration: 0.2) {
+            self.maskView.alpha = 0.75
+        }
+        messageTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(hideConfirmationButton), userInfo: nil, repeats: false)
+    }
+    
     fileprivate func hideIcons() {
-        
         UIView.animate(withDuration: 0.2) {
             self.dotMenu.alpha = 0.0
             self.resetButton.alpha = 0.0
@@ -238,26 +237,20 @@ class TimerVC: UIViewController, Sliding {
     }
     
     fileprivate func showIcons() {
-        
         UIView.animate(withDuration: 0.2) {
             self.dotMenu.alpha = 1.0
             self.resetButton.alpha = 1.0
         }
     }
     
-    @objc private func resetButtonTapped(sender: ResetButtonIconOnly, forEvent event: UIEvent) {
-        
-        message = LS_WARNINGRESETGAME
-        showConfirmationButton()
-        UIView.animate(withDuration: 0.2) { 
-            self.maskView.alpha = 0.75
-
-        }
-        messageTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(hideConfirmationButton), userInfo: nil, repeats: false)
+    
+    // MARK: - Touch Methods
+    
+    @objc private func resetButtonTapped(sender: NewGameButtonIconOnly, forEvent event: UIEvent) {
+        temporarilyShowConfButtonWithMask(message: LS_WARNINGRESETGAME)
     }
     
     @objc private func dismissButtonTapped(sender: DismissButton, forEvent event: UIEvent) {
-        
         inEditMode = false
         dismissEditMode.hide()
         hideConfirmationButton()
@@ -272,7 +265,6 @@ class TimerVC: UIViewController, Sliding {
     }
     
     @objc private func confirmationButtonTapped(sender: UIButton, forEvent event: UIEvent) {
-        
         hideConfirmationButton()
         if message == LS_UNDOGOAL {
             if messageTimer != nil {
@@ -288,18 +280,30 @@ class TimerVC: UIViewController, Sliding {
             }
         } else if message == LS_WARNINGRESETGAME {
             resetWithNewGame()
+        } else if message == LS_WARNINGNEWGAME {
+            handleNewGame()
         }
     }
     
     @objc private func maskViewTapped(sender: UIButton, forEvent event: UIEvent) {
-        
         hideConfirmationButton()
     }
     
     fileprivate func resetWithNewGame() {
-        
         pitch.resetScores()
         handleNewGame()
+    }
+    
+    fileprivate func handleNewGame() {
+        if let minutes = UserDefaults.standard.value(forKey: USERDEFAULTSKEY.Duration) as? Int {
+            if let enumCase = MINUTESINHALF(rawValue: minutes) {
+                duration = enumCase
+            }
+        }
+        game = HockeyGame(duration: duration)
+        stopWatch.reset(withGame: game)
+        pitch.hideBall()
+        pitch.resetScores()
     }
 }
 
@@ -329,17 +333,8 @@ extension TimerVC: StopWatchDelegate {
         }
     }
     
-    func handleNewGame() {
-        
-        if let minutes = UserDefaults.standard.value(forKey: USERDEFAULTSKEY.Duration) as? Int {
-            if let enumCase = MINUTESINHALF(rawValue: minutes) {
-                duration = enumCase
-            }
-        }
-        game = HockeyGame(duration: duration)
-        stopWatch.reset(withGame: game)
-        pitch.hideBall()
-        pitch.resetScores()
+    func handleTappedForNewGame() {
+        temporarilyShowConfButtonWithMask(message: LS_WARNINGNEWGAME)
     }
 }
 
@@ -347,27 +342,22 @@ extension TimerVC: StopWatchDelegate {
 extension TimerVC: PitchDelegate {
     
     func scoreHome() {
-        
         game.homeScored()
     }
     
     func scoreAway() {
-        
         game.awayScored()
     }
     
     func scoreHomeMinusOne() {
-        
         game.homeScoreMinusOne()
     }
     
     func scoreAwayMinusOne() {
-        
         game.awayScoreMinusOne()
     }
     
     func scoreLabelChanged() {
-        
         message = LS_UNDOGOAL
         if confirmationButton.alpha == 0 {
             showConfirmationButton()
@@ -383,8 +373,6 @@ extension TimerVC: PitchDelegate {
 extension TimerVC: DotMenuDelegate {
     
     func handleDotMenuButtonTapped(buttonNumber: Int) {
-        
-        print("number \(buttonNumber) tapped")
         switch buttonNumber {
         case 1:
             // Edit Scores

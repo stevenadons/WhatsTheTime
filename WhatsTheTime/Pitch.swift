@@ -26,8 +26,6 @@ class Pitch: UIView {
     
     private var background: PitchBackgroundLayer!
     private var ball: Ball!
-    private var homeNameLabel: UILabel!
-    private var awayNameLabel: UILabel!
     fileprivate var homeScoreLabel: UILabel!
     fileprivate var awayScoreLabel: UILabel!
     
@@ -68,11 +66,6 @@ class Pitch: UIView {
         background = PitchBackgroundLayer()
         background.frame = bounds
         layer.addSublayer(background)
-        
-        homeNameLabel = nameLabel(title: LS_HOME)
-        addSubview(homeNameLabel)
-        awayNameLabel = nameLabel(title: LS_AWAY)
-        addSubview(awayNameLabel)
         
         homeScoreLabel = scoreLabel()
         addSubview(homeScoreLabel)
@@ -119,16 +112,6 @@ class Pitch: UIView {
         background.layoutIfNeeded()
         
         NSLayoutConstraint.activate([
-            
-            homeNameLabel.heightAnchor.constraint(equalToConstant: 25),
-            homeNameLabel.topAnchor.constraint(equalTo: bottomAnchor, constant: -38 * bounds.height / 202),
-            homeNameLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.25),
-            homeNameLabel.trailingAnchor.constraint(equalTo: centerXAnchor),
-            
-            awayNameLabel.heightAnchor.constraint(equalTo: homeNameLabel.heightAnchor),
-            awayNameLabel.topAnchor.constraint(equalTo: homeNameLabel.topAnchor),
-            awayNameLabel.widthAnchor.constraint(equalTo: homeNameLabel.widthAnchor),
-            awayNameLabel.leadingAnchor.constraint(equalTo: homeNameLabel.trailingAnchor),
             
             homeScoreLabel.heightAnchor.constraint(equalToConstant: 75),
             homeScoreLabel.centerYAnchor.constraint(equalTo: centerYAnchor),

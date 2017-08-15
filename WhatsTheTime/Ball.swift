@@ -15,6 +15,8 @@ class Ball: UIView {
     
     private var pan: UIPanGestureRecognizer!
     private var animator: UIViewPropertyAnimator!
+    private var haptic: UIImpactFeedbackGenerator?
+
     var centerFrame: CGRect!
     private var xOffset: CGFloat!
 
@@ -103,6 +105,7 @@ class Ball: UIView {
         switch pan.state {
             
         case .began:
+            prepareHapticIfNeeded()
             xOffset = (UIScreen.main.bounds.width / 2 + bounds.width / 2) * copysign(1.0, translation.x)
             animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 0.5, animations: {
                 self.frame = self.centerFrame.offsetBy(dx: self.xOffset, dy: 0)
@@ -125,6 +128,7 @@ class Ball: UIView {
             guard (animator.fractionComplete > 0.60 || abs(pan.velocity(in: self.superview!).x) > 1000) == false else {
                 return
             }
+            haptic = nil
             xOffset = 0
             animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 0.5, animations: {
                 self.frame = self.centerFrame
@@ -139,6 +143,8 @@ class Ball: UIView {
     
     private func handleScore(homeSide: Bool) {
         
+        haptic?.impactOccurred()
+        haptic = nil
         guard shouldRecordGoal == true else { return }
         shouldRecordGoal = false
         isUserInteractionEnabled = false
@@ -151,6 +157,20 @@ class Ball: UIView {
         alpha = 0
         repositionBall(withDelay: 1.0)
     }
+    
+    
+    
+    // MARK: - Haptic
+    
+    private func prepareHapticIfNeeded() {
+        
+        guard #available(iOS 10.0, *) else { return }
+        if haptic == nil {
+            haptic = UIImpactFeedbackGenerator(style: .heavy)
+            haptic!.prepare()
+        }
+    }
+
     
 }
 
